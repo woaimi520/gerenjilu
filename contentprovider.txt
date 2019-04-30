@@ -1,0 +1,59 @@
+  URI 决定读取哪个 content  mProjection 数组决定读取列     mSelection:筛选条件  SORT：决定返回后list 的排序
+  Cursor cursor = mResolver.query(URI, mProjection, mSelection, null, SORT);
+   
+   
+   Uri URI = CallLog.Calls.CONTENT_URI;
+  
+  
+          List<String> projection = new ArrayList<>();
+        projection.add(CallLog.Calls._ID);
+        projection.add(CallLog.Calls.TYPE);
+        projection.add(CallLog.Calls.NUMBER);
+        projection.add(CallLog.Calls.DATE);
+        projection.add(CallLog.Calls.DURATION);
+        // Note: 小米MIUI使用[simid]字段区分双卡;华为EMUI取出来的PHONE_ACCOUNT_ID值为0或1,代表主卡或副卡
+        projection.add(RomUtil.isMiui() ? "simid" : CallLog.Calls.PHONE_ACCOUNT_ID);
+        mProjection = projection.toArray(new String[projection.size()]);
+		
+  
+  
+   sb.append(CallLog.Calls.TYPE).append("=").append(CallLog.Calls.INCOMING_TYPE).append(" OR ");
+        sb.append(CallLog.Calls.TYPE).append("=").append(CallLog.Calls.OUTGOING_TYPE).append(" OR ");
+        sb.append(CallLog.Calls.TYPE).append("=").append(CallLog.Calls.MISSED_TYPE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            sb.append(" OR ").append(CallLog.Calls.TYPE).append("=")
+                    .append(CallLog.Calls.REJECTED_TYPE);
+        }
+        mSelection = sb.toString();
+		
+		
+	// 只读取最近200条通话记录
+    private static final String SORT = CallLog.Calls.DEFAULT_SORT_ORDER + " LIMIT 200";
+		
+		
+		
+写入 
+       很多机器人
+        。。。。。
+        。。。。。
+       builder = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Note.NOTE, note);
+            ops.add(builder.build());
+          mResolver.applyBatch(ContactsContract.AUTHORITY, ops);
+
+删除	
+      
+         	机器人     图纸
+            builder = ContentProviderOperation.newDelete(ContactsContract.RawContacts.CONTENT_URI)
+                    .withSelection(ContactsContract.RawContacts.CONTACT_ID + " = ?",
+                            new String[]{String.valueOf(contact.id)});
+            ops.add(builder.build());
+					
+				  开动的机器人	       
+        ops.add(builder.build());		
+		                        服务员开门
+		  mResolver.applyBatch(ContactsContract.AUTHORITY, ops);//删除list中的所有联系人
+  

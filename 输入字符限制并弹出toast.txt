@@ -1,0 +1,28 @@
+
+        /**
+         * @param source 新输入的字符串
+         * @param start 新输入的字符串起始下标，一般为0
+         * @param end 新输入的字符串终点下标，一般为source长度-1
+         * @param dest 当前已显示的内容
+         * @param dstart 当前光标开始位置
+         * @param dend 当前光标结束位置
+         * @return 返回的是当次要增加显示的部分 字符识别 中英都是 1
+         */
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            int keep = mMaxLength - (dest.length() - (dend - dstart));//还剩多少字符可以填充  （dend - dstart新增的时候是0 减少的时候是 1）
+            if(keep < (end - start)){ //7<（3-0）
+                toast.show();  //如果输入的字符大于剩余填充数目
+            }
+            if(keep <= 0){
+                return "";//这里为何不是返回null  如果没有剩余可输入字数   则保持原有文本不变
+            }else if(keep >= end - start){
+                // keep original   如果剩余可输入字数大于当前正在输入的字数    则返回当前输入
+                //（相当于 return source，不过不建议这么写）
+                //可能是删除事件
+                return null;
+            }else{
+                return source.subSequence(start,start + keep);
+            }
+
+        }

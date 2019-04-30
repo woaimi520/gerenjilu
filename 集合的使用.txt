@@ -1,0 +1,4 @@
+list1 1234
+list2 567
+list1.add(1,list2) 
+结果：1567234

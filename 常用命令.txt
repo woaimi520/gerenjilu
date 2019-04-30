@@ -1,0 +1,86 @@
+快捷键
+ctri + F  当前文件查询字符  F3下一个  shirft +F3上一个
+ctri +Shirft+ F  所有文件查询字符
+ctri +N     查找类
+ctri +Shirft +N 查找文件
+ctri+O 重写
+ctri+shirft+alt+N 查找类中的方法或变量
+ctri+alt + 回车 自动分号
+
+ctri+shirft+K push
+
+翻译：ctri+shirft+Y
+替换：ctri+shirft+X
+
+ctri+P 方法参数提示
+alt+Q 提示类名 方法名
+alt+D 添加注释 自己设置的
+ctri+R 替换
+ctri+D 复制
+
+
+查看apk签名
+1.解压apk-》zip 2 META-INF 中的rsa文件 用如下命令
+keytool -printcert -file E:\code\android\Dialer\app\build\outputs\apk\debug\META-INF\CERT.RSA
+
+查看界面任务战
+adb shell dumpsys activity activities
+查看fragment
+adb shell dumpsys activity +包名
+查看versionCode
+adb shell dumpsys package com.szqd.dialer | findstr versionCode
+提交的时候出错
+git commit --amend -C HEAD --reset-author
+
+全局
+C:\Users\Administrator\.gitconfig
+修改全局git用户
+git config --global user.name  "username"     
+git config --global user.email "email"
+
+本地
+Dialer_pre_install\.git\config
+修改本地git用户
+git config user.name  "username"      
+git config user.email "email"
+
+查看
+本地
+git config user.name
+
+android stuido 
+signing:配置可用签名
+buildtype：选择签名 debugable true 才能调试
+左侧 build variants 选择 run /debug/build版本 run不是可debug版本时候会自动改变buildtype
+build的
+路径：app\build\outputs\apk\buitest
+
+generate signed （buildtype增加这里对应增加）
+路径：Dialer\app\release （可配置）
+
+
+版本切换
+git checkout origin（新建本地分支名） origin/a版本
+
+查看remote 对应的地址 其实他就是个地址 分支概念再它之下
+git remote -v
+
+删除origin
+git remote rm origin
+
+重新添加origin
+git remote add origin git@gitee.com:Hnicolas/Dialer.git 
+
+分支跟踪修改 (local_branch_name可以省略 默认是当前分支)
+git  branch -u  origin/remote_branch_name  local_branch_name
+
+
+查看版本追终
+git branch -vv
+
+合并多个commit信息
+git rebase -i HEAD~10  10为你要合并的commit个数
+insert 把pich 改为 squash 留下一个 系统会处理
+esc退出 ：wq 保存
+insert 把please之前的都删除 写下你的message
+esc 退出 ：wq保存

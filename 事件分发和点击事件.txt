@@ -1,0 +1,62 @@
+activity-》viewgroup->view
+
+activity 最后也是用的viewgroup，所以只考虑 viewgroup 和 view
+
+事件分为 down move up
+
+viewgroup：分发 打断 处理
+view     ：分发 处理（分发其实也是调用的处理，所以只有一个处理）
+down来的时候 从顶层向下分发过程：
+（打断返回false时）
+1.老板说 小组长你们组做这个，小组长会找手下。大家都不做 老板自己做
+（打断返回true时）
+2.老板说 小组长你做这个。组长不做 老板自己做 
+
+3.队员只要注册了监听 逻辑能走到的话 就会默认让队员完成事件
+  队员只要注册 ontouchlisener 返回值 true 事件被消费  false 往 ontouchevent-》click 走 最后决定是否做
+4.队员 android:clickable="true"（有的默认值还不同 自己多注意）时 无论有不有设置监听 （三个） 小组长都认为是队员来做 自己不会处理 
+  哪怕队员也没去做 （ontouchlisener 返回false 且无监听 底层的队长也认为是队员做了）  
+
+view或者viewgroup处理的时候 
+ontouchlistener 返回值决定后续流程走不走
+down-》长按（若注册）（还在up处理函数内）-》move-》up-》click（若注册）（还在up处理函数内）
+
+
+
+1.最外层 layout   viewgroup   view 都设置三种监听
+  只有view 的 ontouch-》onclick（up才会出现） 或者 onlongclick（长按不松手出现） 出现
+  
+  最大注意点
+  事件传递是按照点击区域来的 一定注意了
+  
+  第一注意点
+  onlongclick 返回值的影响
+  结果 ： 返回值是false（默认）  则长按时执行完长按监听之后会走点击的监听
+
+  返回值是true   则长按时只会执行setOnLongClickListener 
+  
+  快速点击：和longclick 的返回值无关 都会走onclick
+  
+  第二注意点
+  无论 viewgroup 或者view 都会走view diapath 内先判断ontouch返回值 再决定是否调用 ontouchevent-》onclick等 
+  ontouchlistener 返回为true 后续的click和 onlongclick回调都不走
+  ontouchlistener 返回为false 后续的click和 onlongclick回调还是会走
+  
+  第三注意点
+  ontouch返回值 决定事件是否被消费 
+  onlongclick 的返回值不影响事件 只要注册点击事件无论长短（流程能走到的话）  事件直接就被消费
+  
+  第四注意点
+  子 view 设置 android:clickable="false"（默认为true） 决定他之下的viewgroup能接收事件，
+   如果全部被子view遮挡 且为设置 那么它下层的viewgroup 收不到事件
+  第五注意点
+  recycleview 重写了ontouchevent（）它不会去关心 onclick 和onlongclick
+  解决办法我正在找
+  
+  第六注意点
+  当view 不可见 它的点击事件也就没了 且 父布局不可见 子布局即使设置可见 最终也不可见
+  第七点猜测
+  ontouch 函数 在收到 ondown的时候 返回false的时候 up事件不会传给它
+  第八点猜测
+  TextView 的  android:clickable="true" 可以收到down 和up （down的时候返回false）
+  TextView 的  android:clickable 不设 down返回true的时候 可以收到up 

@@ -1,0 +1,83 @@
+    class MaxTextLengthFilter implements InputFilter{
+        private int mMaxLength;
+        private Toast toast;
+
+        public MaxTextLengthFilter(Context mContext,int max) {
+            mMaxLength = max ;
+            String str="最大字符不能超过{0}";
+            toast = Toast.makeText(mContext, MessageFormat.format(str,String.valueOf(max)),Toast.LENGTH_LONG);
+        }
+
+        /**
+         * @param source 新输入的字符串 “”长度为0
+         * @param start 新输入的字符串起始下标，一般为0
+         * @param end 新输入的字符串终点下标，一般为source长度-1
+         * @param dest 当前已显示的内容
+         * @param dstart 当前光标开始位置
+         * @param dend 当前光标结束位置
+         * @return 返回的是当次要增加显示的部分 字符识别 中英都是 1
+         */
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            int iputSourceLength = getCurLength(source);//新字符长度
+            int oldDest = getCurLength(dest);//旧字符长度
+
+
+            int keep = mMaxLength - (oldDest - (dend - dstart)*getCurLength(dest.subSequence(dstart,dend)));//还剩多少字符可以填充  （dend - dstart新增的时候是0 减少的时候是 1）
+            if(keep < iputSourceLength){ //7<（3-0）
+                toast.show();  //如果输入的字符大于剩余填充数目
+            }
+            if(keep <= 0){
+                return "";//这里为何不是返回null  如果没有剩余可输入字数   则保持原有文本不变
+            }else if(keep >= iputSourceLength){
+                // keep original   如果剩余可输入字数大于当前正在输入的字数    则返回当前输入
+                //（相当于 return source，不过不建议这么写）
+                //可能是删除事件
+                return null;
+            }else{
+                int lastEnd = 0;
+                if(source.length()>0){
+                     for(int i =0;i<source.length();i++) {
+                         if (getCurLength(source.subSequence(start, start + i)) <= keep) {
+                             lastEnd = i;
+                         } else {
+                             break;
+                         }
+                     }
+                     if(lastEnd!=0) {
+                         return source.subSequence(start, start + lastEnd);
+                     }else{
+                         return "";
+                     }
+                }
+                return "";
+            }
+
+        }
+
+
+
+
+
+        /**
+         * @param s 返回字符长度 汉字算2个单位  字符算1个单位 “”长度为0
+         * @return  核算后的长度
+         */
+        private int getCurLength(CharSequence s){
+            int length = 0;
+            if(s==null){
+                return length;
+            }else{
+                for(int i =0;i< s.length();i++){
+                    if(s.charAt(i)<128){
+                        length += 1; //字符加1
+                    }else{
+                        length += 2;//汉字加2
+                    }
+                }
+                return length;
+            }
+
+        }
+
+    }

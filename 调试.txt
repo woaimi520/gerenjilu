@@ -1,0 +1,3 @@
+alt +F8 复制对应函数 可以查看返回值
+
+AndroidStudio->View->Tool Windows->Device File Explorer

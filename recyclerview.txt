@@ -1,0 +1,12 @@
+1
+getitem 和 getcount 都是返回所有的条目 包含未显示的
+2
+setdata
+获取点击位置
+注意
+ViewHolder extends RecyclerView.ViewHolder 
+1.ViewHolder 中有这个方法
+  getAdapterPosition 获取点击的位置
+
+2.在如下方法中获取
+onBindViewHolder

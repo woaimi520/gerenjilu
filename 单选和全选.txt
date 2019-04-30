@@ -1,0 +1,94 @@
+
+在onBindViewHolder 根据 记录来改变显示  记录只记录postition 保证记录在list改变的时候 需要刷新
+
+    case R.id.select_all:
+                if (mAdapter.isSelectedAll()) {
+                    select_all.setText("取消全选");
+                    mAdapter.unselectAll();
+                } else {
+                    select_all.setText("全选");
+                    mAdapter.selectAll();
+                }
+                break;
+				
+     public void onClick(View view, int position) {
+                        select_all.setText(mAdapter.isSelectedAll() ? R.string.contact_unselect_all
+                                : R.string.contact_select_all);
+                        mAdapter.check(position);
+                    }
+
+
+目前我认为好的方案
+onBindViewHolder 中根据变量决定怎么显示
+
+onclick          中改变变量的值
+
+
+
+
+
+先定义记录list 默认都是false
+private SparseBooleanArray selectLists = new SparseBooleanArray();
+
+
+在onBindViewHolder 时候记录点击的位置
+  holder.merge_check.setTag(position);
+
+
+点击后判断 点击位置
+selectLists.get((int) holder.merge_check.getTag())
+反设置 
+selectLists.put(i, false);
+
+
+最后返回这个
+selectLists
+
+
+单选
+
+                        if (mSelectedContactIds.contains(contact.id)) {
+                            mSelectedContactIds.remove(Integer.valueOf(contact.id));
+                        } else {
+                            mSelectedContactIds.add(contact.id);
+                        }
+                        notifyItemChanged(getAdapterPosition());
+                        mBtnSelectAll.setText(mSelectedContactIds.size() == getItemCount() ? "取消全选" : "全选");
+
+
+
+全选
+定义     private List<Integer> mSelectedContactIds;
+保存     contactId = getItem(i).id
+保存的是点击的iteam的id 
+     void selectAll() {
+            for (int i = 0; i < getItemCount(); i++) {
+                int contactId = getItem(i).id;
+                if (!mSelectedContactIds.contains(contactId)) {
+                    mSelectedContactIds.add(contactId);
+                }
+            }
+            notifyDataSetChanged();
+            mBtnSelectAll.setText("取消全选");
+        }
+
+        void selectNone() {
+            mSelectedContactIds.clear();
+            notifyDataSetChanged();
+            mBtnSelectAll.setText("全选");
+        }
+
+界面刷新
+在onBindViewHolder中
+check.setSelected(mSelectedContactIds.contains(contact.id));
+
+全选和取消全选
+        
+                if (TextUtils.equals("全选", select_all.getText())) {
+                    select_all.setText("取消全选");
+                    mAdapter.selectAll();
+                } else {
+                    select_all.setText("全选");
+                    mAdapter.unselectAll();
+                }
+

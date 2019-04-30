@@ -1,0 +1,26 @@
+已经oncreat的界面不会直接改变颜色
+首先添加监听
+ UIColorSubscriber.getInstance().attach(this);
+
+点击模式后
+TRUE 是夜间模式 
+（mPref.getBoolean(KEY_NIGHT_MODE, Defaults.DEFAULT_NIGHT_MODE);）
+ boolean isNight = PreferenceHelper.getInstance(this).isNightMode();//获取当前模式
+ PreferenceHelper.getInstance(this).setNightMode(!isNight);//保存切换后的模式
+ 
+ 根据模式改变着色
+  if (nightMode) {
+            colorBackground = ContextCompat.
+			getColor(context, R.color.ui_background_night);
+			  } 
+	else {
+            colorBackground = ContextCompat.getColor(context, R.color.ui_background_day);
+			
+ 监听回调改变颜色
+ImageView more = getView().findViewById(R.id.more);
+
+对于刚启动的界面 setTheme 设置后可以只对单一的界面生效
+     if (PreferenceHelper.getInstance(this).isNightMode()) {
+            setTheme(R.style.AppTheme_Night);
+        }
+

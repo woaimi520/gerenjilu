@@ -1,0 +1,9 @@
+      目前了解到的  
+		Observable.create((ObservableOnSubscribe<Void>) emitter -> {
+         
+		 。。。。
+		 
+            emitter.onComplete();
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();

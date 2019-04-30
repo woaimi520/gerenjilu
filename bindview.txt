@@ -1,0 +1,16 @@
+buider.gradle(app中的dependencies加入)：
+
+       
+
+implementation 'com.jakewharton:butterknife:8.8.1'
+annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+即可，使用：
+
+@BindView(R.id.text1)
+TextView textView;
+代替：
+
+findviewbyid方法。
+
+使用之前要  ButterKnife.bind(this);

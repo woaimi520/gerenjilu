@@ -1,0 +1,46 @@
+右下角可以看到当前分支 
+有书签标记的为当前分支
+本地和远程都可以拉分支 本地拉的要提交一把才能和远程产生关联
+切换分支 点中分支 点checkout
+
+合并分支内容到当前分支 merge的时候最好先提交 （都进行了提交）
+第一种方法
+1.切换当分支 当前
+2.选择 合并分支-》merge into current  （合并过来会直接commit）
+
+第二种方法
+1.VCS-》git-》mergechanges  好像原理一样 同上
+
+
+checkpic
+切换到目标分支 点击log 选择 要合并过来的分支 
+选择 commit  点击 check pick 然后 commit弹框 接下来commit
+
+
+变换分支
+点击要切换到的分支 点击checkout
+1.点击force changed 的时候 当前没有add且冲突的就会丢失不然会
+复制过去 （commit 的就不会收到影响）
+
+revert 提交
+当提交后又想去掉这次更改 
+可以点击commit 然后右键 点击 REVERT 后会生成一个revert的提交 （只用在commit后就可以用）
+
+删除分支 
+删除分支分为 删除本地和远程 不能删除当前正在的分支 点击branch 后 选择分支 -》delete
+
+TAG 本地拉的分支会同步tag
+创建tag （不push的话 就只存在于本地）
+vcs-》git->tag tag就会打在当前最新的commit上（可以commit的信息来指定到哪个） 在push tag tag可以单独push 
+ 也可以和修改一起 但要勾选 push 框中的 push TagS
+ 
+删除tag
+选中commit 右键 -》 tags -》删除tag  还需要push 
+ 目前push 有问题 android studio 直接删除有bug
+ 
+ 用命令行
+ git tag  查看tag  本地的tag
+ git tag -d 123 删除本地tag
+git push origin :refs/tags/123  删除github上的tag
+
+

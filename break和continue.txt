@@ -1,0 +1,10 @@
+在循环语句中
+for while 
+break 跳出整个循环
+continue 跳出当次循环
+
+在选择语句中 switch
+break 跳出选择语句
+continue 不能单独用
+
+if 和他们没关系
