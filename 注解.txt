@@ -1,0 +1,27 @@
+相像成一个标签 元注解就是标签的标签
+
+使用
+1.创建标签
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Renyu {
+}
+
+2.使用标签
+某类中
+ @Renyu
+    public void suanShu(){
+        System.out.println("1234567890");
+    }
+
+
+解析注解
+反射后判断是否被标记
+m.isAnnotationPresent(Renyu.class)
+  try{
+   //使用对应方法
+                 m.setAccessible(true);
+                 m.invoke(testBug, null);
+
+
+             }catch(Exception e){}
+// 打印还是什么在这里

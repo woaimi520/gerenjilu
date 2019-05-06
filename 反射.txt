@@ -1,0 +1,8 @@
+简单理解就是 获取到 某个类的 class 对象 
+这里面保存了 方法啊 变量啊等信息 可以直接获取到私有的 
+
+第二步就是调用方法 
+Constructor com = noBugClass.getConstructor(); //获取构造函数
+Object object = com.newInstance(); //生成对象
+Method m = noBugClass.getMethod("suanShu"); //获取方法
+m.invoke(object); //方法和对象组合 使用

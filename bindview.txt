@@ -12,5 +12,11 @@ TextView textView;
 代替：
 
 findviewbyid方法。
-
-使用之前要  ButterKnife.bind(this);
+activity 中使用
+使用之前要  ButterKnife.bind(this); 
+需要在       setContentView(R.layout.activity_main); 后
+adapter中使用
+    public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }

@@ -1,4 +1,4 @@
-1
+﻿1
 getitem 和 getcount 都是返回所有的条目 包含未显示的
 2
 setdata
@@ -10,3 +10,9 @@ ViewHolder extends RecyclerView.ViewHolder
 
 2.在如下方法中获取
 onBindViewHolder
+
+下拉到底 弹出对话框问题
+定义一个：DialogFragment
+
+滑动控制
+setNestedScrollingEnabled
