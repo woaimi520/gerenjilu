@@ -1,18 +1,159 @@
-﻿1
-getitem 和 getcount 都是返回所有的条目 包含未显示的
-2
-setdata
-获取点击位置
-注意
-ViewHolder extends RecyclerView.ViewHolder 
-1.ViewHolder 中有这个方法
-  getAdapterPosition 获取点击的位置
+﻿RecyclerView
+app builder 下：
+    //recycleView
+    implementation 'com.android.support:recyclerview-v7:28+'
+	
+注意：
+	getAdapterPosition 可以在adapter中获取当前view的位置
+    LinearLayoutManager 只管理一个recycleview
 
-2.在如下方法中获取
+1.它需要一个adapter来处理数据 每个item 都有一个 holder
+  adpter中函数执行顺序
+     * MyAdapter()
+	 * 
+     * getItemCount
+     *
+     * getItemViewType
+     *
+     * onCreateViewHolder
+     *
+	 * ViewHolder(@NonNull View itemView) {
+	 *  
+     * onBindViewHolde
+
+2.里面内容的排列方向 
+  由    mRecytclerView01.setLayoutManager(lin01); 决定 默认是竖着 
+  XML 中设置了没得效果
+
+3.设置间隔符
+   系统自带
+           mRecytclerView01.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));   
+   自定义 后面再总结
+   
+4 添加监听问题
+  ***********************************************************
+  补充接口的 接口中方法都是public 变量都是public static final的
+  实现类必须实现接口中的方法 包括 接口继承的方法
+  
+  内部类 访问外部类可以直接访问 包括私有方法 和变量 
+  外部类 访问内部类需要先实例化出来 然后范文 包括私有方法和变量
+  
+  外部访问内部类 需要内部类 是 public 等 不能是private
+  实例化方式：
+  W w = new W()
+  W.N n = w.new N()
+  ***********************************************************
+  onBindViewHolde 中 因为入参有 holder 及 position 
+  否则可以用int position = getAdapterPosition()来获取位置
+  所以这里添加监听最合适
+  1.系统回调接口 通过
+  onBindViewHolde
+   viewHolder.itemView.setOnLongClickListener（new onLongClickListener）
+   。。。
+   ）
+   viewHolder.itemView.setOnClickListener（new onClickListener）
+   。。。。
+   ）
+   
+3.外部实现接口
+   OnClickListener
+4. 监听回调  
+   回调外部监听器的对应函数  
+   
+   
+添加监听优化
+ 
+   避免创建过多对象
+onCreateViewHolder 和 onBindViewHolder 对时间都比较敏感，
+尽量避免繁琐的操作和循环创建对象。例如创建 OnClickListener，
+可以全局创建一个，然后数据通过 itemView.setTag 携带
+1.设置监听
+onBindViewHolde
+    viewHolder.itemView.setTag(position);
+        viewHolder.itemView.setOnLongClickListener(this);
+        viewHolder.itemView.setOnClickListener(this);
+
+2. MyAdapter 实现接口
+ 	MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnLongClickListener, View.OnClickListener	
+	
+3.外部实现接口
+   OnClickListener
+4. 监听回调  
+   回调外部监听器的对应函数   
+   
+如果要这么用的话哈   
+特别的 在点击事件中这么判断 考虑到 删除item 重新绘制的时候 多次点击 
+若此刻没有绘制好 
+ int position = getAdapterPosition();
+ if (position == RecyclerView.NO_POSITION) return;   
+ 。。。
+   
+   
+5 判断是否到底 （ontouch 返回false/true 和 onclick 不会干扰它）
+  1 添加滑动监听
+ mRecytclerView01.addOnScrollListener(new RecyclerView.OnScrollListener() {  
+  2 重写 
+  onScrollStateChanged 外层嵌套滑动的时候滑动就会调用 显示的下的时候 滑动也会回调（即使没动）
+  onScrolled 外层嵌套滑动的时候不调用 显示的下的时候 滑动不会回调（即使没动）
+     
+        
+  3 在 onScrollStateChanged 中用 canScrollVertically（-1） /canScrollHorizontally 判断 
+     参数 -1 判顶  到顶返回false
+	       1 判底  到底返回false
+	例如：	   
+		              if(!recyclerView.canScrollVertically(1)){
+                                                             Toast.makeText(MainActivity.this, "已经到达底部", Toast.LENGTH_SHORT).show();
+
+                                                         }
+                                                         if(!recyclerView.canScrollVertically(-1)){
+                                                             Toast.makeText(MainActivity.this, "已经到达顶部", Toast.LENGTH_SHORT).show();
+
+                                                         }
+														 
+		问题：当能滑动的时候还好用
+              不能滑动的时候不管往哪个方向滑动两个判断语句都会返回true
+
+ 针对此问题
+     
+		            int ii= recyclerView.computeVerticalScrollExtent();//显示的
+                    int iii=recyclerView.computeVerticalScrollOffset();//偏移位置 测试最小为0
+                   int iiii= recyclerView.computeVerticalScrollRange();//整个高度 包括没有显示的
+		   通过 ii==iiii  来判断是否显示完全  显示完全的时候只显示一种
+		   
+6.item 内部里面的view 点击事件
+  1
 onBindViewHolder
+  		viewHolder.button.setTag(position);
+        viewHolder.button.setOnClickListener(this);
+  2
+public void onClick(View v) {
+        int position = (Integer) v.getTag();
+        switch (v.getId()) {
+            case R.id.button:
+			
+ 3也可以使用bindview
+   在 ViewHolder类中
+   @OnClick 和  @OnLongClick 注意 这种方式不用要添加监听 它自己会帮你添加
+   这种方式需要在最外部view 中使用 id
+   
+   
+ 外层添加  NestedScrollView
+ 
+ NestedScrollView 没有动的时候
+   recycleview 还是和之前一样的行为 
+   实际动了 且没完全显示 滑动 才会回调 onScrolled
 
-下拉到底 弹出对话框问题
-定义一个：DialogFragment
-
-滑动控制
-setNestedScrollingEnabled
+ 
+  NestedScrollView 动的时候
+  recycleview
+    没完全显示 没有滑动 也不会回调 onScrolled （比如长度很大 使用wrapcontent）
+	
+	NestedScrollView 不能滑动的时候 如能完全显示下内容 
+	  mNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+	  就不会回调
+// nestedScrollView.getMeasuredHeight() 显示的高度
+//nestedScrollView.getChildAt(0).getMeasuredHeight()   整个高度 包含未显示的 因为只有一个线性布局 所以是0
+// scrollY 下滑距离
+	
+	
+  

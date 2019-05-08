@@ -6,6 +6,9 @@ ctri +Shirft +N 查找文件
 ctri+O 重写
 ctri+shirft+alt+N 查找类中的方法或变量
 ctri+alt + 回车 自动分号
+alt+insert 实现 方法 复写方法 抽象类在 匿名内部类使用的时候 要打上{} 再用
+
+Toast 大写 可以快速生成代码
 
 ctri+shirft+K push
 
