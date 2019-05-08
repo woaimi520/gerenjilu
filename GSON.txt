@@ -1,0 +1,19 @@
+app build 中
+
+implementation 'com.google.code.gson:gson:2.8.5'
+
+LIST互转
+1.list 转换为 json
+Gson gson = new Gson();
+String jsonBooks =gson.toJson(books);
+
+2.json 转换为list
+     List<Book> bellsGroupsList = gson.fromJson(booksJson, new TypeToken<List<Book>>(){}.getType());
+
+对象互转
+1.对象 转换为 json
+String jsonBook =gson.toJson(books.get(0));
+
+2.json 转换为对象
+Book book2 = gson.fromJson(bookJson, Book.class);
+

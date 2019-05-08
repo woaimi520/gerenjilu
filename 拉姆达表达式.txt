@@ -1,0 +1,7 @@
+1.配置app 的 build 
+
+在android { 下添加
+compileOptions {
+    targetCompatibility 1.8
+    sourceCompatibility 1.8
+}

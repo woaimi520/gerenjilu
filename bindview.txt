@@ -20,3 +20,8 @@ adapter中使用
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+		
+		
+  @OnClick({R.id.button,R.id.textView}) 添加点击 这种方式不需要view 添加监听器 它会自动添加
+
+   public void  onClick111  这个名字可以自定义

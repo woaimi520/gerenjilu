@@ -1,0 +1,35 @@
+1. 
+注意 
+序列化方式传递：
+传递的是list的时候 book 实测不需要序列化，
+但是直接传送book 实例的时候就需要book 类  
+class Book implements Serializable
+这种方式传递后 引用的指向居然没有变化
+
+转为GSON 传递
+使用GSON转化的话 传递后接收到的对象不同 一定注意了
+且 Gson传递的时候 Book类也不需要 implements Serializable
+
+    public static  MyDialogFragment newInstance( List<Book> books) {
+
+        Bundle args = new Bundle();
+
+        MyDialogFragment fragment = new MyDialogFragment();
+        args.putSerializable("books", (Serializable)books);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+
+            books = (List<Book>)bundle.getSerializable("books");
+
+            Book book = books.get(0);
+        }
+
+    }
