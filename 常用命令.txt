@@ -87,3 +87,9 @@ insert 把pich 改为 squash 留下一个 系统会处理
 esc退出 ：wq 保存
 insert 把please之前的都删除 写下你的message
 esc 退出 ：wq保存
+
+igone 文件重置
+
+git rm -r --cached .
+git add .
+git commit -m 'update .gitignore'

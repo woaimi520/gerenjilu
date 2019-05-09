@@ -1,0 +1,69 @@
+问题引入
+bindview 的时候 创建一个线程去加载图片，加载好的时候就设置图片
+但是 可能当前的viewholder已经被复用 那么此刻设置就会设置到新的
+item上 造成错乱
+
+解决
+第一种：
+首先弄个通用的预载图片：
+holder.imageView.setImageDrawable(mContext.getDrawable(R.mipmap.ic_launcher));
+图片加载完的时候 判断以下tag 
+onbindview的时候：
+String url = mData.get(position);
+holder.imageView.setTag(url);
+加载图片完成的时候：
+URL url = new URL(mData.get(position));
+url.equals(holder.imageView.getTag())
+当发现已经不同的时候不再加载
+
+第二种
+首先弄个通用的预载图片：
+holder.imageView.setImageDrawable(mContext.getDrawable(R.mipmap.ic_launcher));
+异步任务添加tag
+holder.imageView.setTag(1,asyncTask);
+当holder被复用的时候
+public void onViewRecycled(MyViewHolder holder) {
+        super.onViewRecycled(holder);
+        AsyncTask asyncTask = (AsyncTask) holder.imageView.getTag(1);
+        asyncTask.cancel(true);
+    }
+
+
+另外需要注意的是
+    onBindViewHolder 不是在刷新的时候一定会调用的
+	   以下更新的时候只会调用对应位置的view holder回调到 onbindViewHolder
+	   
+	   以下看作只是动画 前提是必须要满足list 要有 不然就会报越界错误
+       notifyItemRemoved(location)
+	   notifyItemInserted(position)
+	   
+	   我目前理解 这个只是会在画面上 添加 和删除了 item，每个item的viewholder都不会感知到
+	   要让 viewholder感知到 需要
+	   notifyItemRangeChanged(position, mDataList.size() - position);
+	   这个就会让 对应的list中的viewholder 调用 onbindview 函数
+	   
+	   
+	   
+	  待续。。
+	   
+	   
+	   。。。。。。。。。。。。。。。
+	   
+	   
+	   
+list remove 逻辑
+0,1,2,3,4,5
+然后 remove(3)从原数组的下标为4就是4开始，复制两个长度也就是4和5复制这两个，
+接着 从目标数组开始（这里也是当前数组）的下标为3这里将其覆盖也就是变成0,1,2,4,5,5，
+最后将最后一位置为null就变成0,1,2,4,5，null	 
+
+list add 逻辑
+同理
+0,1,2,3,4,5
+list.add(3,element)
+从下标为3的数据开始往后面复制3个数即3,4,5
+覆盖到目标数组下标为4的位置，变成了0,1,2,3,3,4,5
+最后将下标为3的值设置为添加的数据  
+
+
+总结：尽量使用 getAdapterPosition() 来获取当前是在操作哪个 位置  不要用 holder去保存位置为好
