@@ -1,0 +1,8 @@
+  创建
+  SharedPreferences sharedPreferences = getSharedPreferences("HuaWeiFirstRun", Context.MODE_PRIVATE);
+  
+  获取
+   boolean isfirst = sharedPreferences.getBoolean("first", true);
+   
+   写入
+    sharedPreferences.edit().putBoolean("first", false).commit();

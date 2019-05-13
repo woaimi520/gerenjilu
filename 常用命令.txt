@@ -20,6 +20,7 @@ alt+Q 提示类名 方法名
 alt+D 添加注释 自己设置的
 ctri+R 替换
 ctri+D 复制
+ctri+Shirft+U 大小写变换
 
 
 查看apk签名

@@ -60,3 +60,36 @@ down-¡·³¤°´£¨Èô×¢²á£©£¨»¹ÔÚup´¦Àíº¯ÊýÄÚ£©-¡·move-¡·up-¡·click£¨Èô×¢²á£©£¨»¹ÔÚup´
   µÚ°Ëµã²Â²â
   TextView µÄ  android:clickable="true" ¿ÉÒÔÊÕµ½down ºÍup £¨downµÄÊ±ºò·µ»Øfalse£©
   TextView µÄ  android:clickable ²»Éè down·µ»ØtrueµÄÊ±ºò ¿ÉÒÔÊÕµ½up 
+  
+  
+  1¡¢onInterceptTouchEvent()ÊÇÓÃÓÚ´¦ÀíÊÂ¼þ
+  £¨ÀàËÆÓÚÔ¤´¦Àí£¬µ±È»Ò²¿ÉÒÔ²»´¦Àí£©²¢¸Ä±ä
+  ÊÂ¼þµÄ´«µÝ·½Ïò£¬Ò²¾ÍÊÇ¾ö¶¨ÊÇ·ñÔÊÐíTouchÊÂ
+  ¼þ¼ÌÐøÏòÏÂ£¨×Ó¿Ø¼þ£©´«µÝ£¬Ò»µ«·µ»ØTrue£¨´ú
+  ±íÊÂ¼þÔÚµ±Ç°µÄviewGroupÖÐ»á±»´¦Àí£©£¬ÔòÏòÏÂ
+  ´«µÝÖ®Â·±»½Ø¶Ï£¨ËùÓÐ×Ó¿Ø¼þ½«Ã»ÓÐ»ú»á²ÎÓëTouch
+  ÊÂ¼þ£©£¬Í¬Ê±°ÑÊÂ¼þ´«µÝ¸øµ±Ç°µÄ¿Ø¼þµÄonTouchEvent()
+  ´¦Àí£»·µ»Øfalse£¬Ôò°ÑÊÂ¼þ½»¸ø×Ó¿Ø¼þµÄonInterceptTouchEvent()
+
+2¡¢ onTouchEventÓÃÓÚ´¦ÀíÊÂ¼þ£¬·µ»ØÖµ¾ö¶¨µ±Ç°¿Ø¼þ
+ÊÇ·ñÏû·Ñ£¨consume£©ÁËÕâ¸öÊÂ¼þ¡£ÓÈÆä¶ÔÓÚACTION_DOWNÊÂ
+¼þ£¬·µ»Øtrue£¬±íÊ¾ÎÒÏëÒª´¦Àíºó
+ÐøÊÂ¼þ£»·µ»Øfalse£¬±íÊ¾²»¹ØÐÄ´ËÊÂ¼þ£¬²¢·µ»ØÓÉ¸¸Àà½øÐÐ´¦Àí¡£
+
+
+
+
+¸¸ ×Ó²¼¾Ö
+onTouch onClick  onLongClick ÊÇÍ¬¼¶µÄ ¶¼ÊÇ¼àÌý»Øµ÷½Ó¿Ú
+dispatchTouchEvent ÊÂ¼þ·Ö·¢
+onInterceptTouchEvent ÊÂ¼þÀ¹½Ø
+onTouchEvent  ÊÂ¼þ´¦Àí
+
+ÀÏ°åÄãÈ¥°ÑÕâÊÂ×öÁË £¬ Ð¡×é³¤ ÎÊÊÖÏÂ£¨dispatchTouchEvent£© ÄãÃÇË­À´×ö Öð¸öÎÊ A B C Èý¸öÏÂÊô£¬
+A ¿´ÏÂ  ÈÃ»úÆ÷ÈË×ö £¨onTouch true£º »úÆ÷ÈË×öÁË false£º ÔÙ¿´¿´£©£¬×Ô¼º×ö onTouchEvent¡£¶¼²»×ö µÄ»° Ð¡×é³¤ ×Ô¼º¾ö¶¨ÊÇÈÃ »úÆ÷ÈË
+×ö£¨onTouch true£º »úÆ÷ÈË×öÁË false£º ÔÙ¿´¿´£©»¹ÊÇ×Ô¼º×ö onTouchEvent¡£¶¼²»Ïë×ö ¾Í·µ»Ø¸øÀÏ°å Äã×Ô¼º¿´×Å°ì¡£
+
+ÀÏ°åÄãÈ¥°ÑÕâÊÂ×öÁË £¬ Ð¡×é³¤ÎÒÖ±½Ó×öÁË £¨À¹½ØÁË onInterceptTouchEvent£© ºóÐøÊÂÇé£¨move
+ up£©Ö±½Ó´ÓÉÏµ½ÏÂ¸øÐ¡×é³¤ Ð¡×é³¤¶¼Ã»À¹½Ø»ú»á Ö±½Ó ×Ô¼º·ÖÅä£¨dispatchTouchEvent£©¸ø×Ô¼º´¦Àí£¨onTouchEvent£©
+ 
+ ÌØ±ðµÄ Ð¡×é³¤ µÚÒ»¼þÊÂ²»×ö ºóÐøÓÖÏë²ÎÓë  ÄÇÃ´Ëû»á¸æÖªÒ»ÏÂABC £¬£¨ACTION_CANCEL= 3£© ÄãÃÇ²»Òª×öÁË Õâ¸öÁË½âÏÂ¾ÍºÃ
