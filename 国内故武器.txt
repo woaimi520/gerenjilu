@@ -1,0 +1,10 @@
+看作是打开远程电脑
+http://www.ipcomserver.com/vpsadm/selfVPSmodify.asp
+5ZOVIP8 cd6d7a87 登录云服务器 这才是账户和密码 汗颜
+
+Xshell 154.95.47.6 端口 22
+root  cd6d7a87 是Xshell的能路用
+
+SS客户端链接 远程电脑
+154.95.47.6 443
+密码：qqq007

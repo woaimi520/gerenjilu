@@ -1,0 +1,37 @@
+安装wget 命令
+yum -y install wget
+yum -y install setup
+yum -y install perl
+
+安装 BBRwget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh
+
+复制代码获取读写权限chmod +x bbr.sh
+
+复制代码启动BBR安装./bbr.sh
+
+接着按任意键，开始安装，坐等一会。安装完成一会之后它会提示我们是否重新启动vps，我们输入 y 确定重启服务器。
+
+或者
+一句话搞定下载
+wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+
+
+重新启动之后，
+
+uname -r
+查看内核版本，含有 4.9 就表示 OK 了
+
+sysctl net.ipv4.tcp_available_congestion_control
+返回值一般为： 
+net.ipv4.tcp_available_congestion_control = bbr cubic reno
+
+sysctl net.ipv4.tcp_congestion_control
+返回值一般为： 
+net.ipv4.tcp_congestion_control = bbr
+
+sysctl net.core.default_qdisc
+返回值一般为： 
+net.core.default_qdisc = fq
+
+lsmod | grep bbr
+返回值有 tcp_bbr 模块即说明bbr已启动。
