@@ -25,3 +25,48 @@ adapter中使用
   @OnClick({R.id.button,R.id.textView}) 添加点击 这种方式不需要view 添加监听器 它会自动添加
 
    public void  onClick111  这个名字可以自定义
+   
+   
+   
+   
+   
+   
+       特别注意 
+   
+ 升级到android studio 3.4后 gragle 5.1.1 gradle插件 3.4.0 后
+   
+   目前ButterKnife最新版为10.1.0版本，由于最新版添加了AndroidX支持，故在使用时要注意。
+
+如果还是使用com.android.support:appcompat-v7这种Android依赖库的话（目前最高版本28.0.0），就不要使用最高版本的ButterKnife,要是用低版本的，建议使用com.jakewharton:butterknife:9.0.0。
+
+我的配置如下： AS版本：3.4   gradle版本：5.1.1 
+
+项目的gradle添加如下：
+
+dependencies {
+    classpath 'com.android.tools.build:gradle:3.4.0'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0'
+}
+app的gradle配置如下：
+
+android {
+   compileOptions {
+       sourceCompatibility JavaVersion.VERSION_1_8
+       targetCompatibility JavaVersion.VERSION_1_8
+   }
+}
+dependencies {
+   implementation 'com.jakewharton:butterknife:9.0.0'    
+   annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0'
+}
+如果在module中使用的话，配置如下：
+
+在module的build.gradle顶部添加apply plugin: 'com.jakewharton.butterknife'，目的是为了生成R2文件，因为在module使用的是R2.id,不是R.id。原因是 ButterKnife 的注解必须是常量，在Library 中的 R.id.*并不是常量，生成的 R2才是final修饰的常量。
+ 
+dependencies {
+   implementation 'com.jakewharton:butterknife:9.0.0'
+   annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0'
+}
+
+   
