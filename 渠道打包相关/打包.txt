@@ -1,0 +1,71 @@
+    输出固定格式的apk 包含时间 渠道名 版本号
+	applicationVariants.all { variant ->
+        variant.outputs.all {
+            def date = new Date()
+           def formattedDate = date.format('yyyyMMddHHmmss')
+
+                // 显示app名称+当前版本号
+                def fileName = "dialer-${variant.versionName}"
+                // 如果有渠道，显示渠道名""
+                if (variant.flavorName!=""){
+                    fileName = fileName + "-${variant.flavorName}"
+                }
+                // 加入打包时间
+                fileName = fileName + "-${formattedDate}"
+                // 如果是debug版本，加入beta版本号
+                if ('debug'.equals(variant.buildType.name)) {
+                    fileName = fileName + "debug.apk"
+                } else if('release'.equals(variant.buildType.name)){
+                    // 如果是release版本，直接显示
+                    fileName = fileName + "-release.apk"
+                }
+            outputFileName = fileName;
+
+        }
+    }
+
+
+变量方式替换
+1.添加flavor
+
+    flavorDimensions "default"
+    productFlavors {
+        yuzhuang {
+            dimension "default"
+            manifestPlaceholders = [
+                    UMENG_CHANNEL_VALUE: "yuzhuangceshi4",
+                    ICON_ID            : "@mipmap/ic_launcher",
+            ]
+        }
+        zhihuiyun {
+            dimension "default"
+            manifestPlaceholders = [
+                    UMENG_CHANNEL_VALUE: "1_zhihuiyun",
+                    ICON_ID            : "@mipmap/ic_launcher",
+            ]
+        }
+        yingyongbao{
+            dimension "default"
+            manifestPlaceholders = [
+                    UMENG_CHANNEL_VALUE: "1_yingyongbao",
+                    ICON_ID            : "@mipmap/ic_launcher",
+            ]
+        }
+
+        vivoshichang{
+            dimension "default"
+            manifestPlaceholders = [
+                    UMENG_CHANNEL_VALUE: "3_vivoshichang",
+                    ICON_ID            : "@mipmap/ic_launcher_vivo",
+            ]
+        }
+    }
+	
+2.在mannifest中对应位置添加变量
+   android:icon="${ICON_ID}"	
+   // <application标签下
+           <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
+			
+			
