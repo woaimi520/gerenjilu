@@ -34,7 +34,7 @@ greendao 中 1对多关系中 可以通过1对象直接获取到多的对象集合 返回一个list
 
 
 查看数据库
-    //数据库查看库
+    //数据库查看库 app moudle
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
 	
 	下面当你在App启动的时候，你要注意查看下你的logcat，会有这么一行：
