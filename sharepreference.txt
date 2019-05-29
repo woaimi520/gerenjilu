@@ -6,3 +6,25 @@
    
    写入
     sharedPreferences.edit().putBoolean("first", false).commit();
+	
+监听变化
+	
+	定义监听
+	 创建监听器
+	    private SharedPreferences.OnSharedPreferenceChangeListener spChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+            if (mContactAdapter != null) {
+                mContactAdapter.notifyDataSetChanged();
+
+            }
+        }
+    };
+	
+	
+	 SharedPreferences spSplidSetting;
+	  开始监听
+	   spSplidSetting.registerOnSharedPreferenceChangeListener(spChangeListener);
+	  取消监听
+	    spSplidSetting.unregisterOnSharedPreferenceChangeListener(spChangeListener);

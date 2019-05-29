@@ -11,3 +11,5 @@
           </shape>
      </item>
 </layer-list>
+
+然后弄成背景 recycleview 是设置的整体 不是单个item

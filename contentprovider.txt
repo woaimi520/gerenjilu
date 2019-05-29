@@ -57,3 +57,49 @@
 		                        服务员开门
 		  mResolver.applyBatch(ContactsContract.AUTHORITY, ops);//删除list中的所有联系人
   
+自定义的contentprovider
+
+ContentResolver
+   URI：content://net.manoel.provider.Books/books// content：// + authorities + 表
+
+
+  android:authorities="net.manoel.provider.Books" //授权决定URI中间部分
+ android:name=".BooksProvider"
+ 
+package com.example.personaltools;
+
+
+学习
+provider 属性
+net.manoel.provider.Books123 provider 授权路径
+
+DatabaseHelper 属性
+BooksProvider 的 onCreat 中初始化 DatabaseHelper
+
+DatabaseHelper extends SQLiteOpenHelper（db操作类）
+     1.通过他的构造函数传入数据库name
+ DB
+     2.通过 DatabaseHelper 的onCreate 函数 创建表
+               db.execSQL(DATABASE_CREATE);
+
+添加等相关属性
+
+ 1.找到对应的provider
+     获取到 contentresolver
+	    ContentResolver contentResolver = this.getBaseContext().getContentResolver();
+      找到对应URI
+	   Uri insertUri = Uri.parse("content://net.manoel.provider.Books/books"); 
+	   // 特别注意其实决定调用哪个provider 只由中间部分决定 后面是不是用由接收端决定
+	   
+       组装数据
+	      ContentValues values = new ContentValues();
+            values.put("title", "lm");
+            values.put("isbn", "1350000009");
+	     进行操作
+  		    Uri uri = contentResolver.insert(insertUri, values);
+			
+	
+			
+			
+			
+			

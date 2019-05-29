@@ -1,0 +1,34 @@
+1.app model中添加依赖
+//内存检测 2.0的注意 需要支持androidx 1.6应该是最新的了
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+    // Optional, if you use support library fragments:
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
+
+
+2.
+application 配置 记得appliacation 要到mannifest中注册
+ private RefWatcher refWatcher;
+    public static RefWatcher getRefWatcher(Context context) {
+        Myappllication application = (Myappllication) context.getApplicationContext();
+        return application.refWatcher;
+    }
+
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        refWatcher=LeakCanary.install(this);
+        // Normal app init code...
+
+    }
+}
+
+3. 没有三了 就可以检测activity 以及fragment 还要检测其他的话 
+就需要 // Myappllication.getRefWatcher(this).watch(this);
+       

@@ -28,7 +28,27 @@ app builder 下：
 3.设置间隔符
    系统自带
            mRecytclerView01.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));   
-   自定义 后面再总结
+   自定义 宽度
+      rcLeft.addItemDecoration(getRecyclerViewDivider(R.drawable.inset_recyclerview_divider));//设置分割线
+	  
+       public RecyclerView.ItemDecoration getRecyclerViewDivider(@DrawableRes int drawableId) {
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        itemDecoration.setDrawable(getResources().getDrawable(drawableId));
+        return itemDecoration;
+    }
+   
+   <?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetLeft="0dp">
+    <!--android:insetLeft="10dp" 分割线距离左侧10dp-->
+    <shape>
+        <!--分割线的高度，横向的RecyclerView,这里设置宽度即可-->
+        <size android:height="1dp" />
+        <!--分割线的颜色-->
+        <solid android:color="@color/septumColor" />
+    </shape>
+
+</inset>
    
 4 添加监听问题
   ***********************************************************
@@ -89,7 +109,7 @@ onBindViewHolde
  。。。
    
    
-5 判断是否到底 （ontouch 返回false/true 和 onclick 不会干扰它）
+5 判断是否到底 （ontouch 返回false/true 和 onclick 不会干扰它  这种方式感觉也不好用）
   1 添加滑动监听
  mRecytclerView01.addOnScrollListener(new RecyclerView.OnScrollListener() {  
   2 重写 
