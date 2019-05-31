@@ -1,0 +1,5 @@
+    1.logger日志
+    implementation 'com.orhanobut:logger:2.2.0'
+	
+	2.MyAppllication 中替换
+	 Logger.addLogAdapter(new AndroidLogAdapter());//logger 初始化

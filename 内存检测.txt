@@ -29,6 +29,6 @@ application 配置 记得appliacation 要到mannifest中注册
     }
 }
 
-3. 没有三了 就可以检测activity 以及fragment 还要检测其他的话 
+3. 没有三了 一定要有的话就是安装debug的apk到手机 就可以检测activity 以及fragment 还要检测其他的话 
 就需要 // Myappllication.getRefWatcher(this).watch(this);
        

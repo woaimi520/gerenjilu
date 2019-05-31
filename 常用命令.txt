@@ -36,6 +36,9 @@ adb shell dumpsys package com.szqd.dialer | findstr versionCode
 提交的时候出错
 git commit --amend -C HEAD --reset-author
 
+git 用 https方式的时候对应的账户是网站的注册账户
+    用 SSH 的时候 我理解是生成 ssh密钥时 的git 账户
+
 全局
 C:\Users\Administrator\.gitconfig
 修改全局git用户
