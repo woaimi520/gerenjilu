@@ -1,3 +1,6 @@
+    //GreenDao数据库
+    implementation 'org.greenrobot:greendao:3.2.2'
+
 首先记 数据库中不能存对象 
 标识一个表中一行和另一表中行的对应关系
 1对 1 ：随便哪个记住另外表的 group_id 就行
@@ -39,4 +42,13 @@ greendao 中 1对多关系中 可以通过1对象直接获取到多的对象集合 返回一个list
 	
 	下面当你在App启动的时候，你要注意查看下你的logcat，会有这么一行：
 D/DebugDB: Open http://XXX.XXX.X.XXX:8080
+
+更好的调试框架
+    //调试框架 网址chrome://inspect/#devices
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+	app oncreat中添加 
+	      //调试框架
+   Stetho.initializeWithDefaults(this);
+
+ 
 

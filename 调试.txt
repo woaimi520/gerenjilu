@@ -1,3 +1,20 @@
 alt +F8 复制对应函数 可以查看返回值
 
 AndroidStudio->View->Tool Windows->Device File Explorer
+
+
+
+查看数据库
+    //数据库查看库 app moudle
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
+	
+	下面当你在App启动的时候，你要注意查看下你的logcat，会有这么一行：
+D/DebugDB: Open http://XXX.XXX.X.XXX:8080
+
+更好的调试框架
+    //调试框架 网址chrome://inspect/#devices
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+	app oncreat中添加 
+	      //调试框架
+   Stetho.initializeWithDefaults(this);
+
