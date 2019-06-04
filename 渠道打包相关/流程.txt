@@ -1,0 +1,31 @@
+
+神指拨号
+这里时间要改为打包时间后一周
+if (Long.parseLong(time) >= 20190130L)
+修改版本号
+        versionCode 251
+        versionName "2.5.1"
+软件配置
+1.签名（签名有的软件有单独设置输出路径） 2.多渠道信息 3.输出路径
+
+步骤1：使用android studio 生成三个渠道包 
+          vivo要替换启动图标 icon ic_launcher_vivo  
+          时间需要加长 if (Long.parseLong(time) >= 20190130L)
+          build versionCode 248
+ 
+步骤2：加固
+  1_360shoujizhushou   1  360单独（只用配置一个签名）     
+ 1_zhihuiyun        1    腾讯云 多渠道
+3_vivoshichang      1  icon ic_launcher_vivo  腾讯云单独
+yuzhuangbao             腾讯云 单独  （new）
+
+------------------------
+现在直接用360打包 
+1 vivo 
+2 预装
+3 zhihuiyun
+
+腾讯云
+
+
+步骤3：编译预装包
