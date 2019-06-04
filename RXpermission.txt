@@ -1,0 +1,12 @@
+project的
+allprojects
+     repositories {
+       ...
+        maven { url 'https://jitpack.io' }
+    }
+	
+app
+	 //运行时权限
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+	
+	
