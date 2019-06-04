@@ -1,0 +1,7 @@
+1
+    //app调试框架
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+2.
+   Stetho.initializeWithDefaults(this);//调试
+3.
+chrome://inspect/#devices   
