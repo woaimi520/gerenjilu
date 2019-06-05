@@ -1,0 +1,116 @@
+概念
+URI（统一资源标识符） 例如 你的标签是王麻子的身份证 唯一标志一个人
+URL （是统一资源定位器，是URI的子类）例如 你是王麻子 你住在哪里哪里 身份证是什么）
+我认为 安卓中的Uri就是这里的URL
+
+结论
+获取到地址后 
+
+外部存储的最终地址
+ 解析出id
+ 直接拼接出来 屌不屌
+ Environment.getExternalStorageDirectory() + "/" + split[1]
+ 
+下载的
+解析出id
+拼接成URI 它这里只有一个金刚 没区分
+content://downloads/public_downloads +id
+去对应金刚哪里取
+
+media的
+      1          封装后的URI 
+DocumentsContract.getDocumentId(uri) 
+      1              document 封装层
+	type： 来决定 MediaStore.Images.Media.EXTERNAL_CONTENT_URI 
+    1 1 1          三个小金刚 ID都是它对应数据库的行id （播放用它的）
+getContentUriForPath（uri） 判断到底改存放在哪里
+    1 1 1 （实际存储的文件）
+	
+	
+特别注意：应用自带铃声 需要自己手动插入到媒体库中去 insertRingtone
+
+解析出id 
+拼接成三大金刚对应的uri
+去 media 三大金刚哪里去取 
+（如：data对应地址，title对应歌曲名字）
+ （如：播放的话
+ URI 就是三大金刚对应的URI 省了自己去转化
+ RingtoneManager.getRingtone(this, URI);）
+
+
+
+
+
+没有封装的时候
+content://media/extenral/images/media/17766
+document封装过了
+content://com.android.providers.media.documents/document/image%3A82482  
+
+
+document封装过的简介
+
+content://com.android.providers.media.documents/document/image%3A82482  
+
+
+Log.d("pathPart",uri.toString());
+content://com.android.providers.media.documents/document/image%3A82482  
+
+getPath()
+/document/image%3A82482  
+
+getAuthority()
+com.android.providers.media.documents 
+
+getHost()
+com.android.providers.media.documents 
+
+getScheme()
+content
+
+
+
+
+首先看下是不是封装过的
+DocumentsContract.isDocumentUri(context, uri）
+
+媒体文件（包含 image video audio）
+ 是否是媒体文件
+"com.android.providers.media.documents".equals(uri.getAuthority())
+ 媒体文件，我们先得到type/id，这个是图片在数据库中的_ID的值
+ DocumentsContract.getDocumentId(uri)//image:3A82482  即使 type/id
+ 
+ contentUri 获取
+    if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+				
+  通过contentprovider到media数据库去获取
+  final String selection = "_id=?";
+  context.getContentResolver().query(contentUri, projection, selection, selectionArgs,  
+ 
+ 对应的媒体库就包含了路径（MediaStore.MediaColumns.DATA ） 及 歌曲名称（MediaStore.MediaColumns.TITLE）等等
+ 
+ 
+注意联系人铃声名获取还不同
+首先每个联系人都在联系人数据库有一个唯一id contackid
+         Uri contactUri = ContentUris.withAppendedId(
+                 ContactsContract.Contacts.CONTENT_URI, contactId);
+         Cursor cursor = context.getContentResolver().query(contactUri,
+                 projection, null, null, null);
+				 
+				 获取到
+		ContactsContract.Contacts.CUSTOM_RINGTONE 是一个string 保存的
+
+        需要转化为
+		Uri tempUri = Uri.parse(rington);
+		然后就可以到media三大金刚数据库中获取名字了
+		
+关于播放
+    URI 使用的是为封装的 三个小金刚的URI
+	ringtone = RingtoneManager.getRingtone(this, bells.getRingtoneUri());
+    ringtone.play();	
+		
