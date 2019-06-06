@@ -4,7 +4,15 @@
 
 getFilesDir() 内部存储根
 getExternalStorageDirectory 外部存储根(4.0) 机身存储一部分的根(4.4)
+演进过程 返回值不同 4.1 开始有了多SD卡  4.4开始有了多用户
+4.0	/mnt/sdcard
+4.1	/storage/sdcard0
+4.2	/storage/sdcard0
+4.4	/storage/emulated/0
+6.0	/storage/emulated/0
+
 getExternalFilesDirs                 (4.0无)        sd 卡根   (4.4)
+
 
 
 内部存储
