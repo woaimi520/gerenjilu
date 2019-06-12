@@ -1,0 +1,22 @@
+首先坐标系 向右为负 向下为负
+  view 包含了 内容 a 
+  对view：
+    MotionEvent .getX/gety 标识的是 点击点到view 左边和右边的距离
+	MotionEvent .getRawX/getRawY 标识的是 点击点到整个屏幕左边和顶部（包含通知栏）的距离
+	
+	对内容
+	button。scrolTo(-100,-100) 标识的是 把文字（取文字左上）向右和下移动100
+	button。scrollBy(-100,-100) 标识的是 把文字（取文字左上）在上次基础上 再向右和下移动100
+	这时
+	button。getScrollX()/getScrollY 就得到 -200
+	
+	
+	view.getWidth() 和  view.getHeight()
+	
+	
+	ev.getX() ev.getY() ev.getRawY() ev.getRawX() 
+	view.getLocationOnScreen(location);
+	view.getMeasuredWidth()
+	view.getMeasuredHeight()
+	获取出来是正的
+	
