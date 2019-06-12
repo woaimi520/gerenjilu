@@ -101,3 +101,14 @@ igone 文件重置
 git rm -r --cached .
 git add .
 git commit -m 'update .gitignore'
+
+manifest
+但是也有快捷键 把鼠标放在类名上 alt+enter  就有一个add activity to manifest
+
+点击就可以 但是 这玩意如果不小心给弄没了呢
+
+可以这么设置 alt+ctrl+s打开设置
+
+搜索Intentions 
+
+再在里面搜索manifest
