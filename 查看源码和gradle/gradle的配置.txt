@@ -1,0 +1,45 @@
+- 若选中`Use default gradle wrapper(recommended)`,
+则设置的Gradle位置为`Service directory path`中的路径；（它才有offline模式）
+- 若选中`Use local gradle distribution`，则设置的Gradle位置为`Gradle home`中的路径。
+（offline模式勾不勾选对他都没影响）
+
+Service directory path是全局级的，
+Use default gradle wrapper(recommended)与Use local gradle distribution
+是项目级的，优先级高于全局级的设置。
+
+配置
+全局地址：
+模糊指定：如：C:/Users/Administrator/.gradle   这里不去改
+局部地址：
+模糊指定：E:\code\localgradle
+精却指定如：E:\code\localgradle\gradle-5.1.1
+
+
+
+gradle下载地址：https://services.gradle.org/distributions/ 下载gradle-5.1.1-all格式的
+
+gradle 插件和gradle配置
+方式一：
+ctrl+shift+alt+s 第一项配置
+方式二：
+插件 在 project的
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+gradle：
+
+在 android 模式下 
+gradle-wrapper.properties文件中
+distributionUrl=https\://services.gradle.org/distributions/gradle-2.10-all.zip
+
+
+build Plugin 插件匹配问题 查询地址
+https://developer.android.google.cn/studio/releases/gradle-plugin.html#
+
+
+注意：以下配置和gradle无关
+using explicit module groups
+using qualified names

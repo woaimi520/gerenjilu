@@ -1,0 +1,24 @@
+首先明白点击跳转到源码 
+第一种：直接跳到jar中的class文件，并反编译然后呈现给你 一般是没有注释的
+第二种：（有源码 也就是对应class文件的java文件），再跳转到class的过程中 
+        被ide截断 他把你引导到 设置的源码文件里（也就是对应的java文件）
+		但是是只读状态。
+		设置路径 
+		plantform源码在：C:\Users\Administrator\.AndroidStudio3.4\config\options\jdk.table下对应api的
+		  <sourcePath>
+          <root type="composite">
+            <root url="file://E:/sdk/Android/sources/android-28" type="simple" />
+          </root>
+        </sourcePath>
+       		
+		更改后需要用 sys gradle file 刷新一次	才生效
+		
+		
+是第三方jar包，gradle构建时若发现本地没有该jar包则会去联网到中央仓库下载
+rxbinding 0.4.0的jar包，在window系统上会将该jar包放在
+C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.jakewharton.rxbinding\rxbinding\0.4.0 
+其中对应jar包中 如 support-v4-23.1.1-sources为对应源码文件
+
+android自己的jar包，gradle构建时若发现本地没有该jar包则会去联网下载，
+放在SDK的目录下，在window系统上比如会将该jar包放在：
+E:\sdk\Android\extras\android\m2repository\com\android\support		
