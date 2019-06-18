@@ -2,3 +2,43 @@ EasyPermission
 具体流程看图
 
 rxpermission
+配置
+app下
+    //运行时权限
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+project	下
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+
+  mRxPermissions = RedWineApplication.getFrRxPermission(this);//权限申请
+  然后就可以玩了
+    申请权限（同时也有判断权限的功能）
+       mRxPermissions.requestEach(Manifest.permission.WRITE_CONTACTS,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(permission -> {//会返回多大对象
+                    if (permission.granted) { // Always true pre-M
+                        // I can control the camera now
+                        Toast.makeText(this.getContext(), "成功获取到权限", Toast.LENGTH_SHORT).show();
+                    } else if(permission.shouldShowRequestPermissionRationale){
+                       //拒绝逻辑
+                        Toast.makeText(this.getContext(), "未能成功获取权限", Toast.LENGTH_SHORT).show();
+                    }else
+                        //点击不再显示弹框逻辑
+                        Toast.makeText(this.getContext(), "程序需要对应权限 请到设置中开启", Toast.LENGTH_SHORT).show();
+                });
+				
+   检查是否有权限
+  mRxPermissions.isGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE);//fase 没有权利 true有权限   
+				
+扩展：是否再次申请的时候还会弹框？
+
+
+// RxJava2
+ 配置 
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.8'

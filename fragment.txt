@@ -1,0 +1,24 @@
+最基本的初始化
+第一种
+   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(initlayout(), container, false); //注意第三个参数 false
+        return view;//注意这里是返回view
+
+    }
+	
+第二种
+     public View onCreateView(@NonNull LayoutInflater inflater, 
+	 @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(initlayout(), container, true);//这
+		里第三个参数为true的时候就直接加载到第二个参数的group中了
+		
+        ButterKnife.bind(this,view);
+        return super.onCreateView(inflater, container, savedInstanceState);//返回的是super 没有返回这个view 
+
+    }
+	
+fragment的替换
+	
+FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+fragmentTransaction.add(frameId, fragment);
+fragmentTransaction.commit();

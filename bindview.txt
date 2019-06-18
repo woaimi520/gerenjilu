@@ -15,6 +15,13 @@ findviewbyid方法。
 activity 中使用
 使用之前要  ButterKnife.bind(this); 
 需要在       setContentView(R.layout.activity_main); 后
+
+
+fragment中使用
+在 onCreateView中
+View view = inflater.inflate(initlayout(), container, true);
+ButterKnife.bind(this,view);
+
 adapter中使用
     public ViewHolder(@NonNull View itemView) {
             super(itemView);
