@@ -32,8 +32,9 @@ allprojects {
                         Toast.makeText(this.getContext(), "程序需要对应权限 请到设置中开启", Toast.LENGTH_SHORT).show();
                 });
 				
-   检查是否有权限
+   检查是否有权限（据说是只能判断运行时权限）
   mRxPermissions.isGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE);//fase 没有权利 true有权限   
+  但注意 ACCESS_NOTIFICATION_POLICY不能用这个方法判断
 				
 扩展：是否再次申请的时候还会弹框？
 
