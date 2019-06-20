@@ -18,7 +18,7 @@ allprojects {
 
   mRxPermissions = RedWineApplication.getFrRxPermission(this);//权限申请
   然后就可以玩了
-    申请权限（同时也有判断权限的功能）
+    申请权限（同时也有判断权限的功能,可以用在 oncreat onstart onclick中）
        mRxPermissions.requestEach(Manifest.permission.WRITE_CONTACTS,Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(permission -> {//会返回多大对象
                     if (permission.granted) { // Always true pre-M
@@ -43,3 +43,30 @@ allprojects {
  配置 
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.8'
+	
+	
+	
+额外的结合 rxbiding	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+6.0权限整理
+	  一般申请/判断权限的方法
+	  ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+	  重写得到结果 fragment这里即使覆写也不会回调
+	  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+      
+	  6.0以上系统 targetSdkVersion 23以上 可用 
+	  但是还是有权限判断会出错 如：ACCESS_NOTIFICATION_POLICY 一直返回的都是0 
+	   但是实际上还是不可用 且不会出现同意权限确认弹框 但是会返回结果
+	  返回-1 没权限 ，0 有权限 
+	  ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+
+
+
