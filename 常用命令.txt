@@ -27,12 +27,22 @@ ctri+Shirft+U 大小写变换
 1.解压apk-》zip 2 META-INF 中的rsa文件 用如下命令
 keytool -printcert -file E:\code\android\Dialer\app\build\outputs\apk\debug\META-INF\CERT.RSA
 
-查看界面任务战
+查看界面任务战（主要看activity）
 adb shell dumpsys activity activities
+
 查看fragment
 adb shell dumpsys activity +包名
+更好的办法 adb shell dumpsys activity top  但是有pageview 的时候就有多个显示
+
 查看versionCode
 adb shell dumpsys package com.szqd.dialer | findstr versionCode
+或者直接用E:\sdk\Android\build-tools\29.0.0 aapt 查看apk 
+aapt dump badging "%filename%" //filename 为对应apk
+
+多个手机都连着 怎么安装
+adb devices 列出所有手机
+adb -s LRQOMNVS99999999 install + "%filename%" //filename 为对应apk
+
 提交的时候出错
 git commit --amend -C HEAD --reset-author
 
