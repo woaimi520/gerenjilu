@@ -5,5 +5,5 @@ cd %~dp1
 echo 以下是%filename%的签名信息：
 echo ----------------------------------------------------------
 keytool -list -printcert -jarfile "%filename%"
-call C:\Users\Administrator\Desktop\aapt.exe dump badging "%filename%"
+call %~dp0\aapt.exe dump badging "%filename%" |findstr /c:"targetSdkVersion" /c:"sdkVersion" /c:"versionCode"
 pause
