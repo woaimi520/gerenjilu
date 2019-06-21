@@ -1,0 +1,5 @@
+%~dp1 拖入进来apk的路径
+%~dp0 脚本所在路径
+|findstr /c:"targetSdkVersion" /c:"sdkVersion" /c:"versionCode" 查找多个字符串
+call 可以调用exe 程序 并可以在后面再加命令
+如：call %~dp0\aapt.exe dump badging "%filename%" |findstr /c:"targetSdkVersion" 
