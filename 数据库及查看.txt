@@ -1,14 +1,40 @@
     //GreenDao数据库
-    implementation 'org.greenrobot:greendao:3.2.2'
-	在app build配置下
-	    greendao {
-        //数据库版本号，升级时修改
-        schemaVersion 2
-        //生成的DAO，DaoMaster和DaoSession的包路径。默认与表实体所在的包路径相同
-        daoPackage 'com.szqd.sznotes.model.db'
-        //生成源文件的路径。默认源文件目录是在build目录中的(build/generated/source/greendao)
-        targetGenDir 'src/main/java'
+	一：模块下面添加
+    apply plugin: 'com.android.application'
+    apply plugin: 'org.greenrobot.greendao' // 1.apply plugin  greendao
+
+    android {
+        greendao {
+              //2.
+            schemaVersion 1 //数据库版本号
+            daoPackage '包名.greendao.gen' //自动生成的工具类的包名
+            targetGenDir 'src/main/java' //路径
+        }
     }
+
+    //3.
+    dependencies {
+        // add library  greendao
+        implementation 'org.greenrobot:greendao:3.2.2'
+    }
+
+
+    //二：工程目录下面添加
+        buildscript {
+            repositories {
+                jcenter()
+                mavenCentral() // 4.add repository
+            }
+            dependencies {
+                classpath 'com.android.tools.build:gradle:3.1.1'
+                classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' //5. add plugin
+            }
+        }
+		
+		已经验证是正确的 但是会导致lamuda表达式不能用
+--------------------- 
+
+
 
 首先记 数据库中不能存对象 
 标识一个表中一行和另一表中行的对应关系
@@ -46,13 +72,23 @@ greendao 中 1对多关系中 可以通过1对象直接获取到多的对象集合 返回一个list
 
 
 5 升级数据库
-    app build 下添加依赖
-      //GreenDao 数据库升级依赖
-    implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
-	以及    
-	implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
-    project build 下添加依赖
-	 maven { url "https://jitpack.io" }
+   一：模块下面添加
+	  
+    dependencies {
+        // add library  greendao
+         implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1//1.  GreenDao 数据库升级依赖
+    }
+二：工程目录下面添加
+        buildscript {
+            repositories {
+                jcenter()
+                maven { url "https://jitpack.io" } // 2.add repository
+            }
+         
+        }
+		
+--------------------- 
+	
 			
    添加helper函数
    public MyOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory) {
