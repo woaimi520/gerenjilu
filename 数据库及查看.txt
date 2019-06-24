@@ -76,7 +76,8 @@ greendao 中 1对多关系中 可以通过1对象直接获取到多的对象集合 返回一个list
 	  
     dependencies {
         // add library  greendao
-         implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1//1.  GreenDao 数据库升级依赖
+    implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
+	
     }
 二：工程目录下面添加
         buildscript {
@@ -91,10 +92,12 @@ greendao 中 1对多关系中 可以通过1对象直接获取到多的对象集合 返回一个list
 	
 			
    添加helper函数
-   public MyOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory) {
+public class MyOpenHelper extends DaoMaster.DevOpenHelper {
+
+    public MyOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory) {
         super(context, name, factory);
     }
-
+    @Override
     public void onUpgrade(Database db, int oldVersion, int newVersion) {
 
         // 把需要管理的数据库表DAO作为最后一个参数传入到方法中
@@ -109,7 +112,7 @@ greendao 中 1对多关系中 可以通过1对象直接获取到多的对象集合 返回一个list
             public void onDropAllTables(Database db, boolean ifExists) {
                 DaoMaster.dropAllTables(db, ifExists);
             }
-        }, TaskModelDao.class,SortModelDao.class);
+        }, SortModelDao.class,TaskModelDao.class,MediaModelDao.class);
 
     }
 }
@@ -118,7 +121,10 @@ greendao 中 1对多关系中 可以通过1对象直接获取到多的对象集合 返回一个list
          修改初始化
             MyOpenHelper helper = new MyOpenHelper(context, DB_NAME, null);
             sDaoMaster = new DaoMaster(helper.getWritableDatabase());
-			
+	
+
+要注意更新gradle 记得	
+------------------------------------------ 	 			
 			
 注意记得在升级表后要改数据库版本号	
 app buuild 修改		
