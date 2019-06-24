@@ -36,7 +36,50 @@ greendao 中 1对多关系中 可以通过1对象直接获取到多的对象集合 返回一个list
 4查询
 
 
-查看数据库
+5 升级数据库
+    app build 下添加依赖
+      //GreenDao 数据库升级依赖
+    implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
+    project build 下添加依赖
+	 maven { url "https://jitpack.io" }
+			
+   添加helper函数
+   public MyOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory) {
+        super(context, name, factory);
+    }
+
+    public void onUpgrade(Database db, int oldVersion, int newVersion) {
+
+        // 把需要管理的数据库表DAO作为最后一个参数传入到方法中
+        MigrationHelper.migrate(db, new MigrationHelper.ReCreateAllTableListener() {
+
+            @Override
+            public void onCreateAllTables(Database db, boolean ifNotExists) {
+                DaoMaster.createAllTables(db, ifNotExists);
+            }
+
+            @Override
+            public void onDropAllTables(Database db, boolean ifExists) {
+                DaoMaster.dropAllTables(db, ifExists);
+            }
+        }, TaskModelDao.class,SortModelDao.class);
+
+    }
+}
+
+
+         修改初始化
+            MyOpenHelper helper = new MyOpenHelper(context, DB_NAME, null);
+            sDaoMaster = new DaoMaster(helper.getWritableDatabase());
+			
+			
+注意记得在升级表后要改数据库版本号	
+app buuild 修改		
+    greendao {
+        //数据库版本号，升级时修改
+        schemaVersion 2
+
+6查看数据库
     //数据库查看库 app moudle
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
 	
@@ -49,6 +92,9 @@ D/DebugDB: Open http://XXX.XXX.X.XXX:8080
 	app oncreat中添加 
 	      //调试框架
    Stetho.initializeWithDefaults(this);
+  查看数据库
+  chrome://inspect
+   点击web sql 就可以查看
 
  
 
