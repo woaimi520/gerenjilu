@@ -1,5 +1,14 @@
     //GreenDao数据库
     implementation 'org.greenrobot:greendao:3.2.2'
+	在app build配置下
+	    greendao {
+        //数据库版本号，升级时修改
+        schemaVersion 2
+        //生成的DAO，DaoMaster和DaoSession的包路径。默认与表实体所在的包路径相同
+        daoPackage 'com.szqd.sznotes.model.db'
+        //生成源文件的路径。默认源文件目录是在build目录中的(build/generated/source/greendao)
+        targetGenDir 'src/main/java'
+    }
 
 首先记 数据库中不能存对象 
 标识一个表中一行和另一表中行的对应关系
@@ -40,6 +49,8 @@ greendao 中 1对多关系中 可以通过1对象直接获取到多的对象集合 返回一个list
     app build 下添加依赖
       //GreenDao 数据库升级依赖
     implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
+	以及    
+	implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
     project build 下添加依赖
 	 maven { url "https://jitpack.io" }
 			
