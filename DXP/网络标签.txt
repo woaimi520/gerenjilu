@@ -1,0 +1,13 @@
+PN 放网络标号
+pw 原理图中画线
+pt pcb top和buttion 画电气线
+
+自动布线 取消自动布线
+ uaa       uua
+ 布线检查
+ TDR
+ 
+ 覆同 
+ 可能需要设置
+ 最右边的设置按钮 pcbeditor gernal
+ PG

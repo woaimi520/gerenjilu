@@ -1,0 +1,3 @@
+PN 放网络标号
+pw 原理图中画线
+pt pcb top和buttion 画电气线
