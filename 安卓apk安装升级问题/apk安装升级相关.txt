@@ -1,0 +1,95 @@
+手机未root 小米手机
+  一：adb install 命令：
+   1.先安装115版本 在安装115版本提示错误如下：
+    Failure [INSTALL_FAILED_ALREADY_EXISTS: 
+	Attempt to re-install com.szqd.sznotes 
+	without first uninstalling
+    	
+  2.先安装115版本 在安装118版本提示错误如下：
+     Failure [INSTALL_FAILED_ALREADY_EXISTS: 
+	 Attempt to re-install com.szqd.sznotes 
+	 without first uninstalling.]  
+	 
+  3. 先安装118版本 在安装115版本提示错误如下：
+    Failure [INSTALL_FAILED_VERSION_DOWNGRADE]  
+	
+ 二：adb install -r 命令
+      1.先安装115版本 在安装115版本提示正确如下：
+	     success
+		数据保留
+   
+      2.先安装115版本 在安装118版本提示正确如下： 
+	    success
+		数据保留
+	  3.先安装118版本 在安装115版本提示错误如下：	
+	    Failure [INSTALL_FAILED_VERSION_DOWNGRADE]
+
+小结：install -r 不会影响app本地的数据库 
+
+手机root 	三星S8
+  一：adb install 命令：	 
+       1.先安装115版本 在安装115版本提示正确如下：
+	     success
+		数据保留
+		
+      2.先安装115版本 在安装118版本提示正确如下： 
+	    success
+		数据保留
+	  3. 先安装118版本 在安装115版本提示正确如下：
+	     success
+		数据保留
+  二：adb install -r 命令
+      1.先安装115版本 在安装115版本提示正确如下：
+	     success
+		数据保留
+   
+      2.先安装115版本 在安装118版本提示正确如下： 
+	    success
+		数据保留
+	  3.先安装118版本 在安装115版本提示正确如下：	
+	   	success
+		数据保留
+
+  小结：root 后 version code 且是否安装 都挡不住
+在线安装
+ 一：未root 小米手机在线
+
+  1.先安装115版本 在安装115版本正确安装：
+     数据保留
+  2.先安装115版本 在安装118版本正确安装：
+     数据保留  
+  3.先安装118版本 在安装115版本错误安装提示如下：
+    该软件包似乎已损坏  
+小结：结果相当于 本地 未root 手机的adb install -r 会保留数据及判断versioncode
+
+二：root 三星手机
+  1.先安装115版本 在安装115版本正确安装：
+     数据保留
+  2.先安装115版本 在安装118版本正确安装：
+     数据保留  
+  3.先安装118版本 在安装118版本正确安装：
+     数据保留  
+小结：root 后 version code 且是否安装 都挡不住
+
+关于数据库升级问题
+测试手机 小米 未root  三星 root
+前提条件：本地app数据库是A 数据库版本1  升级app 要用到A+(添加了列)
+     一：升级的app里面 数据库版本是1
+         会报如下错误     
+         caused by: android.database.sqlite.SQLiteException: no such column:
+		 
+     二：升级的app里面 数据库版本是2
+	    理论上这种情况只是之前的数据没了
+		但是笔记app特殊，分析如下：
+	      本地app 加载了数据 且 由于sp记录了 只会保存一次
+		   升级数据库 删除了旧的数据库 新建了个数据库 
+		    因为sp记录没清除 新数据库中没有数据
+			 这个时候去获取就报错了 这是特殊情况
+			  
+	 三：升级的app里面 数据库版本是2 且greendao做了数据保存备份
+	     不报错 成功安装
+
+总结：root手机不会管是否已经安装 又或是versioncode的值
+     未root手机 adb install 会考虑是否已经有包，
+	            adb install -r 会考虑version code是否>= 当前app的version code 
+				在线安装 会考虑version code是否>= 当前app的version code 
