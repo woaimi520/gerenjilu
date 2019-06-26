@@ -1,0 +1,54 @@
+中间界面
+                      sideMenuFragment（左边侧滑）
+					  
+					  
+					                                    
+  main2activity  -》 
+    mainFragment （中间显示）
+	         
+                	-》mRvComplete、 mRv   （两个recyclerview） 
+					       第一层点击事件
+					         mRvComplete.addOnItemTouchListener(completeItemTouchListener);
+					         mRv.addOnItemTouchListener(itemTouchListener);
+							 
+		                	-》mCompleteAdapter 、TaskAdapter
+							    new TaskAdapter(getActivity(), new MyTaskOnItemClickListener());
+							    new TaskAdapter(getActivity(), new MyCompleteTaskOnItemClickListener());
+							  
+							   -》rv_photos （两个recyclerview） 
+                                  rv_voices
+								       第二层点击事件
+                                    -》  rvPhotos.setOnTouchListener(
+									
+									    第三层点击事件
+										onBindViewHolder 中设置
+									   -》
+									    setPhotos(holder, position, mediaPhotos);  
+									    PhotosAdapter 初始化的时候设置监听
+										
+										setVoices(holder, mediaVoices);
+                                        VoicesAdapter 初始化的时候设置的监听
+										  
+										   -》 后续执行 * 记事列表图片点击事件
+										  
+										  
+										      -》   voicePb.setOnClickListener(v -
+										  
+										  
+										  
+                     toolbar （顶部）
+					 
+					 
+					 
+					 -------------------------------------------------
+					 中间点击会进入 TaskEditActivity 并在destory的时候save
+					 
+					 
+					 
+					 ---------------------------------------------------------------
+					 开始播放音频
+					 ------------------------------------------------------------------
+					 
+					view分发函数 dispath 中 ontouchlistener onclick onlongclick
+					
+					   group 的分发 比 他包含的后执行
