@@ -18,9 +18,19 @@ activity 中使用
 
 
 fragment中使用
+Unbinder unbinder
+
 在 onCreateView中
 View view = inflater.inflate(initlayout(), container, true);
-ButterKnife.bind(this,view);
+mUnbinder = ButterKnife.bind(this, view);
+在fragment的 destory中
+@Override
+    public void onDestroy() {
+        super.onDestroy();
+     
+        mUnbinder.unbind();
+    }
+		
 
 adapter中使用
     public ViewHolder(@NonNull View itemView) {
@@ -34,7 +44,11 @@ adapter中使用
    public void  onClick111  这个名字可以自定义
    
    
-   
+   或者
+      @Override
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        ButterKnife.bind(this, viewHolder.itemView);
+    }
    
    
    

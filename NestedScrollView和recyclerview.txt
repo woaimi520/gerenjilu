@@ -5,7 +5,23 @@ app builder 下：
 	
 注意：
 	getAdapterPosition 可以在adapter中获取当前view的位置
+	且一定要添加布局信息 不然 至少我在viewpage中遇到不能显示问题
+	外部可以用 list和 adapter的局部变量 但是就不能实时判断变化了
+	覆写的懒加载 onFragmentVisibleChange 函数应该是去加载网络变化更新的时候用 第一次 recycle 中数据会加载 即使里面什么都没做
     LinearLayoutManager 只管理一个recycleview
+
+补充：viewpage 和 fragment+ry 配合使用的时候 可能需要懒加载
+     因为一进入 就会把 可见的fragment及它旁边的两个（可配置 但是最小范围就是这样） 生命周期走到 onResume 即使不可见的 
+     对于可能需要访问网络的就可能卡
+     因此要懒加载 
+     懒加载 注意 setUserVisibleHint（boolean）会在不可见的时候 调用一次，当可用的时候又调用一次 都在onCreatview前面
+	 因此要在  setUserVisibleHint 及 onCreateView 都做处理
+	 onCreateView 处理理由：setUserVisibleHint 不管是传入 true 还是false 此时可能isViewInflateFinished是false 因此不加载
+	 我这里用三个变量来控制调用加载逻辑
+	public boolean isloadData; //是否已经加载过数据 true：已经加载过   false:未加载过
+    public boolean isViewInflateFinished;//rootview是否已经inflate 完毕
+    public boolean isViewVisable;//当前的可见状态  
+
 
 1.它需要一个adapter来处理数据 每个item 都有一个 holder
   adpter中函数执行顺序
