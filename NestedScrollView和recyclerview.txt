@@ -21,6 +21,43 @@ app builder 下：
 	public boolean isloadData; //是否已经加载过数据 true：已经加载过   false:未加载过
     public boolean isViewInflateFinished;//rootview是否已经inflate 完毕
     public boolean isViewVisable;//当前的可见状态  
+	
+	
+	
+	刷新问题
+	删除一个元素  
+	              //相减少的奇葩 不能分开 只有连起来用 start
+				     //删除范围要求：【0，list.size()-1】
+                  adapter.notifyItemRemoved(j);
+				  //指的是把 从 0-> 开始第几个删除 
+                  adapter.notifyItemRangeChanged(j, list.size() - j);//j=1 ,1234  134   会通知 【1，2】 j即 34的位置 若 adapter.notifyItemRangeChanged(j, list.size() - j) 可能还会越界 但是加没问题
+                 
+                  //相减少的奇葩 不能分开 只有连起来用 end
+				  
+				  
+	插入一个元素			  
+                   //这两个组合有动画 且 位置不会出错 这个就是添加的最终形态 插入 start
+                  //插入范围要求：【0，list.size()】 是包含边界的哈 例子【0，4】
+                  adapter.notifyItemInserted(i);
+                  //可以刷新从positionStart开始itemCount数量的item了   
+                  adapter.notifyItemRangeChanged(i, list.size() - i);
+                  //i=3 数据 1234  123X4 记忆把第几个(从0->)数据往后挤开 ，【3，5-3=2】 会通知到 x4的位置  （通知是指的修改后的元素位置的 onbindview调用）
+				  //i=0 数据 1234 X1234 【0，5-0=5】 通知 01234的位置
+                  //i=4 数据 1234 1234x 【4，5-4=1】 通知 X的位置
+                  //这两个组合有动画 且 位置不会出错 这个就是添加的最终形态 end
+				  
+	刷新一个元素			  
+	              //刷新的时候 start
+				   刷新范围要求：【0，list.size()-1】 因为要先取出来改
+                  //adapter.notifyItemChanged(1);//指定更新哪一个 这个更扯 我找不到规律了  list 有变化不要用  这个是用于单个刷新的 list不变化
+                  //刷新的时候 end	
+
+	添加一个元素			  
+	              //添加的时候 可以直接用这个 start
+                  //adapter.notifyItemInserted(list.size()); //加了不加 效果一样
+                  //adapter.notifyItemRangeChanged(list.size(), list.size()); //始终是以改变后的list为准来通知 还要用到位置的
+                  //或者单独用 adapter.notifyItemChanged(list.size());
+                  //添加的时候 可以直接用这个 start
 
 
 1.它需要一个adapter来处理数据 每个item 都有一个 holder
