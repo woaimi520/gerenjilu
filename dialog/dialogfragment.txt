@@ -1,0 +1,98 @@
+总的说： 普通的自定义diaolog（只改变位置的） 需要在 dialog。show（） 后 执行 位置修改
+         完全自定义的dialog 在 creat（） 函数中完成所有设置 包含 位置修改的
+		 dialogfragment 1 覆写  onCreateDialog 的，它的onceeat 是在dialogfragment.show后执行  
+		                  只用返回 一个完全自定义的dialog 就行  
+						2.覆写  onCreateView 的 它的onceeat 是在dialogfragment.show后执行  
+							 //使用onCreateView原则 是否执行父类 super 依次是：you 无 you you
+							在onCreate中接收传递过来的参数   style 设置在这里执行 show 后才执行 oncraeat dialog 是在oncreat 后才创建的 这里获取不到 dialog
+
+							在onCreateView中创建布局文件     这里dialog就可以获取到了
+
+							在onViewCreated中对布局控件处理   执行 view 的监听啊 更新显示啊
+
+							在onStart中设置布局在屏幕中的属性  super onstart中 会执行 dialog.show 窗口设置需要在show后才生效
+
+
+注意导入的包
+一定要是 import android.support.v4.app.DialogFragment;
+不要重载 fragment 的构造函数 使用 build 再 newInstance 和 oncreat中传递  为了耦合据说是
+如：
+     public static DataUpListDialogFragment newInstance(int latoutResId,int outLatout,int[] ars) {
+        
+        Bundle args = new Bundle();
+        args.putInt("latoutResId", latoutResId);
+        args.putInt("outLatout", outLatout);
+        args.putIntArray("ars", ars);
+        DataUpListDialogFragment fragment = new DataUpListDialogFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+         latoutResId = getArguments().getInt("latoutResId");
+         outLatout = getArguments().getInt("outLatout");
+         ars = getArguments().getIntArray("ars");
+    }
+	
+	外部传递
+	   int outLatout1 = R.id.out_layout;
+       int[] ars1 = new int[]{R.id.restore, R.id.detail, R.id.time_setting, R.id.turn_off_automatic_backup, R.id.out_layout};
+       DataUpListDialogFragment mDialogFragment2 = DataUpListDialogFragment.newInstance(latoutResId1, outLatout1, ars1);
+       mDialogFragment2.show(BackUpFragment.this.getActivity().getSupportFragmentManager(),"DataUpListDialogFragment");
+
+1结合已经有的dialog
+等价于第二种方法从onCreate到onStart的事, 可以说是一步到位
+
+  覆写方法 这样你也不用去处理旋转屏幕的问题
+  这里注意返回的是dialog 
+      public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Context context = getActivity();
+        int latoutResId = R.layout.dialog_data_up;
+        int outLatout = R.id.out_layout;
+        int[] ars = new int[]{R.id.restore, R.id.detail, R.id.time_setting, R.id.turn_off_automatic_backup, R.id.out_layout};
+        DataUpListDialog dialog = new DataUpListDialog(context,latoutResId,outLatout,ars);
+        return dialog;
+    }
+  使用 Tag后面补充
+           new DataUpListDialogFragment().show(BackUpFragment.this.getActivity().getSupportFragmentManager(),"DataUpListDialogFragment");
+		   
+		   
+2.重新弄dialog
+覆写 onCreateView 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.dialog_data_up, container, false);
+
+        return view;
+    }	
+
+使用 Tag后面补充
+           new DataUpListDialogFragment().show(BackUpFragment.this.getActivity().getSupportFragmentManager(),"DataUpListDialogFragment");
+(简单布局也行)		   
+你以为完了吗 不好意思 这样显示出来的dialog 不正常
+
+ //使用onCreateView原则
+在onCreate中接收传递过来的参数   show 后才执行 oncraeat dialog 是在oncreat 后才创建的 这里获取不到 dialog
+
+在onCreateView中创建布局文件     这里dialog就可以获取到了
+
+在onViewCreated中对布局控件处理
+
+在onStart中设置布局在屏幕中的属性  super onstart中 会执行 dialog.show 窗口设置需要在show后才生效
+
+super onstart 如下：
+@Override
+    public void onStart() {
+        super.onStart();
+        if (mDialog != null) {
+            mViewDestroyed = false;
+            mDialog.show();
+        }
+    }
+
+
+
+
+		   	
