@@ -1,0 +1,148 @@
+   继承关系  自定义dialog和AlertDialog 是dialog的子类
+
+   //普通的dialog
+   通过 setTitle 设置 title  通过  setPositiveButton 等函数设置dialog含有的item 通过监听设置回调 通过 build show 来显示dialog
+    private void showAlterDialog(){
+        AlertDialog.Builder alerDialog = new AlertDialog.Builder(this.getContext());
+        alerDialog.setTitle("确定关闭自动备份");
+        alerDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(BackUpFragment.this.getContext(), "点击了确定", Toast.LENGTH_SHORT).show();
+            }
+        });
+        alerDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(BackUpFragment.this.getContext(), "点击了取消", Toast.LENGTH_SHORT).show();
+            }
+        });
+        alerDialog.show();
+    }
+	
+	自定义的dialog
+	自定义的类继承dialog  它应该后于 style 和xml的设置
+	主要完成：
+    1.设置style ：  super(context, R.style.dataListUpDialog);
+	2.设置布局：    setContentView(LayoutResId);
+	3.调整dialog显示框大小： window.setAttributes(p);
+	4.设置监听回调：
+	       if (listenedItem != null && listenedItem.length > 0) {
+
+            for (int id : listenedItem) {
+                findViewById(id).setOnClickListener(this);
+            }
+        }
+    5.显示dialog：     DataUpListDialog dialog = new DataUpListDialog(context, latoutResId, outlayout,listenedItem);
+	                   dialog.show();
+					   
+	if (listenedItem != null && listenedItem.length > 0) {
+
+            for (int id : listenedItem) {
+                findViewById(id).setOnClickListener(this);
+            }
+        }
+	额外说明：1.android:backgroundDimEnabled">true开启后android:backgroundDimAmount">0 才生效 
+	          是dialog 所在外部区域 及内部 背景 是背景色部分透明度设定。
+			  还需要 android:windowBackground">@android:color/transparent 设定为这个才行 原理不清
+			  2.window.requestFeature(Window.FEATURE_NO_TITLE); 不设置的时候 背景色不能覆盖全部界面（除去dialog部分）会留一个黑顶
+	
+	
+	先要有xml 布局
+	有对应的style 主要完成dialog的属性设置 具体见注释
+	如：
+	  <style name="dataListUpDialog" parent="android:Theme.Dialog">
+        <!--背景色 dialog 框的背景-->
+       <item name="android:windowBackground">@android:color/transparent</item>
+        <!--是否半透明 用处不明确-->
+        <item name="android:windowIsTranslucent">false</item>
+        <!--是否没有标题-->
+        <item name="android:windowNoTitle">false</item>
+        <!--是否悬浮在activity之上 false 跑到顶顶上去了-->
+        <item name="android:windowIsFloating">true</item>
+
+        <!--是否背景模糊 true： 的时候就模糊了 false:不会 backgroundDimAmount设置就失效了-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!--设置背景模糊透明度 设置的是除了dialog(dialog背景也会影响 奇怪了) 框之外部分的透明度 1：全黑 0;不受影响-->
+        <item name="android:backgroundDimAmount">0</item>
+
+    </style>
+	
+	
+	
+	
+	public class DataUpListDialog extends Dialog implements View.OnClickListener {
+    private Context mContext;
+    private int LayoutResId;
+    private int[] listenedItem;
+    private ConstraintLayout mConstraintLayout;
+    private int outlatout;
+
+    /**
+     * @param context
+     * @param latoutResId layout
+     * @param outLatout  背景
+     * @param listenedItem 监听
+     */
+    public DataUpListDialog(@NonNull Context context, int latoutResId, int outLatout, int[]listenedItem) {
+        super(context, R.style.dataListUpDialog);
+        this.mContext = context;
+        this.LayoutResId = latoutResId;
+        this.listenedItem = listenedItem;
+        this.outlatout = outLatout;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+       //这里流程后于 xml
+        Window window = getWindow();//dialog 窗口
+        window.requestFeature(Window.FEATURE_NO_TITLE);//不设置这句的话 获取到的高度 不足以填充满整个dialog windows 窗口
+
+
+        setContentView(LayoutResId);//设置到dialog 的windows的framlyout上
+        setCanceledOnTouchOutside(true);//点击旁边就会取消 对于 全屏的 dialog无效
+
+        WindowManager windowManager = ((Activity) mContext).getWindowManager();//获取屏幕 manager
+        Display display = windowManager.getDefaultDisplay();//获取的屏幕的宽高 肯定
+        Point size = new Point();
+        display.getSize(size);
+
+
+
+
+        WindowManager.LayoutParams p = window.getAttributes();//diaolog 宽高参数
+
+        p.width = size.x* 1;//布局设定好后 还要到这里在设置
+        p.height =size.y* 1;
+        window.setAttributes(p);//重新设置dialog的宽高  window.requestFeature(Window.FEATURE_NO_TITLE); 不设置会有黑顶
+       // window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);//等于 设置背景 android:backgroundDimAmount">0
+
+        //设置除了中间部分的颜色
+        mConstraintLayout = findViewById(outlatout);
+        mConstraintLayout.setBackgroundColor(ThemeColorManager.getThemeDialogBgColor());//会受到android:backgroundDimAmoun  android:windowBackground属性影响
+        if (listenedItem != null && listenedItem.length > 0) {
+
+            for (int id : listenedItem) {
+                findViewById(id).setOnClickListener(this);
+            }
+        }
+    }
+
+    private OnDialogItemClickListener mListener;
+    public  void setOnDialogItemClickListener(DataUpListDialog.OnDialogItemClickListener listener){
+        this.mListener = listener;
+    }
+
+    public interface OnDialogItemClickListener{
+        void OnItemClickListener(DataUpListDialog dialog, View view);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        mListener.OnItemClickListener(this, v);
+        dismiss();
+    }
+}
+	
