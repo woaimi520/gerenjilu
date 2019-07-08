@@ -3,3 +3,9 @@
 	
 	2.MyAppllication 中替换
 	 Logger.addLogAdapter(new AndroidLogAdapter());//logger 初始化
+	 
+    3 设置PRETTY_LOGGER tag
+	 在 logger filter 中去添加 log tag PRETTY_LOGGER
+	
+    4 使用的时候 import com.orhanobut.logger.Logger;	
+	   rulogger

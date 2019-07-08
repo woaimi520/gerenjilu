@@ -92,7 +92,31 @@ super onstart 如下：
         }
     }
 
+----------------------------------------------------------------------------------------------------------------
+设置为外部点击无法取消 
 
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            setCancelable(false);
+            getDialog().setCancelable(false);
+            getDialog().setCanceledOnTouchOutside(false);
+            getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
 
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+取消
+ public void cancleLoadingDialog() {
+        if(mBackUpLoadingdialog!=null&&mBackUpLoadingdialog.getDialog().isShowing()){
+            mBackUpLoadingdialog.dismiss();
+        }
+
+    }
 
 		   	
