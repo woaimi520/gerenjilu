@@ -35,22 +35,67 @@ data文件夹：内部都是app的包名，存储着应用程序相关的数据�
    mnt（storage）/sdcard/ Android/data/对应app包下/   （应用删除会删除）
    
    
-设置->应用->应用详情里面的“清除数据”与“清除缓存”选项  （清除的是外部存储私有部分以及内部存储 我试了都会清）
-  清除数据： 内部存储 和外部存储 私有部分  （应用删除会删除）
-  清除缓存： 清除的应用内存占用部分  （应用删除会删除）
+
   
-  
-  获取对应存取路径
-   getActivity().getFilesDir().toString(); //内部存储data/data/包名/files目录
-   getActivity().getCacheDir().toString(); //内部存储data/data/包名/cache目录
-   Environment.getExternalStorageDirectory().toString(); //外部存储根目录 mnt/sdcard/ 
-   Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString(); //外部存储公有目录
-   getActivity().getExternalFilesDir(null).toString();//外部存储私有目录storage/sdcard/Android/data/包名/files。一般存储长时间保存的数据。
-   getActivity().getExternalCacheDir(null).toString() //外部存储私有目录storage/sdcard/Android/data/包名/cache。一般存储临时缓存数据
   
   额外的
   .\ 当前房间找  ..\返回上一房间 找  ,a\b 从a房间 跨步（“\”） 进入 b房间  
 getPath() 方法跟创建 File 对象时传入的路径参数有关，返回构造时传入的路径
 getAbsolutePath() 方法返回文件的绝对路径，如果构造的时候是全路径就直接返回全路径，如果构造时是相对路径，就返回当前目录的路径 + 构造 File 对象时的路径
 getCanonicalPath() 方法返回绝对路径，会把 ..\ 、.\ 这样的符号解析掉
+
+设置->应用->应用详情里面的“清除数据”与“清除缓存”选项  （清除的是外部存储私有部分以及内部存储 我试了都会清）
+  清除数据： 内部存储 和外部存储 私有部分  （应用删除会删除）
+  清除缓存： 清除的应用内存占用部分  （应用删除会删除）
+
+
+实际测试：
+指定DB路径 = this.getDatabasePath("person.db").getPath();   								    ///data/user/0/com.renyu.administrator.redwineapplication/databases/person.db
+内部存储 files目录 = this.getFilesDir().getPath();          									///data/user/0/com.renyu.administrator.redwineapplication/files
+内部存储 cache目录 = this.getCacheDir().getPath();          									///data/user/0/com.renyu.administrator.redwineapplication/cache
+外部根=Environment.getExternalStorageDirectory().getPath(); 									///storage/emulated/0
+外部共= Environment.getExternalStoragePublicDirectory(type值常量).getPath();  					///storage/emulated/0/X
+外私file = this.getExternalFilesDir(null).getPath();										    ///storage/emulated/0/Android/data/com.renyu.administrator.redwineapplication/files
+外私cache = this.getExternalCacheDir().getPath();											    ///storage/emulated/0/Android/data/com.renyu.administrator.redwineapplication/cache
+
+type值常量(系统的一些东西)
+说明代表的路径
+
+Environment.DIRECTORY_MUSIC
+音乐存放
+
+
+Environment.DIRECTORY_PODCASTS
+系统广播
+
+
+Environment.DIRECTORY_RINGTONES
+系统铃声
+
+
+Environment.DIRECTORY_ALARMS
+系统提醒铃声
+
+
+Environment.DIRECTORY_NOTIFICATIONS
+系统通知铃声
+
+
+Environment.DIRECTORY_PICTURES
+图片存放
+
+
+Environment.DIRECTORY_MOVIES
+电影存放
+
+
+Environment.DIRECTORY_DOWNLOADS
+下载
+
+
+Environment.DIRECTORY_DCIM
+相机拍摄照片和视频
+
+
+
 
