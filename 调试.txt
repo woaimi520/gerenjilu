@@ -17,4 +17,12 @@ D/DebugDB: Open http://XXX.XXX.X.XXX:8080
 	app oncreat中添加 
 	      //调试框架
    Stetho.initializeWithDefaults(this);
+   
+   
+ --------------------------------------------------
+as左侧配置的 debug 和release 会影响 run 和 debug 
 
+ 当为 release 时： debug 按钮按下去 会报错  run不会 
+        Root手机   在run进去后这种情况不能通过进程直接看到日志信息 可以看到logger信息 log.d信息和 网页上的数据库
+		
+           debug： 什么都应该可以看到
