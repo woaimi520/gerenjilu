@@ -1,0 +1,118 @@
+流：通俗理解 它的作用是连接 内存（最终的）和文件等外部数据源的通道，它是通道和内部的数据集合。
+
+一端链接文件 一端可能链接内存 获取其他链接器 类比：跑路传递消息的小哥 听一个数据就跑的急性子
+FileInputStream
+FileOutputStream
+
+一般一端链接 内存 一端链接其他连接器  类比：记录的秘书，能一次记录很多数据的 能把记录直接给小哥
+BufferedInputStream
+BufferedOutputStream 
+
+内存端  类比：发号司令的总统，只说话 不能用纸张记录
+注意点：
+  file.exists() 文件或文件加是否存在
+  file.isDirectory() 是否是文件夹
+  file.isFile()      是否是文件
+  file.mkdir();   创建文件夹（父目录没有就不会创建）
+  file.mkdirs();  创建文件夹（父目录没有会自动创建父目录）
+  file.createNewFile() 创建文件
+ file.delete();//是否删除文件夹 多次调用 delete 不会报错 可以删除文件和文件夹
+ FileInputStream fis = new FileInputStream(fileIN);//没有就会报错
+ FileOutputStream fos = new FileOutputStream(fileOUT);//没有不会报错 且如果运行到 还会创建文件
+
+如：
+        /**
+     * 复制文件
+     *
+     * @param fromPath 源文件路径
+     * @param toPath 目的文件路径
+     * @return
+     */
+    public static boolean copyFile(String fromPath, String toPath) {
+            try {
+                File fileIN = new File(fromPath);
+                File fileOUT = new File(toPath);
+
+
+                FileInputStream fis = new FileInputStream(fileIN);//没有就会报错
+                FileOutputStream fos = new FileOutputStream(fileOUT);//没有不会报错 且如果运行到 还会创建文件
+
+
+                BufferedInputStream bis = new BufferedInputStream(fis);
+                BufferedOutputStream bos = new BufferedOutputStream(fos);
+
+
+                byte[] b = new byte[1024];
+                int len;
+                while ((len = bis.read(b)) != -1) {
+                    bos.write(b, 0, len);
+                }
+                bos.flush();//目标路径文件会被覆盖
+                bis.close();
+                bos.close();
+
+                return true;
+            } catch (Exception e) {
+                Logger.d("Exception = "+e);;
+                return false;
+            }
+    }
+
+
+    /**
+     * 删除SD目录路径文件
+     * @param pathString
+     */
+    public static void  deleteSDFile(String pathString)
+    {
+        try{
+            String sdState = Environment.getExternalStorageState();
+            if(sdState.equals(Environment.MEDIA_MOUNTED)) {
+                File file = new File(pathString);
+                System.out.println("file new");
+                if (file.exists()) {
+                    System.out.println("file exists");
+                    if (file.isFile()) {
+                        file.delete();//多次删除不会报错
+                    } else if (file.isDirectory()) {
+                        System.out.println("file isDirectory");
+                        File files[] = file.listFiles();
+                        for (int i = 0; i < files.length; i++) {
+                            deleteSDFile(files[i].getPath());
+                        }
+                    }
+                    file.delete();//是否删除文件夹 多次调用 delete 不会报错
+                }
+            }
+        } catch (Exception e) {
+           Logger.d("Exception ="+e);
+        }
+    }
+
+
+    /**
+     * 删除文件
+     * @param pathString
+     */
+    public static void  deleteFile(String pathString)
+    {
+        try{
+                File file = new File(pathString);
+                System.out.println("file new");
+                if (file.exists()) {
+                    System.out.println("file exists");
+                    if (file.isFile()) {
+                        file.delete();//多次删除不会报错
+                    } else if (file.isDirectory()) {
+                        System.out.println("file isDirectory");
+                        File files[] = file.listFiles();
+                        for (int i = 0; i < files.length; i++) {
+                            deleteFile(files[i].getPath());
+                        }
+                    }
+                    file.delete();//是否删除文件夹 多次调用 delete 不会报错
+                }
+        } catch (Exception e) {
+            Logger.d("Exception ="+e);
+        }
+    }

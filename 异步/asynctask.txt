@@ -106,7 +106,7 @@
                 return null;
             }
 
-            // 方法3：onProgressUpdate（）
+            // 方法3： onProgressUpdate（）
             // 作用：在主线程 显示线程任务执行的进度
             @Override
             protected void onProgressUpdate(Integer... progresses) {
@@ -125,7 +125,7 @@
             }
 
             // 方法5：onCancelled()
-            //已经完成取消无效
+            //已经完成取消无效 取消了 也不会有结果 即onPostExecute 不会回调
             // 作用：将异步任务设置为：取消状态
             @Override
             protected void onCancelled() {

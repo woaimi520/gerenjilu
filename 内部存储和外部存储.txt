@@ -41,22 +41,31 @@ data文件夹：内部都是app的包名，存储着应用程序相关的数据�
   额外的
   .\ 当前房间找  ..\返回上一房间 找  ,a\b 从a房间 跨步（“\”） 进入 b房间  
 getPath() 方法跟创建 File 对象时传入的路径参数有关，返回构造时传入的路径
-getAbsolutePath() 方法返回文件的绝对路径，如果构造的时候是全路径就直接返回全路径，如果构造时是相对路径，就返回当前目录的路径 + 构造 File 对象时的路径
+getAbsolutePath() 方法返回文件的绝对路径，如果构造的时候是全路径就直接返
+回全路径，如果构造时是相对路径，就返回当前目录的路径 + 构造 File 对象时的路径
 getCanonicalPath() 方法返回绝对路径，会把 ..\ 、.\ 这样的符号解析掉
 
+data/app 下包含 一个 so 和 oat 文件 以及 一个apk
+
+
 设置->应用->应用详情里面的“清除数据”与“清除缓存”选项  （清除的是外部存储私有部分以及内部存储 我试了都会清）
-  清除数据： 内部存储 和外部存储 私有部分  （应用删除会删除）
-  清除缓存： 清除的应用内存占用部分  （应用删除会删除）
+  清除数据： 内部存储 和外部存储 私有部分  （应用删除会删除 同时候还会删除data/app下的所有东西）
+  清除缓存： 清除的应用内存占用部分  （应用删除会删除  内部cache 确定会删除）
 
 
 实际测试：
-指定DB路径 = this.getDatabasePath("person.db").getPath();   								    ///data/user/0/com.renyu.administrator.redwineapplication/databases/person.db
-内部存储 files目录 = this.getFilesDir().getPath();          									///data/user/0/com.renyu.administrator.redwineapplication/files
-内部存储 cache目录 = this.getCacheDir().getPath();          									///data/user/0/com.renyu.administrator.redwineapplication/cache
-外部根=Environment.getExternalStorageDirectory().getPath(); 									///storage/emulated/0
-外部共= Environment.getExternalStoragePublicDirectory(type值常量).getPath();  					///storage/emulated/0/X
-外私file = this.getExternalFilesDir(null).getPath();										    ///storage/emulated/0/Android/data/com.renyu.administrator.redwineapplication/files
-外私cache = this.getExternalCacheDir().getPath();											    ///storage/emulated/0/Android/data/com.renyu.administrator.redwineapplication/cache
+
+
+内部存储 files目录= this.getFilesDir().getpath;               	///data/user/0/com.renyu.administrator.redwineapplication/files
+内部存储sp目录=sppath1.substring(0, sppath1.length()-5)  + "shared_prefs" + "/" + "task_sp.xml";	///data/user/0/com.renyu.administrator.redwineapplication/shared_prefs/task_sp.xml
+
+指定DB路径 = this.getDatabasePath("person.db").getPath();   								   	 	///data/user/0/com.renyu.administrator.redwineapplication/databases/person.db
+内部存储 files目录 = this.getFilesDir().getPath();          										///data/user/0/com.renyu.administrator.redwineapplication/files
+内部存储 cache目录 = this.getCacheDir().getPath();          										///data/user/0/com.renyu.administrator.redwineapplication/cache
+外部根=Environment.getExternalStorageDirectory().getPath(); 										///storage/emulated/0
+外部共= Environment.getExternalStoragePublicDirectory(type值常量).getPath();  						///storage/emulated/0/X
+外私file = this.getExternalFilesDir(null).getPath();										   		///storage/emulated/0/Android/data/com.renyu.administrator.redwineapplication/files
+外私cache = this.getExternalCacheDir().getPath();											   		///storage/emulated/0/Android/data/com.renyu.administrator.redwineapplication/cache
 
 type值常量(系统的一些东西)
 说明代表的路径

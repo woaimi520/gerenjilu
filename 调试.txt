@@ -26,3 +26,12 @@ as左侧配置的 debug 和release 会影响 run 和 debug
         Root手机   在run进去后这种情况不能通过进程直接看到日志信息 可以看到logger信息 log.d信息和 网页上的数据库
 		
            debug： 什么都应该可以看到
+		   
+		   
+ --------------------------------------------------
+modules 里面 设置 signing configs 里面设置 release debug 的签名的时候 是设置的run和debge按钮的
+		   
+		   
+		   
+		   
+		   
