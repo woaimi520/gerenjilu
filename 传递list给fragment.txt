@@ -7,9 +7,11 @@ class Book implements Serializable
 这种方式传递后 引用的指向居然没有变化 不管是包含在list还是直接传对象 （普通值不是对象 是值传递）
 
 转为GSON 传递
-使用GSON转化的话 传递后接收到的对象不同 一定注意了
-且 Gson传递的时候 Book类也不需要 implements Serializable
+使用GSON转化的话 传递后接收到的对象不同 传递的要是list list里面还包含了对象的话 对象获取出来也是不同的 一定注意了
+且 Gson传递的时候 Book类也不需要 implements Serializable，当然实现了 结果也一样。另外需要注意解析 json数据的时候
+new TypeToken 这个别掉了 不然解析出错。
 
+一 范例
     public static  MyDialogFragment newInstance( List<Book> books) {
 
         Bundle args = new Bundle();
@@ -33,3 +35,30 @@ class Book implements Serializable
         }
 
     }
+	
+	
+	二。
+	范例
+
+TestClass 未实现序列化或实现序列化 结果一样
+ ArrayList<TestClass> a1;
+ ArrayList<TestClass> a2;
+  发送
+     a1 = new ArrayList<>();
+        a1.add(t1);
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(a1);
+ 接收	
+	 Gson gson = new Gson();
+     a2 = new ArrayList<>();
+     a2 = gson.fromJson(jsonString, new TypeToken<ArrayList<TestClass>>() {}.getType());
+     if(a2!=null&&a2.get(0)!=null){
+               a2.get(0).number = 100;
+     }
+	 
+结果： a1 a2 指向的对象不同，且list中包含的对象也指向不同	
+	
+	
+	
+	
+	

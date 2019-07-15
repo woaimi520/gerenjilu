@@ -17,3 +17,23 @@ String jsonBook =gson.toJson(books.get(0));
 2.json 转换为对象
 Book book2 = gson.fromJson(bookJson, Book.class);
 
+
+范例
+
+TestClass 未实现序列化或实现序列化 结果一样
+ ArrayList<TestClass> a1;
+ ArrayList<TestClass> a2;
+  发送
+     a1 = new ArrayList<>();
+        a1.add(t1);
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(a1);
+ 接收	
+	 Gson gson = new Gson();
+     a2 = new ArrayList<>();
+     a2 = gson.fromJson(jsonString, new TypeToken<ArrayList<TestClass>>() {}.getType());
+     if(a2!=null&&a2.get(0)!=null){
+               a2.get(0).number = 100;
+     }
+	 
+结果： a1 a2 指向的对象不同，且list中包含的对象也指向不同	 
