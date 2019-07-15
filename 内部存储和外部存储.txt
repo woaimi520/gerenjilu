@@ -54,9 +54,10 @@ data/app 下包含 一个 so 和 oat 文件 以及 一个apk
 
 
 实际测试：
+数据库备份还原后要重启应用 不然 数据没刷新 我理解应该是缓存数据没更新同步
 
 
-内部存储 files目录= this.getFilesDir().getpath;               	///data/user/0/com.renyu.administrator.redwineapplication/files
+内部存储 files目录= this.getFilesDir().getPath();;               									///data/user/0/com.renyu.administrator.redwineapplication/files
 内部存储sp目录=sppath1.substring(0, sppath1.length()-5)  + "shared_prefs" + "/" + "task_sp.xml";	///data/user/0/com.renyu.administrator.redwineapplication/shared_prefs/task_sp.xml
 
 指定DB路径 = this.getDatabasePath("person.db").getPath();   								   	 	///data/user/0/com.renyu.administrator.redwineapplication/databases/person.db

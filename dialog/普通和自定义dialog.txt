@@ -1,3 +1,5 @@
+   注意 显示与隐藏 不要放到 handler 处理函数里 有问题
+   
    继承关系  自定义dialog和AlertDialog 是dialog的子类
 
    //普通的dialog

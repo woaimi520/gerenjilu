@@ -5,3 +5,5 @@ compileOptions {
     targetCompatibility 1.8
     sourceCompatibility 1.8
 }
+
+package org.greenrobot.greendao.annotation; 这个包的东西不能用用了 哪个文件就不能用拉姆达表达式
