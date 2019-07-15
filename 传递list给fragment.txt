@@ -4,7 +4,7 @@
 传递的是list的时候 book 实测不需要序列化，
 但是直接传送book 实例的时候就需要book 类  
 class Book implements Serializable
-这种方式传递后 引用的指向居然没有变化
+这种方式传递后 引用的指向居然没有变化 不管是包含在list还是直接传对象 （普通值不是对象 是值传递）
 
 转为GSON 传递
 使用GSON转化的话 传递后接收到的对象不同 一定注意了
