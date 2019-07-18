@@ -1,0 +1,3 @@
+String
+  xml： android:text="@string/back_and_recover"
+  java：String hind_one = getResources().getString(R.string.output_points);

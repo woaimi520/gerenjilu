@@ -7,6 +7,11 @@ ctri+O 重写
 ctri+shirft+alt+N 查找类中的方法或变量
 ctri+alt + 回车 自动分号
 alt+insert 实现 方法 复写方法 抽象类在 匿名内部类使用的时候 要打上{} 再用
+ctri +Shirft + +/- 实现折叠打开关闭效果
+
+字符串快速导入到resorce
+点击字符串 alt+enter 
+
 
 Toast 大写 可以快速生成代码
 

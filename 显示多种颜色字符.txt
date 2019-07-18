@@ -1,6 +1,7 @@
 1.
 注意：new ForegroundColorSpan 这个对象 setSpan 一次就需要一个 这个对象不可复用
       SPAN_EXCLUSIVE_EXCLUSIVE 一般都用这个 只要不涉及字符串插入操作 这个参数设置 4种之一都可以 
+	  8,23 为 [开始，结束）的位置 汉字和英文算1 符号算2
 SpannableStringBuilder stringBuilder2=new SpannableStringBuilder(hind_two);
 stringBuilder2.setSpan(new ForegroundColorSpan(Color.RED),8,23, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 stringBuilder2.setSpan(new ForegroundColorSpan(Color.RED),48,63, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
