@@ -4,7 +4,10 @@
 传递的是list的时候 book 实测不需要序列化，
 但是直接传送book 实例的时候就需要book 类  
 class Book implements Serializable
-这种方式传递后 引用的指向居然没有变化 不管是包含在list还是直接传对象 （普通值不是对象 是值传递）
+这种方式传递后 引用的指向居然没有变化 不管是包含在list（map）还是直接传对象 （普通值不是对象 是值传递）
+注意有的类型不能放
+如：错误: 不兼容的类型: SpannableStringBuilder无法转换为Serializable
+
 
 转为GSON 传递
 使用GSON转化的话 传递后接收到的对象不同 传递的要是list list里面还包含了对象的话 对象获取出来也是不同的 一定注意了
