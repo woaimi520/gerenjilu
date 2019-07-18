@@ -1,0 +1,8 @@
+内容文字最大行数   sb_content_rows  setContentRows TASK_CONTENT_ROWS     TextView.setMaxLines
+标题文字最大行数   sb_title_rows    setTitleRows   TASK_TITLE_ROWS       TextView.setMaxLines
+内容文字大小       sb_content_size  setContentSize TASK_CONTENT_SIZE     TextView.setTextSize
+标题文字大小       sb_title_size    setTitleSize   TASK_TITLE_SIZE       TextView.setTextSize     
+
+字间距             sb_text_spacing  setTextSpacing TASK_TEXT_SPACING     TextView.setLetterSpacing 
+行间距             sb_line_spacing  setLineSpacing TASK_LINE_SPACING     TextView.setLineSpacing
+       
