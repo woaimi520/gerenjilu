@@ -1,4 +1,4 @@
 paddingTop  
 paddingBottom  
 android:gravity="center"
-与书写顺序无关 且 没有先后执行的概念 都是先后制约
+与书写顺序无关 且  没有先后执行的概念 都是先后制约
