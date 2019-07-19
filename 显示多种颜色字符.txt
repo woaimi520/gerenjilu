@@ -8,3 +8,6 @@ stringBuilder2.setSpan(new ForegroundColorSpan(Color.RED),48,63, Spanned.SPAN_EX
 
 2
   textView.setText(stringBuilder2);
+  
+  
+  注意：这种方式设置后 即使最后调用tvDate.setTextColor(Color.BLUE); 也不会改变 8,23 及48,63 的颜色
