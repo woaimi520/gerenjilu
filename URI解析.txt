@@ -13,7 +13,7 @@ URL （是统一资源定位器，是URI的子类）例如 你是王麻子 你�
  
 下载的
 解析出id
-拼接成URI 它这里只有一个金刚 没区分
+拼接成URI 它这里只有一个金刚  没区分
 content://downloads/public_downloads +id
 去对应金刚哪里取
 
