@@ -1,0 +1,8 @@
+  添加权限 
+ <uses-permission android:name="android.permission.VIBRATE"/>
+ 获取服务 执行
+     	 Vibrator vibrator;
+
+        vibrator = (Vibrator) MyApplication.getInstances().getSystemService(Service.VIBRATOR_SERVICE);
+
+        vibrator.vibrate(200);
