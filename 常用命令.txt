@@ -135,3 +135,16 @@ assets 文件的创建
 选择main文件夹右键——》New——》New Directory，文件名为assets就好
 或者
 右键单击main目录，选择New>Folder>Assets Folder. 注意改路径
+
+创建 libs （project标签）/ jniLibs (android标签)
+ 1. 在app的android 标签下
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/']
+        jniLibs.srcDirs = ['libs']} }
+ 2.据说能直接生成文件夹但是我没有 所以手动再在 project 下
+   选择app文件夹右键——》New——》New Directory，文件名为 libs 就好
+   
+导入jar
+   将jar 文件复制到libs下 并点击 as library 然后同步
+导入 so
+   有了以上操作后直接放到 libs下就行了   
+   
