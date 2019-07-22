@@ -128,3 +128,10 @@ manifest 自动添加 设置
 搜索 Intentions 
 
 再在里面搜索 manifest
+
+assets 文件的创建
+
+同样在Project目录结构下：
+选择main文件夹右键——》New——》New Directory，文件名为assets就好
+或者
+右键单击main目录，选择New>Folder>Assets Folder. 注意改路径
