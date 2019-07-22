@@ -1,0 +1,6 @@
+1把 libs 下文件复制到工程的libs 下 （5b7cd5f4）
+2把 assets下文件 复制到 工程assets/iflytek下（语音转文字需要dialog 才是必须）
+3把 res 下文件 复制到 工程layout下 （语音转文字需要dialog 才是必须）
+4然后 sys工程
+
+具体配置见红酒工程
