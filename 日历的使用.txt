@@ -1,4 +1,4 @@
-        CalendarUitls.newInstance().getCalendar();
+           CalendarUitls.newInstance().getCalendar();
                 Logger.d("当前年份="+CalendarUitls.newInstance().getCalendar().get(Calendar.YEAR));
                 Logger.d("当前月份="+(CalendarUitls.newInstance().getCalendar().get(Calendar.MONTH)+1));//月份是从0开始
                 Logger.d("当前天="+CalendarUitls.newInstance().getCalendar().get(Calendar.DATE));
@@ -104,6 +104,10 @@
                 //设置data
                 dangqian.setTime(new Date());
                 Logger.d("dangqian settime（new Date()）后：:" + simpleDateFormat.format(dangqian.getTime()));
+
+                dangqian.setTimeInMillis(System.currentTimeMillis());
+
+                Logger.d("dangqian setTimeInMillis（500）后：:" + simpleDateFormat.format(dangqian.getTime()));
                 break;
             default:
                 Logger.d("unknow");;
