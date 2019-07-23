@@ -1,0 +1,78 @@
+//在ViewPager 中 因为预先加载  那么 最少有三个fragment 都会运行到 onResume，
+  但是setUserVisibleHint 入参会不同 能看见的是 false->true 看不见的是false
+
+public abstract class BaseLazyLoadRxFragment extends BaseRxFragment {
+    public boolean isloadData; //是否已经加载过数据 true：已经加载过   false:未加载过
+    public boolean isViewInflateFinished;//rootview是否已经inflate 完毕
+    public boolean isViewVisable;//当前的可见状态
+    private Unbinder mUnbinder;
+
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // 这里判空只是优化一下 控件换性能 因为 可能切换的时候它又会重新创建
+          if(rootView == null){
+              rootView = inflater.inflate(getLayoutResource(), container, false);
+          }
+        mUnbinder = ButterKnife.bind(this, rootView);
+          //不可见的时候不加载 && 已经加载过的不加载
+        if(isViewVisable&&!isloadData){
+            onFragmentVisibleChange(isViewVisable);
+            isloadData = true;
+        }
+        initData();//初始化数据
+        initView();//主要是是否显示
+        isViewInflateFinished = true;
+        return rootView;
+    }
+
+
+
+    /**
+     *
+     *
+     *   setUserVisibleHint()在Fragment创建时会先被调用一次，传入isVisibleToUser =false
+     *   如果当前Fragment可见，一般是在创建后转化为可见的。那么setUserVisibleHint()会再次被调用一次，传入isVisibleToUser = true
+     *   如果Fragment从可见->不可见，那么setUserVisibleHint()也会被调用，传入isVisibleToUser = false
+     *   总结：setUserVisibleHint()除了Fragment的可见状态发生变化时会被回调外，在new Fragment()时也会被回调
+     *   如果我们需要在 Fragment 可见与不可见时干点事，用这个的话就会有多余的回调了，那么就需要重新封装一个
+     *
+     * @param isVisibleToUser
+     */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        isViewVisable = isVisibleToUser;
+        //rootview 完毕 且 可见  且 第一次加载
+        if(isViewInflateFinished && isVisibleToUser && !isloadData){
+            onFragmentVisibleChange(isVisibleToUser);
+            isloadData = true;
+        }
+
+    }
+
+
+    /**
+     * 当前fragment可见状态发生变化时会回调该方法
+     * 如果当前fragment是第一次加载，等待onCreateView后才会回调该方法，其它情况回调时机跟 {@link #setUserVisibleHint(boolean)}一致
+     * 在该回调方法中你可以做一些加载数据操作，甚至是控件的操作.
+     * <p>
+     * 满足 可见  rootview加载好了  第一次加载（first 未false）
+     *
+     * @param isVisible true  不可见 -> 可见
+     *                  false 可见  -> 不可见
+     */
+    protected abstract void onFragmentVisibleChange(boolean isVisible);
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(mUnbinder!= null) {
+            mUnbinder.unbind();
+        }
+        isViewInflateFinished = false;
+    }
+
+}
