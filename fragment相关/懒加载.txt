@@ -1,6 +1,8 @@
 //在ViewPager 中 因为预先加载  那么 最少有三个fragment 都会运行到 onResume，
   但是setUserVisibleHint 入参会不同 能看见的是 false->true 看不见的是false
 
+
+
 public abstract class BaseLazyLoadRxFragment extends BaseRxFragment {
     public boolean isloadData; //是否已经加载过数据 true：已经加载过   false:未加载过
     public boolean isViewInflateFinished;//rootview是否已经inflate 完毕

@@ -1,3 +1,11 @@
+需要管理相互独立的并且隶属于Activity的Fragment使用FragmentManager（），
+而在Fragment中动态的添加Fragment要使用getChildFragmetManager（）来管理。
+
+使用Fragment需要熟悉几个类，包括FragmentActivity、FragmentManager、
+ FragmentTranscation，一个FragmentActivity可以包含多个Fragment，谁来管理？
+ FragmentManager就起到了作用。做Fragment的增加、删除、替换的时候，
+ 事务FragmentTranslation 来负责执行。
+
 最基本的初始化
 第一种
    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
