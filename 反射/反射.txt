@@ -7,6 +7,10 @@ Object object = com.newInstance(); //生成对象
 Method m = noBugClass.getMethod("suanShu"); //获取方法
 m.invoke(object); //方法和对象组合 使用
 
+
+
+实例：
+
 改变及获取父类的私有变量的值 注意 成员变量不能多态
 	try{
 		Person son = new Son(); //创建变量
@@ -26,3 +30,39 @@ m.invoke(object); //方法和对象组合 使用
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+		
+		
+		
+		
+			public static void main(String [] arg){
+		
+
+		try{
+		Person son = new Son();//创建变量
+		Field file =son.getClass().getSuperclass().getDeclaredField("number");//获取file 注意这里是看son的实际类型
+		//  Field file =Person.class.getSuperclass().getDeclaredField("number");
+		file.setAccessible(true);//打开开关 变量才能操作
+		file.set(son, "100");//设置变量
+        System.out.println(son.getNumber());
+		
+		
+		String number = (String)file.get(son);
+		System.out.println("get"+son.getNumber());
+		System.out.println("get"+son.getName());/方法有多态 且 getName 调用的变量是最后调用的是谁的方法来决定使用哪里的变量
+		
+			
+	 Class<?> classF = Class.forName("Person");
+	 Method method = classF.getMethod("getAge",String.class);
+		
+	System.out.println("method"+method.invoke(classF.newInstance(),"wo"));//注意方法的执行
+		
+		} catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch(Exception e){
+			
+		}
+
+		
+	}
