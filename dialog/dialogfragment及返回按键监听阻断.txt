@@ -12,6 +12,7 @@
 
 							在onStart中设置布局在屏幕中的属性  super onstart中 会执行 dialog.show 窗口设置需要在show后才生效
 
+注意：执行dimiss() 后会回调 dismiss() -> onDestroyView
 
 注意导入的包
 一定要是 import android.support.v4.app.DialogFragment;

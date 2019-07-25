@@ -1,0 +1,33 @@
+onResume 执行完毕后才可见。
+
+启动新的dialogfragment的时候 新的要执行到 onResume 后 才开始执行旧的 onPause
+
+退出到后台的hi后 会执行 onPause onStop
+
+从后台恢复的时候：会执行 onStart 和 onResume
+
+当执行dismiss的h时候：会从onResume onPausr onStop onDestoryView onDestory ondetach
+
+
+fragmentmanager
+ getChildFragmentManager （母是fragment）和  getSupportFragmentManager（母是activity）
+ 且这个manager是一个fragment 或 一个activity 独立
+ 如要关闭一个fragment中嵌套的dialogfragment 可以在dialogfragment中这么写 
+       Fragment prev = getParentFragment().getChildFragmentManager().findFragmentByTag("voice_recording_transfer_textdialog");
+            if (prev != null) {
+                DialogFragment df = (DialogFragment) prev;
+                df.dismissAllowingStateLoss();
+            }
+注意：getParentFragment().getChildFragmentManager().findFragmentByTag 
+
+当想从manager中删除
+ getParentFragment().getChildFragmentManager().beginTransaction().remove(this);
+
+dismiss
+可以看作 是个任务 当执行dismiss()时候 不会立马 去 到 onDestory，会把后续的
+如： ondismiss()
+     starAdd() //这个方法也会执行 在执行 ondestory方法
+
+
+在fragment 的 onAttach 进入后就可以获取到，在fragment onDetach 执行完之前都可以获取到
+fragment的栈：
