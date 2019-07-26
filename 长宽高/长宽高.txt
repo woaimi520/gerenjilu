@@ -1,0 +1,26 @@
+   一 获取屏幕的信息
+   //DisplayMetrics看作是存放尺寸的容器
+	  DisplayMetrics dm = new DisplayMetrics();
+      //调用getWindowManager() 之后，会取得现有Activity 的Handle
+	  mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+      //取得的宽高维度存放于DisplayMetrics 对象   单位{PX}
+	  mWindowManager.getDefaultDisplay().getMetrics(dm);
+	  
+	  dm.widthPixels //等于 1080
+	  
+   二。自定义view 的ondraw中 测量view的宽度 高度
+     getMeasuredWidth() 为view的宽度  986	   
+	 getMeasuredHeight() 为view的高度 60
+	 
+   三 测量字符串的长宽
+   1 创建一个 paint 画笔
+   textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+   textPaint.setTextSize(30);
+   textPaint.setColor(Color.WHITE);
+   2 用画笔来测量
+   textPaint.measureText("00:00")   
+   
+   四 计算两个时间差 单位 /S
+    long thisTime = System.currentTimeMillis();
+	long initTime = System.currentTimeMillis();
+    int  timeTemp =(int)(thisTime - startTime)/1000;
