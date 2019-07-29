@@ -18,7 +18,7 @@ BufferedOutputStream
   file.createNewFile() 创建文件
  file.delete();//是否删除文件夹 多次调用 delete 不会报错 可以删除文件和文件夹
  FileInputStream fis = new FileInputStream(fileIN);//没有就会报错
- FileOutputStream fos = new FileOutputStream(fileOUT);//没有不会报错 且如果运行到 还会创建文件
+ FileOutputStream fos = new FileOutputStream(fileOUT);//没有不会报错 且如果运行到 还会创建文件（文件夹都没有那么还是会报错 需要先创建文件夹）
 
 如：
         /**
@@ -116,3 +116,8 @@ BufferedOutputStream
             Logger.d("Exception ="+e);
         }
     }
+	
+	
+apk中的
+  is = context.getAssets().open(source);	
+	
