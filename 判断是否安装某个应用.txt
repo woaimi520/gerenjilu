@@ -1,0 +1,20 @@
+    /**
+     * @param context
+     * @param pkgName 对应 app build 下的 applicationId
+     * @return
+     */
+    public static boolean checkAppInstalled(Context context, String pkgName) {
+        if (pkgName== null || pkgName.isEmpty()) {
+            return false;
+        }
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> info = packageManager.getInstalledPackages(0);
+        if(info == null || info.isEmpty())
+            return false;
+        for ( int i = 0; i < info.size(); i++ ) {
+            if(pkgName.equals(info.get(i).packageName)) {
+                return true;
+            }
+        }
+        return false;
+    }
