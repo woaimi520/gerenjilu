@@ -2,3 +2,78 @@ list1 1234
 list2 567
 list1.add(1,list2) 
 结果：1567234
+
+ Iterator 和 for 都可以看作是顺着 存储的大厦 一点一点向下 读取
+
+一.colector 下有list和set
+1.list 有 arraylist 和linkedlist
+  arraylist 底层是数组 查询快 插入慢 允许重复的对象 允许有多个null 可以直接打印
+  常用方法 
+       mlist.add(s);	* 添加元素
+    mlist.remove(s);    * 删除指定元素   是否包含这个对象
+    mlist.remove(i);    * 删除指定位置元素 会返回这个位置的字符串
+	  mlist.get(i）;    * 获取指定位置元素
+	  
+	  Iterator 可以看作是个箭头 默认指向 集合之上 ，for 也可以看作 他们都可以沿着 数组 链表 挨个去读
+	  迭代器方式轮询 实测速度快
+	    Iterator<String> it = mlist.iterator();
+		 while(it.hasNext()){
+            String s = it.next();
+			。。。
+	    }
+		
+	  for循环方式 实测速度慢一点	
+		     for(String s : mlist){
+            Logger.d("for s=" + s+"  "+ simpleFormatter.format(System.currentTimeMillis()));
+        }
+		
+ linkedlist 底层是链表 插入快 查询慢 允许重复的对象 鱼汛有多个null 删除的时候
+  
+         mLinkList.add(s);    * zai linklist 尾部加一个数据
+		mLinkList.addFirst(s);           * 头部插入  
+      mLinkList.addLast(s);     * 尾部添加
+         mLinkList.add(i, s);    * 指定位置插入
+     mLinkList.remove();    * 删除的是头 是头 会返回这个位置的字符串
+     mLinkList.remove(s);     * 删除指定元素 是否包含这个对象
+    mLinkList.remove(i);      * 删除指定位置 会返回这个位置的字符串
+    mLinkList.removeFirst();     * 删除第一项 会返回这个位置的字符串 
+	mLinkList.removeLast()     * 删除最后一项 会返回这个位置的字符串
+	mLinkList.getFirst()  * 获取的是第一项 不会被删除
+	 mLinkList.getLast() * 获取的是最后 不会被删除
+	 mLinkList.peek();    * 获取的是第一项 不会被删除
+	 
+	 
+	 
+	 
+set 
+  无序，这里无序指的是 通过iteractor 和 for 打印的顺序 和 存入SET的顺序不相关，
+    另外set也可以存入 null 也可以打印，但是存入多次null  打印的时候只有一个（相同的字符也是一个效果） 
+	 且是先占坑 没冲突就不会调用 equal,有冲突 就调用equal true：注意不做处理（一定注意不是覆盖） false：存放到桶里
+	 null 可以看作不同于其他所有对象 它是独立 唯一的 不会调用对象的hashcode 和 equal 函数
+
+     mSetP.add(s);
+	 mSetP.contains(s)//可以判断是不是包含null
+	 mSetP.remove(s);//且可以删除 null 这个元素
+	 Iterator 和 for  但是打印出来都不是存入顺序
+	 
+hashcode 和 equal
+假如有 12345 五个对应标号的桶子 规定对象的hashcode()/8 余数为桶子的标号
+对象的 hashcode()返回此对象的hashcode 在集合中用于找对象放哪个桶子里面	 如 9/8 余 1 放第一个桶  10/8 余 2 放第二个桶
+对象的 equal() 用于判断对象是否相等   如 9/8 17/8 都将放到1号桶的时候 判断对象是否相等 （set中） 相等就是覆盖 否则都放到1号桶（链表）
+Object的	
+public boolean equals(Object obj) {  
+    return (this == obj);  
+} 
+
+public native int hashCode() //native表示根据系统资源计算的 此方法是交给C++等实现的
+比如对象的存储地址，对象的字段等）映射成一个数值，这个数值称作为散列值
+
+
+LinkedHashSet 
+里面多了一个 记录存入顺序的 链表  其他特性和hashset差不多
+itactor 和 for 就直接读取的是 链表构建的新楼房
+ mSetP.remove(s);//且可以删除 null 这个元素
+ 
+TreeSet 
+最大的区别就是 不能存 null，一个都不行。 看作是规定  
+
