@@ -4,5 +4,5 @@
 标题文字大小       sb_title_size    setTitleSize   TASK_TITLE_SIZE       TextView.setTextSize     
 
 字间距             sb_text_spacing  setTextSpacing TASK_TEXT_SPACING     TextView.setLetterSpacing 
-行间距             sb_line_spacing  setLineSpacing TASK_LINE_SPACING     TextView.setLineSpacing
+行间距             sb_line_spacing  setLineSpacing TASK_LINE_SPACING     TextView.setLineSpacing（int add ，int mul），space = add* mul 
        

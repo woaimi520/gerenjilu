@@ -1,3 +1,4 @@
+改变字体颜色
 1.
 注意：new ForegroundColorSpan 这个对象 setSpan 一次就需要一个 这个对象不可复用
       SPAN_EXCLUSIVE_EXCLUSIVE 一般都用这个 只要不涉及字符串插入操作 这个参数设置 4种之一都可以 
@@ -11,3 +12,7 @@ stringBuilder2.setSpan(new ForegroundColorSpan(Color.RED),48,63, Spanned.SPAN_EX
   
   
   注意：这种方式设置后 即使最后调用tvDate.setTextColor(Color.BLUE); 也不会改变 8,23 及48,63 的颜色
+  
+ 改变字体大小 
+stringBuilderTitle.setSpan(new AbsoluteSizeSpan(20, true), 0, notifyTime.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+ 注意：这种方式设置后 即使最后调用tvDate.setTextColor(Color.BLUE); 也不会改变 8,23 及48,63 的大小
