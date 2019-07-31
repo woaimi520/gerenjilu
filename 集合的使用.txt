@@ -76,4 +76,20 @@ itactor 和 for 就直接读取的是 链表构建的新楼房
  
 TreeSet 
 最大的区别就是 不能存 null，一个都不行。 看作是规定  
+且 它的唯一不是使用 hashcode 和 equal 方法，而是使用compare 方法 返回0的时候就不会存进去（特别注意） 
+添加自定义类的时候必须要实现 比较器 不然 会报ClassCastException 运行时异常
+所以类加比较器
+   public int compareTo(Person o) {
+        int result = this.age - o.age;//返回 负数 标识 o要小  放到二叉树的左边 所以一打印就到前面去了
+        return result;
+    }
+	
+TreeSet 添加比较器
+    public static TreeSet<Person> mTreeSetP = new TreeSet<>(new Comparator<Person>() {
+        @Override
+        public int compare(Person o1, Person o2) {
+           int result =  o1.age - o2.age;
+            return result;
+        }
+当都加的时候 类的比较器失效 只会用 TreeSet中的		
 
