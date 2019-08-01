@@ -4,6 +4,8 @@ list1.add(1,list2)
 结果：1567234
 
  Iterator 和 for 都可以看作是顺着 存储的大厦 一点一点向下 读取
+ Liked 会改变大厦   Iterator 和 for  读取的就是新的大厦
+ 
 
 一.colector 下有list和set
 1.list 有 arraylist 和linkedlist
@@ -27,7 +29,7 @@ list1.add(1,list2)
             Logger.d("for s=" + s+"  "+ simpleFormatter.format(System.currentTimeMillis()));
         }
 		
- linkedlist 底层是链表 插入快 查询慢 允许重复的对象 鱼汛有多个null 删除的时候
+ linkedlist 底层是链表 插入快 查询慢 允许重复的对象 允许有多个null 删除的时候
   
          mLinkList.add(s);    * zai linklist 尾部加一个数据
 		mLinkList.addFirst(s);           * 头部插入  
@@ -45,11 +47,11 @@ list1.add(1,list2)
 	 
 	 
 	 
-set 
+Hashset  
   无序，这里无序指的是 通过iteractor 和 for 打印的顺序 和 存入SET的顺序不相关，
-    另外set也可以存入 null 也可以打印，但是存入多次null  打印的时候只有一个（相同的字符也是一个效果） 
-	 且是先占坑 没冲突就不会调用 equal,有冲突 就调用equal true：注意不做处理（一定注意不是覆盖） false：存放到桶里
-	 null 可以看作不同于其他所有对象 它是独立 唯一的 不会调用对象的hashcode 和 equal 函数
+  另外set也可以存入 null 也可以打印，但是存入多次null  打印的时候只有一个（相同的字符也是一个效果） 
+  且是先占坑 没冲突就不会调用 equal,有冲突 就调用equal true：注意不做处理（一定注意不是覆盖） false：存放到桶里
+  null 可以看作不同于其他所有对象 它是独立 唯一的 不会调用对象的hashcode 和 equal 函数， null作为key时被放在了tab下标为0的位置
 
      mSetP.add(s);
 	 mSetP.contains(s)//可以判断是不是包含null
@@ -59,7 +61,7 @@ set
 hashcode 和 equal
 假如有 12345 五个对应标号的桶子 规定对象的hashcode()/8 余数为桶子的标号
 对象的 hashcode()返回此对象的hashcode 在集合中用于找对象放哪个桶子里面	 如 9/8 余 1 放第一个桶  10/8 余 2 放第二个桶
-对象的 equal() 用于判断对象是否相等   如 9/8 17/8 都将放到1号桶的时候 判断对象是否相等 （set中） 相等就是覆盖 否则都放到1号桶（链表）
+对象的 equal() 用于判断对象是否相等   如 9/8 17/8 都将放到1号桶的时候 判断对象是否相等 （set中） 相等什么都不做 否则都放到1号桶（链表）
 Object的	
 public boolean equals(Object obj) {  
     return (this == obj);  
@@ -75,7 +77,7 @@ itactor 和 for 就直接读取的是 链表构建的新楼房
  mSetP.remove(s);//且可以删除 null 这个元素
  
 TreeSet 
-最大的区别就是 不能存 null，一个都不行。 看作是规定  
+最大的区别就是 不能存 null，一个都不行。它会必调TreeMap的用 compare 里面就会空 看作是规定  
 且 它的唯一不是使用 hashcode 和 equal 方法，而是使用compare 方法 返回0的时候就不会存进去（特别注意） 
 添加自定义类的时候必须要实现 比较器 不然 会报ClassCastException 运行时异常
 所以类加比较器
@@ -91,5 +93,20 @@ TreeSet 添加比较器
            int result =  o1.age - o2.age;
             return result;
         }
-当都加的时候 类的比较器失效 只会用 TreeSet中的		
+当都加的时候 类的比较器失效 只会用 TreeSet中的	即 treeset 没设置 
+比较器的时候 会调用自定义类中的 自定义类中的要是没有 就会报错
 
+  	
+
+
+
+Map
+map都是用的key的hashcode (hashMap LinkedHashMap)或则用的是key的compare(TreeMap)
+value 是不是null 没有关系
+
+HashMap
+Key可以存null 但是只能有一个 且可重复存 但是 后面添加的会覆盖前面的 区别于 set（set是什么都不做）
+LinkedHashMap 
+Key可以存null 但是只能有一个 且可重复存 但是 后面添加的会覆盖前面的 区别于 set（set是什么都不做）
+TreeMap
+key 不能存 null 因为要进行比较 
