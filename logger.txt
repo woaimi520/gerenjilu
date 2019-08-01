@@ -2,7 +2,10 @@
     implementation 'com.orhanobut:logger:2.2.0'
 	
 	2.MyAppllication 中替换
-	 Logger.addLogAdapter(new AndroidLogAdapter());//logger 初始化
+	        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                .showThreadInfo(true)  // (Optional) Whether to show thread info or not. Default true
+                .build();
+	 Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));//logger 初始化
 	 
     3 设置PRETTY_LOGGER tag
 	 在 logger filter 中去添加 log tag PRETTY_LOGGER
