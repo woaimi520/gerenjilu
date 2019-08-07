@@ -2,7 +2,52 @@
 Client           server
 主设备           从设备
 
-发现设备（看作识别无线信号）  
- 配对（看作验证） 
-  链接（只能收到从设备的广播数据） 
-   通信（有了输入输出流）
+发现设备（看作识别无线信号 服务端的无线信号携带信息 但是没有进行连接 可以这么理解）  
+ 配对（看作验证，看作密钥交换，我认为这过程中也有链接 不然怎么传密钥） 
+  链接（我认为是就是建立来回通路 双方认为是通的） 
+   通信（有了输入输出流， 实际传输数据）
+   
+   
+ 配置文件：理解为服务代理  
+ 
+ BluetoothProfile.ServiceListener
+ 为A2DP时候 及 HEADSET 时候 注册的是谁 回调的时候 int profile就对应的是谁
+ 1.在开关打开 关闭的时候会调用 同 ACTION_STATE_CHANGED
+ 2.调用getProfileProxy 会回调 回调谁看当前蓝牙开关状态 注意 蓝牙开关关闭的时候 调用也不会回调
+ 3.连接某个蓝牙设备 不会回调
+ 
+ 连接状态 0是断开连接 1是正在连接 2是连接上
+
+注意点 俗称 坑
+api： 蓝牙的扫描  可以获取到位置附近的蓝牙设备 但是已经绑定的不会通过广播返回
+
+若蓝牙已经手动连接了 那么调用 device的connect 也会成功 ，若没有手动连接 且 蓝牙设备为 可连接态（可能需要复位蓝牙设备）也可以成功
+
+安卓 苹果 可以同时连接多个设备
+
+蓝牙开关打开或关闭监听
+action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)
+     int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,//开关状态
+	 BluetoothAdapter.ERROR);
+	 
+	  case BluetoothAdapter.STATE_OFF:
+                        //开关关闭
+                        BlueTooth.getInstance().stop();
+                        Logger.d("开关关闭 ");
+                        break;
+                    case BluetoothAdapter.STATE_ON:
+                        //开关打开
+                        Logger.d("开关打开 ");
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_ON:
+                        // 开关正打开
+                        Logger.d("开关正打开 ");
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                        //开关正关闭
+                        Logger.d("开关正关闭 ");
+                        break;
+
+蓝牙设备连接打开/断开
+action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)
+action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)
