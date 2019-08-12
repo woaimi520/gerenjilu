@@ -107,5 +107,5 @@ Environment.DIRECTORY_DCIM
 相机拍摄照片和视频
 
 
-
+ File.separator 为 “/”
 

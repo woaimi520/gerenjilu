@@ -1,0 +1,17 @@
+String 中空格会影响长度
+substring [a,b)  b不能大于 可以等一 字符串长度
+"".length() 为 0 //“”没有长度 “  ”只要有空格就会有长度
+"".isEmpty()返回true “ ”.isEmpty 饭hifalse
+
+将hexString转化为 int 
+int iValue = Integer.parseInt("0x30", 16);  //这样会产生异常
+int iValue = Integer.parseInt("30", 16);  //这样就对了，结果是48.
+
+将byte[]转化为hexString
+java.lang.Integer.toHexString() 方法
+的参数是int(32位)类型，如果输入一个
+byte(8位)类型的数字，这个方法会把这
+个数字的高24为也看作有效位，这就必然
+导致错误，使用& 0XFF操作，可以把高24
+位置0以避免这样错误
+Integer.toHexString(b[i] & 0xFF);

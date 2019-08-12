@@ -1,3 +1,4 @@
+
 流：通俗理解 它的作用是连接 内存（最终的）和文件等外部数据源的通道，它是通道和内部的数据集合。
 
 一端链接文件 一端可能链接内存 获取其他链接器 类比：跑路传递消息的小哥 听一个数据就跑的急性子
@@ -14,7 +15,7 @@ BufferedOutputStream
   file.isDirectory() 是否是文件夹
   file.isFile()      是否是文件
   file.mkdir();   创建文件夹（父目录没有就不会创建）
-  file.mkdirs();  创建文件夹（父目录没有会自动创建父目录）
+  file.mkdirs();  创建文件夹（父目录没有会自动创建父目录） 注意创建出来的是文件夹
   file.createNewFile() 创建文件
  file.delete();//是否删除文件夹 多次调用 delete 不会报错 可以删除文件和文件夹
  FileInputStream fis = new FileInputStream(fileIN);//没有就会报错

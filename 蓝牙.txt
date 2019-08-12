@@ -8,7 +8,25 @@ Client           server
    通信（有了输入输出流， 实际传输数据）
    
    
+   
  配置文件：理解为服务代理  
+ 
+ 一个16进制数 占用4位 2的四次方
+ 
+ mDataInputStream.read(buffer); 当buffer不足的时候会读多次  把水管中的数据读取到buffer中 当没有数据还再都的时候返回-1
+ 
+  Logger.d("msg" + Arrays.toString((byte[]) msg.obj)); 打印的是 byte中存放的数
+ 
+      Logger.d("msg ==" +getHexString((byte[]) msg.obj)); 打印的是 byte中存放的数转为16进制后的数
+	  
+	         String a = "e6b58be8af95";
+            Logger.d("data ==" + Arrays.toString(toBytes(a))); 字符串转化为byte
+ 
+ 表象上看 蓝牙设备只建立了一个socket 连接 
+ 用device.createRfcommSocketToServiceRecord 返回的socket不同
+ 我还没找到能获取当前连接的socket
+ 
+ 调试的时候编译器看待byte 都是看成10进制 它是10进制的人
  
  BluetoothProfile.ServiceListener
  为A2DP时候 及 HEADSET 时候 注册的是谁 回调的时候 int profile就对应的是谁
