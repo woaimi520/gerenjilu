@@ -1,5 +1,5 @@
  LayoutInflater.from(mContext).inflate(resId, viewgroup); 返回的是view
- factory就是AppCompatDelegate实现类
+ factory 就是 AppCompatDelegate实现类
 
 oncreat 设置mFactory2
  delegate.installViewFactory();-》 
@@ -14,9 +14,9 @@ oncreat 设置mFactory2
 																	
 																		  
 
-setContentView 使用 mFactory2
+setContentView 使用 mFactory2  据说windows 发起的流程 最后还是会调用到 mFactory2.onCreateView
 setContentView -》
-         AppCompatDelegate实现类 getDelegate().setContentView(layoutResID);-》
+         AppCompatDelegate实现类(Build.VERSION.SDK_INT 即使上部设置这里还是用的版本判断出来的) getDelegate().setContentView(layoutResID);-》
 		                    createViewFromTag(root, name, inflaterContext, attrs)-》
 				                             mFactory2.onCreateView(parent, name, context, attrs);  //创建对应view 传入的id 由xml解析为了attrs 
 											    -》

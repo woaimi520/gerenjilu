@@ -1,0 +1,17 @@
+创建model
+右键app-> new->model-> phone$Tablet  选无界面
+
+manafest 配置
+manafest 
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.skinnight">
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true" />
+</manifest>
+
+
+生成apk 
+build ->genarate ->module 选对应的（底部有个path出来 点返回 在 next）->选择输出位置（指向module 就行 不用进入）
