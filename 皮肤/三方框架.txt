@@ -1,0 +1,27 @@
+
+SkinAppCompatViewInflater 创建view 的包工头 
+            SkinCompatTextView  员工 组长
+			   SkinCompatTextHelper 负责背景的
+			   
+皮肤包中加载皮肤 可以看作点击事件
+大概就是去子线程获取皮肤包的包名和Resources
+* @param skinName 皮肤包名称.
+* @param listener 皮肤包加载监听.
+* @param strategy 皮肤包加载策略.
+   SkinCompatManager.getInstance().loadSkin("night.skin", null, CustomSDCardLoader.SKIN_LOADER_STRATEGY_SDCARD);
+   
+保存皮肤包名 皮肤名 加载策略
+SkinCompatResources.getInstance().setupSkin()   
+
+换肤
+ SkinCompatTextView的applySkin（） -》 mBackgroundTintHelper.applySkin()
+ 
+ 
+监听APP所有Activity的生命周期(registerActivityLifecycleCallbacks())
+在每个Activity的onCreate()方法调用时setFactory(),设置创建View的工厂.将创建View的琐事交给SkinCompatViewInflater去处理.
+库中自己重写了系统的控件(比如View对应于库中的SkinCompatView),实现换肤接口(接口里面只有一个applySkin()方法),表示该控件
+是支持换肤的.并且将这些控件在创建之后收集起来,方便随时换肤.
+在库中自己写的控件里面去解析出一些特殊的属性(比如:background, textColor),并将其保存起来
+在切换皮肤的时候,遍历一次之前缓存的View,调用其实现的接口方法applySkin(),在applySkin()
+中从皮肤资源(可以是从网络或者本地获取皮肤包)中获取资源.获取资源后设置其控件的background或textColor等,就可实现换肤.
+
