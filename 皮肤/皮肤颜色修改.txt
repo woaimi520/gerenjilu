@@ -1,3 +1,5 @@
+皮肤换肤 思路 设置前移 能添加监听
+
 已经oncreat的界面不会直接改变颜色
 首先添加监听
  UIColorSubscriber.getInstance().attach(this);

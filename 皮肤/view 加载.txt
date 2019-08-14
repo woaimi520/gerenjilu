@@ -1,0 +1,44 @@
+ LayoutInflater.from(mContext).inflate(resId, viewgroup); 返回的是view
+ factory就是AppCompatDelegate实现类
+
+oncreat 设置mFactory2
+ delegate.installViewFactory();-》 
+    LayoutInflaterCompat.setFactory2(layoutInflater, this); -》
+      inflater.setFactory2(factory);//这里只能设置一次 因为
+										       if (mFactory == null) {
+														mFactory = mFactory2 = factory;
+																} else {
+												mFactory = mFactory2 = new FactoryMerger(factory, factory, mFactory, mFactory2);
+																		}
+                                                                          -》           
+																	
+																		  
+
+setContentView 使用 mFactory2
+setContentView -》
+         AppCompatDelegate实现类 getDelegate().setContentView(layoutResID);-》
+		                    createViewFromTag(root, name, inflaterContext, attrs)-》
+				                             mFactory2.onCreateView(parent, name, context, attrs);  //创建对应view 传入的id 由xml解析为了attrs 
+											    -》
+													  mAppCompatViewInflater.createView
+													    -》
+														最后根据name （XmlPullParser  parser 中获取 parser.getName()） 和 控件名字 转为对应的view
+														AppCompatViewInflater //这里也可以替换为i自己的inflater 如 SkinCompatViewInflater//创建大工厂
+														   case 0:
+																view = this.createTextView(context, attrs);//一个具体的创建工厂
+																	this.verifyNotNull((View)view, name);
+																	break
+														   ->
+														       mTextHelper.loadFromAttributes(attrs, defStyleAttr);
+															   
+															   若是自定义的会走
+															       if (view == null && originalContext != context) {
+																// If the original context does not equal our themed context, then we need to manually
+																// inflate it using the name so that android:theme takes effect.
+																	view = createViewFromTag(context, name, attrs);
+																}
+															   createViewByPrefix
+															   
+															   
+															   换肤思路就是替换 factory  因为之前说 factory 只能设置一次 所以要通过反射来改属性 设置成自己的
+															   
