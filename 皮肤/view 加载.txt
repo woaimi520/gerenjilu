@@ -1,70 +1,187 @@
  LayoutInflater.from(mContext).inflate(resId, viewgroup); 返回的是view
- factory 就是 AppCompatDelegate实现类
+ factory 就是 AppCompatDelegate实现类 还有 AppCompatDelegateImplV9 等等 因为他们都实现了 LayoutInflater.Factory2
+ AppCompatDelegate
+   AppCompatDelegateImplBase
+      AppCompatDelegateImplV9 implement LayoutInflater.Factory2
+    
 
-oncreat 设置mFactory2
- delegate.installViewFactory();-》 
-    LayoutInflaterCompat.setFactory2(layoutInflater, this); -》
-      inflater.setFactory2(factory);//这里只能设置一次 因为
-										       if (mFactory == null) {
-														mFactory = mFactory2 = factory;
-																} else {
-												mFactory = mFactory2 = new FactoryMerger(factory, factory, mFactory, mFactory2);
-																		}
-                                                                          -》           
+设置包工头 mFactory2
+AppCompatActivity  delegate.installViewFactory(); 返回 一个AppCompatDelegateImplN 实例-》 
+   AppCompatDelegateImplV9    AppCompatDelegateImplV9（最后都会调用这个）的 installViewFactory -》
+  
+       AppCompatDelegateImplV9    LayoutInflater layoutInflater = LayoutInflater.from(mContext);//创建 layoutInflater
+											if (layoutInflater.getFactory() == null) {
+			LayoutInflaterCompat									LayoutInflaterCompat.setFactory2(layoutInflater, this);}    -》
+										
+						LayoutInflater													 inflater.setFactory2(factory);//这里只能设置一次 因为
+																									   if (mFactory == null) {
+																												mFactory = mFactory2 = factory;（这里设置的就是 开头 返回的 一个AppCompatDelegateImplN 实例 ）
+																														} else {
+																										mFactory = mFactory2 = new FactoryMerger(factory, factory, mFactory, mFactory2);
+																																}
+	
 																	
 																		  
-
-setContentView 使用 mFactory2  据说windows 发起的流程 最后还是会调用到 mFactory2.onCreateView
-setContentView -》
-   LayoutInflater.inflate -》
-    
-         AppCompatDelegate实现类(Build.VERSION.SDK_INT 即使上部设置这里还是用的版本判断出来的) getDelegate().setContentView(layoutResID);-》
-		                    createViewFromTag(root, name, inflaterContext, attrs)-》
-				                             mFactory2.onCreateView(parent, name, context, attrs);  //创建对应view 传入的id 由xml解析为了attrs 
-											    -》
-													  mAppCompatViewInflater.createView
-													    -》
-														最后根据name （XmlPullParser  parser 中获取 parser.getName()） 和 控件名字 转为对应的view
-														AppCompatViewInflater //这里也可以替换为i自己的inflater 如 SkinCompatViewInflater//创建大工厂
-														   case 0:
-																view = this.createTextView(context, attrs);//一个具体的创建工厂
-																	this.verifyNotNull((View)view, name);
-																	break
-														   ->
-														       mTextHelper.loadFromAttributes(attrs, defStyleAttr);
 															   
-															   若是自定义的会走
-															       if (view == null && originalContext != context) {
-																// If the original context does not equal our themed context, then we need to manually
-																// inflate it using the name so that android:theme takes effect.
-																	view = createViewFromTag(context, name, attrs);
-																}
-															   createViewByPrefix
-															   
-															   
-															   换肤思路就是替换 factory  因为之前说 factory 只能设置一次 所以要通过反射来改属性 设置成自己的
-															   
-															   
-															   
+返回view 															   
 															   
 	appcompactactivity setContentView(@LayoutRes int layoutResID) ->
 	  如：设置的是 AppCompatDelegateImplV9
-       LayoutInflater    getDelegate().setContentView(layoutResID); ->
-		LayoutInflater	  LayoutInflater.from(mContext).inflate(resId, contentParent);	 ->
-		
-		   LayoutInflater    XmlResourceParser parser = res.getLayout(resource);
-			LayoutInflater		inflate(parser, root, attachToRoot);				           ->	 
+       AppCompatActivity    getDelegate().setContentView(layoutResID); ->
+	    AppCompatDelegateImplV9                             setContentView(int resId) ->
+			LayoutInflater	  LayoutInflater.from(mContext).inflate(resId, contentParent);	 ->
 			
-				LayoutInflater	 final View temp = createViewFromTag(root, name, inflaterContext, attrs);				   
-				LayoutInflater		 rInflateChildren(parser, temp, attrs, true); //最后还是会调用 createViewFromTag	->	
-   
-                   LayoutInflater    mFactory2.onCreateView(parent, name, context, attrs);     -> 包工头出现了 可以替换的包工头
-				   
-				      LayoutInflater.Factory2  onCreateView(parent, name, context, attrs)  
-                             对应有很多实现类 我们替换的就是这里
-							 
-							 如：
-							 
+			   LayoutInflater    XmlResourceParser parser = res.getLayout(resource);
+				LayoutInflater		inflate(parser, root, attachToRoot);				           ->	 
 				
+					LayoutInflater	 final View temp = createViewFromTag(root, name, inflaterContext, attrs);				   
+					LayoutInflater		 rInflateChildren(parser, temp, attrs, true); //最后还是会调用 createViewFromTag	->	
+	   
+					   LayoutInflater    mFactory2.onCreateView(parent, name, context, attrs);     -> 包工头出现了 可以替换的包工头
+					   
+						  LayoutInflater.Factory2  onCreateView(parent, name, context, attrs)  
+								 对应有很多实现类 我们替换的就是这里
+								 如： AppCompatDelegateImplV9
+							                 
+												AppCompatViewInflater(包工头的秘书 一个包工头一个)	 
+												                mAppCompatViewInflater.createView
+				
+															         case "TextView":
+																		view = createTextView(context, attrs);
+																		verifyNotNull(view, name);                             
 															   
 															   
+															                     new AppCompatTextView(context, attrs);  ->
+																				 
+														                      	AppCompatTextView   包含了设置背景等方法 
+		所以：
+	一个AppCompatActivity 对应一个 	AppCompatDelegateImplV9  
+        	公有	LayoutInflaterCompat layoutInflater	(它是唯一的 是从服务中获取的)	
+            公有    最后存入的	AppCompatDelegate	（我们叫包工头） 他还有个唯一秘书	mAppCompatViewInflater 
+                          
+
+皮肤替换		
+   替换了包工头 getSkinDelegate(context)
+   添加监听   ArrayList<SkinObserver> observers; 监听器只实现了updateSkin（）方法
+   添加activity周期监听  application.registerActivityLifecycleCallbacks(this);
+    作用：若是需要换肤的（由全局设置 及单个activity是否实现SkinCompatSupportable接口 ） activity 
+	          设置包工头      SkinActivityLifecycle   installLayoutFactory(activity);  会把activity 的包工头放入mSkinDelegateMap 感觉没什么用了 这句
+			  若activiry 实现了 SkinCompatSupportable 执行applySkin
+			  替换StatusBa和背景色
+			  添加和这个activity强相关的LazySkinObserver implements SkinObserver
+			  监听器到SkinCompatManager中
+			  observer = new LazySkinObserver(context);//每个activity的
+			  SkinCompatManager.getInstance().addObserver(observer);
+
+   修改后的包工头 SkinCompatDelegate
+     他秘书换成 SkinCompatViewInflater
+	 
+   修改后的秘书 SkinCompatViewInflater	 
+	  秘书调用逻辑变化
+	  if (view == null) {
+            view = createViewFromFV(context, name, attrs);
+        }
+    
+   工人变化
+           case "TextView":
+                view = new SkinCompatTextView(context, attrs);
+		如 SkinCompatTextView extends AppCompatTextView implements SkinCompatSupportable
+		  @Override
+			public void applySkin() {
+				if (mBackgroundTintHelper != null) {
+				mBackgroundTintHelper.applySkin();
+				}
+			if (mTextHelper != null) {
+				mTextHelper.applySkin();-》【
+				             public void applySkin() {
+							applyCompoundDrawablesRelativeResource();
+							applyTextColorResource();
+							applyTextColorHintResource();】
+    }
+			}
+			}
+		
+		
+
+皮肤切换 
+        点击事件中  SkinCompatManager.getInstance().loadSkin("night.skin", SkinCompatManager.SKIN_LOADER_STRATEGY_ASSETS);//切换到指定皮肤-》
+					 
+								   SkinCompatManager    new SkinLoadTask(listener, loaderStrategy).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, skinName);-》
+										 SkinCompatManager            onPostExecute
+											根据皮肤名字skinName来切换
+											null 及 “” 都恢复默认皮肤										
+																	
+																												
+																	-》
+																	
+		SkinCompatManager										保存皮肤名及策略（SDCARD 还是assess文件）					
+							   	 SkinPreference.getInstance().setSkinName(skinName).setSkinStrategy(mStrategy.getType()).commitEditor();
+	                                                                       -》
+																		   
+														通知更新皮肤
+														（目前没有获取到皮肤会交给我们自己处理 只是会设
+														  SkinPreference.getInstance().setSkinName("").setSkinStrategy(SKIN_LOADER_STRATEGY_NONE).commitEditor();）				   
+							SkinCompatManager						 notifyUpdateSkin(); -》
+							
+							SkinObservable （SkinCompatManager父类）   
+												arrLocal = observers.toArray(new SkinObserver[observers.size()]);							
+															arrLocal[i].updateSkin(this, arg);	 -》
+
+                            SkinActivityLifecycle      activity的回调 ：   updateSkinForce(); -》
+							
+																			if (mContext instanceof Activity && isContextSkinEnable(mContext)) {
+																			updateStatusBarColor((Activity) mContext);
+																			updateWindowBackground((Activity) mContext);
+                                                                                getSkinDelegate(mContext).applySkin();取出对应的包工头执行 -》
+																				
+																			
+													
+																					
+            }
+											SkinCompatDelegate      
+											List<WeakReference<SkinCompatSupportable>> mSkinHelpers = new ArrayList<>();
+														mSkinHelpers 会保存包工头创建好的view														
+																					//包工头创建的view 创建了多少个view 就执行applySkin()好多次           
+											for (WeakReference ref : mSkinHelpers) {
+																							if (ref != null && ref.get() != null) {
+																								((SkinCompatSupportable) ref.get()).applySkin();
+																							}
+																						}-》
+ 										
+										 如：创建的有textview SkinCompatTextView extends AppCompatTextView implements SkinCompatSupportable
+										     这里实现了最终的替换
+											 @Override
+												public void applySkin() {
+													if (mBackgroundTintHelper != null) {
+														mBackgroundTintHelper.applySkin();
+													}
+													if (mTextHelper != null) {
+														mTextHelper.applySkin();
+													}
+    }
+															
+
+可以这么理解 
+先说设置包工头：
+1.application 会监听界面创建 并在这时 设置底层包工头，所以可能activiry的设置就无效。
+2.创建VIEW 及 改变皮肤
+AppCompatDelegateImplV9为上层包工头，没继承三方的activiry的应用 所有的acrivity都是调用这个，
+最后调用到底层的包工头来创建view，这里注意每个acvity 都有一个底层包工头 ，
+但是底层只能设置一个 每个activity在创建的时候都去替换 底层包工头会并记录它创建的view。 
+当皮肤改变的时候找到每个包工头 在找到包工头创建的view 最后调用对应view里的	applySkin() 实现刷新														
+													 
+					三方库            拨号方式
+是否回调			 有                 有
+是否设置监听         有                 有
+是否自动替换     以view为单位     以activity为单位
+fragment            兼容           应该也是兼容的
+	   
+	   
+
+        
+
+
+
+
+
+
