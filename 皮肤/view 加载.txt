@@ -16,6 +16,8 @@ oncreat 设置mFactory2
 
 setContentView 使用 mFactory2  据说windows 发起的流程 最后还是会调用到 mFactory2.onCreateView
 setContentView -》
+   LayoutInflater.inflate -》
+    
          AppCompatDelegate实现类(Build.VERSION.SDK_INT 即使上部设置这里还是用的版本判断出来的) getDelegate().setContentView(layoutResID);-》
 		                    createViewFromTag(root, name, inflaterContext, attrs)-》
 				                             mFactory2.onCreateView(parent, name, context, attrs);  //创建对应view 传入的id 由xml解析为了attrs 
@@ -41,4 +43,28 @@ setContentView -》
 															   
 															   
 															   换肤思路就是替换 factory  因为之前说 factory 只能设置一次 所以要通过反射来改属性 设置成自己的
+															   
+															   
+															   
+															   
+	appcompactactivity setContentView(@LayoutRes int layoutResID) ->
+	  如：设置的是 AppCompatDelegateImplV9
+       LayoutInflater    getDelegate().setContentView(layoutResID); ->
+		LayoutInflater	  LayoutInflater.from(mContext).inflate(resId, contentParent);	 ->
+		
+		   LayoutInflater    XmlResourceParser parser = res.getLayout(resource);
+			LayoutInflater		inflate(parser, root, attachToRoot);				           ->	 
+			
+				LayoutInflater	 final View temp = createViewFromTag(root, name, inflaterContext, attrs);				   
+				LayoutInflater		 rInflateChildren(parser, temp, attrs, true); //最后还是会调用 createViewFromTag	->	
+   
+                   LayoutInflater    mFactory2.onCreateView(parent, name, context, attrs);     -> 包工头出现了 可以替换的包工头
+				   
+				      LayoutInflater.Factory2  onCreateView(parent, name, context, attrs)  
+                             对应有很多实现类 我们替换的就是这里
+							 
+							 如：
+							 
+				
+															   
 															   
