@@ -1,3 +1,42 @@
+第三方框架实现
+
+       首先是获取资源对象并保存
+	    * 皮肤包的位置
+         */
+		 SkinCompatManager.SkinLoadTask 中去读取地址
+		   String skinName = mStrategy.loadSkinInBackground(mAppContext, params[0]);//根据加载策略去读取 
+
+		 SkinAssetsLoader assets文件加载
+		 SkinNoneLoader 应该是默认系统的加载
+		 SkinBuildInLoader 
+		 SkinPrefixBuildInLoader 
+		 
+		 
+    如是 asses 加载
+	   File skinDir = new File(getCacheDir(context), SkinConstants.SKIN_DEPLOY_PATH);// context.getAssets()
+
+        AssetManager assetManager = AssetManager.class.newInstance();
+        Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
+        addAssetPath.invoke(assetManager, filePath);
+
+        Resources resources = new Resources(
+                assetManager,//需要这个对象保存了资源地址
+                orginResources.getDisplayMetrics(),//同系统一样不改变
+                orginResources.getConfiguration()//同系统一样不改变
+        )
+	   SkinCompatResources.getInstance().setupSkin()//保存资源对象
+	   其次是通过id信息去对应的资源对象里获取
+
+        if (!isDefaultSkin) {
+            int targetResId = getTargetResId(context, resId);
+            if (targetResId != 0) {
+                return mResources.getDrawable(targetResId);//去如 assess工程的资源中获取
+            }
+        }
+        return context.getResources().getDrawable(resId); //去系统资源对象获取
+
+
+拨号的换肤
 皮肤换肤 思路 设置前移 能添加监听
 
 已经oncreat的界面不会直接改变颜色
