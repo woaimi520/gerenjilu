@@ -13,7 +13,7 @@
 		 
 		 
     如是 asses 加载
-	   File skinDir = new File(getCacheDir(context), SkinConstants.SKIN_DEPLOY_PATH);// context.getAssets()
+	   File skinDir = new File(getCacheDir(context), SkinConstants.SKIN_DEPLOY_PATH);// context.getAssets() 三方报文件位置
 
         AssetManager assetManager = AssetManager.class.newInstance();
         Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
@@ -27,6 +27,7 @@
 	   SkinCompatResources.getInstance().setupSkin()//保存资源对象
 	   其次是通过id信息去对应的资源对象里获取
 
+SkinCompatResources 中获取
         if (!isDefaultSkin) {
             int targetResId = getTargetResId(context, resId);
             if (targetResId != 0) {

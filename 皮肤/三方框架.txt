@@ -25,3 +25,49 @@ SkinCompatResources.getInstance().setupSkin()
 在切换皮肤的时候,遍历一次之前缓存的View,调用其实现的接口方法applySkin(),在applySkin()
 中从皮肤资源(可以是从网络或者本地获取皮肤包)中获取资源.获取资源后设置其控件的background或textColor等,就可实现换肤.
 
+细节
+drawable的问题
+1 使用矢量图需要使用这个属性
+    defaultConfig {
+       
+        vectorDrawables.useSupportLibrary = true
+    }
+	
+2.换肤问题
+   drawalbe 在textview中使用
+   一 前提drawable 中的颜色使用 皮肤包中有的，但是皮肤包中没有此drawable
+      换肤后 该drawable 不会换肤，猜测是使用的默认皮肤中的color
+	  
+   二 前提drawable 中的颜色使用 皮肤包中有的，但是皮肤包中有此drawable 
+      换肤后会使用对应皮肤包中的color  ，且drawable使用的color的值还可以不同 如 默认使用 @color/main_share_btn_bg 皮肤包中使用@color/red
+	  简单理解就是drawable的color 和实际使用的皮肤包或默认 对应 它不会动态的去取
+	  
+   三 动态加载drawable问题
+       获取本地的资源包并设置 在资源文件中设置也其实是调用了如下的语法
+	    VectorDrawableCompat mMenuDrawable=VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_main_txt_detail, getContext().getTheme());
+        text.setCompoundDrawablesWithIntrinsicBounds(mMenuDrawable, null, null, null);
+          
+       获取皮肤包中的
+    
+	  mMenuDrawable02=VectorDrawableCompat.create(SkinCompatResources.getInstance().getSkinResources(), SkinUtils.getInstance().getIdentifier(getContext(),R.drawable.ic_main_txt_detail), getContext().getTheme());//三方皮肤
+		
+	   皮肤包中没有对应drawable资源 
+		切换皮肤的时候 就不会变化 它也是去找 找不到资源 就应默认皮肤的了
+       	 
+        怎么通过id去获取 对应的drawable？		 
+		注意获取资源的时候 使用的都是同一个R.drawable.A （假如都是288） 但是返回的对象是不同的，
+		 if (!isDefaultSkin) {
+            int targetResId = getTargetResId(context, resId);
+            if (targetResId != 0) {
+                return mResources.getDrawable(targetResId);//使用皮肤包的返回
+            }
+        }
+        return context.getResources().getDrawable(resId);//使用 默认的返回
+		
+		使用 SkinCompatResources 类中的  int targetResId = getTargetResId(context, resId); 将默认皮肤的id 转化为了皮肤包的id
+		它会去获取 本地资源的 名字 和 类型 如 ic_main_txt_detail 和drawable
+		然后调用 mResources.getIdentifier(resName, type, mSkinPkgName)去获取//这个是系统方法 提供包名 类型 资源名 给resources
+		最后调用的都是 Resources.getDrawable(targetResId)
+
+      
+	
