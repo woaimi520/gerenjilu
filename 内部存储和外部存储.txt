@@ -108,4 +108,16 @@ Environment.DIRECTORY_DCIM
 
 
  File.separator 为 “/”
+ 
+ asset中的文件
+ 如使用media 播放音频文件 
+ 直接用这个地址无效  因为通过assets目录构造URI，不能用来播放视频，也不能播放音频。在raw目录下的文件构造URI可以播放音频，也能播放视频
+ file:///android_asset/guild/XX，MP4
+ 
+ 放到raw下试试
+ String uri = "android.resource://" + getPackageName() + "/" + R.raw.video;
+ 
+ getAssets().open（filename）// 路径是assert/filename 否则
+ 
+ 
 
