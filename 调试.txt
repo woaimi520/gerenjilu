@@ -32,6 +32,7 @@ as左侧配置的 debug 和release 会影响 run 和 debug
 modules 里面 设置 signing configs 里面设置 release debug 的签名的时候 是设置的run和debge按钮的
 		   
 		   
-		   
+ --------------------------------------------------
+logger 在release 和debuge 版本 都可以看到打印 在Android studio中 
 		   
 		   
