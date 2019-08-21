@@ -1,0 +1,216 @@
+ taskmodel 存放主要内容  taskid：指向sortmodel id
+ sortmodel 存放分类有哪些
+ mediamodel 存放使用到的图片等东西 mediaid:指向taskmodel的id    mediatype: 1 图片 2视频（好像没有用） 3语音 
+             mediaPath 存放路径
+ 
+ 写入到数据库
+    mMediaDao.insertInTx(voices); //mMediaDao 看作表管理 voices看作数据list
+ 
+---------------------------------------------------------------------------   
+ 点击快捷方式添加的时候
+   mainfragment
+							//处理点击事件
+                            FastEditTaskDialog dialog = new FastEditTaskDialog();
+                            Bundle bundle = new Bundle();
+   
+  FastEditTaskDialog
+         //草稿读取
+         String titleStr = SPUtils.getInstance().getTaskTitleDraught();
+         String contentStr = SPUtils.getInstance().getTaskContentDraught();
+         String photoStr = SPUtils.getInstance().getTaskPhotosDraught();
+         String voiceStr = SPUtils.getInstance().getTaskVoicesDraught(); 
+
+
+
+	FastEditTaskDialog
+	    点击“照相机”添加图片
+		case R.id.iv_take_photo: {		 
+ 
+    ChoicePhotosDialog
+	    //照片选择
+		 RecyclerView -》 ChoicePhotosAdapter mAdapter;
+		 会去 Cursor cursor1 = resolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, null);读取照片
+		 添加到相机照片模型中     List<GalleryFileModel> files = new ArrayList<>(); files.add(new GalleryFileModel(cursor1, false));
+         最后添加到adapter中   mAdapter.addAll(GalleryManager.getInstance().getGalleryFiles(7));
+                               mAdapter.add(new GalleryFileModel(-1)); 
+							   //一般照片的位置/storage/emulated/0/nubiaHybrid/icon/596482076.png
+		点击图片选择：	 public void onClick(View view, int position) {
+                         判断是不是大于8张等逻辑
+						
+						mAdapter.check(galleryFile);	-》 mSelectedItems.add(galleryFile);//保存点击的项
+                         -》 notifyDataSetChanged();	
+						  
+    ChoicePhotosAdapter 然后 再onBindViewHolder 中勾选效果
+					   holder.checked.setImageResource(R.drawable.ic_checked);	
+					 holder.checked.setVisibility(mSelectedItems.contains(data) ? View.VISIBLE : View.GONE);	
+
+    					 
+						 
+	ChoicePhotosDialog		 case R.id.btn_submit://点击了确定
+							     mListener.onChoicePhotos(mAdapter.getSelectedItems());//传送出去点击的项目
+								 //此时的地址/storage/emulated/0/nubiaHybrid/icon/1905204864.png
+								 
+	FastEditTaskDialog			又加到外层的adapter中 这个时候两个模型数据交换了哈
+									MediaModel mediaModel = new MediaModel();
+									mediaModel.setMediaType(1);
+									mediaModel.setMediaPath(galleryFile.data);
+									mPhotosAdapter.add(mediaModel);		
+
+    FastEditTaskDialog			 //点击确定		
+	                             case R.id.iv_add: {
+										mIsCreate = true;
+										这时候会清空草稿
+										
+										内容保存
+										        mTaskModel.setTitle(title);
+												mTaskModel.setContent(content);
+												long currentTime = System.currentTimeMillis();
+												mTaskModel.setCreateDate(currentTime);
+												mTaskModel.setUpdateDate(currentTime);
+												mTaskModel.setStartDate(currentTime)
+										mTaskDao.insert(mTaskModel);
+                                	    照片保存
+										    mediaModel.setMediaId(id);
+											mediaModel.setMediaPath(FileUtils.copyFile(mediaModel.getMediaPath()));//这个地方地址从外面复制到media文件夹了
+			                                mMediaDao.insertInTx(photos);//dao婊子去保存
+											
+											
+			
+ 照片如果是照相机立马照的
+ ChoicePhotosDialog
+           case R.id.rl_take_photo: {
+                ChoicePhotosDialogPermissionsDispatcher.onNeedsCameraWithPermissionCheck(this);
+                break;
+ 
+ 
+ Camera2Activity 中进行拍照
+        Intent intent = new Intent(getActivity(), Camera2Activity.class);
+        intent.putExtra(CHOICE_PHOTOS_MAX_COUNT, mMaxCount);
+        startActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
+		
+		把照片输出到 tackphote 文件夹中
+		  FileOutputStream output = new FileOutputStream(file);// public void onImageAvailable(ImageReader reader) { 数据是从这个reader来的
+		  放到adapter中
+           mPhotosAdapter.check(filePath);///storage/emulated/0/神指笔记ShineNote/takePhotos/1566373205337.jpg
+		
+
+        点击红色的勾
+                 case R.id.iv_submit:
+                Intent intent = new Intent();
+                intent.putExtra("media_path", (Serializable) mPhotosAdapter.getSelectedItems());
+                setResult(TAKE_PHOTO_RESULT_CODE, intent);
+                finish();
+                break; 		
+			
+			
+ChoicePhotosDialog			
+			 public void onActivityResult(int //获取/storage/emulated/0/神指笔记ShineNote/takePhotos/1566373790950.jpg 地址
+			  mListener.onTakePhoto(mediaPaths);
+			  
+FastEditTaskDialog
+       public void onTakePhoto(List<String> paths) {
+                        for (String path : paths) {
+                            MediaModel mediaModel = new MediaModel();
+                            mediaModel.setMediaType(1);
+                            mediaModel.setMediaPath(path);
+                            mPhotosAdapter.add(mediaModel);
+                        }	
+
+后续点击确定就一样了都是在点击了确定的时候做地址转化
+
+    FastEditTaskDialog			 //点击确定		
+	                             case R.id.iv_add: {
+										mIsCreate = true;
+										这时候会清空草稿
+										
+										内容保存
+										        mTaskModel.setTitle(title);
+												mTaskModel.setContent(content);
+												long currentTime = System.currentTimeMillis();
+												mTaskModel.setCreateDate(currentTime);
+												mTaskModel.setUpdateDate(currentTime);
+												mTaskModel.setStartDate(currentTime)
+										mTaskDao.insert(mTaskModel);
+                                	    照片保存
+										    mediaModel.setMediaId(id);
+											mediaModel.setMediaPath(FileUtils.copyFile(mediaModel.getMediaPath()));//这个地方地址从外面复制到media文件夹了
+			                                mMediaDao.insertInTx(photos);//dao婊子去保存
+
+ 如果不是点击的确定 而是点击的取消那
+
+     switch (view.getId()) {
+            case R.id.item:
+                dismiss();
+                break;
+FastEditTaskDialog	
+			保存草稿			
+				为了这个草稿 都复制到了 media文件夹中
+				
+				for (MediaModel photo : photos) {
+                    photoStr = photoStr + FileUtils.copyFile(photo.getMediaPath()) + "|";
+                }
+                SPUtils.getInstance().setTaskPhotosDraught(photoStr);//当task被保存后 草稿没清空 这里是不是有问题 且草稿保存的是 复制到media的地址
+---------------------------------------------------------------------------  	
+---------------------------------------------------------------------------  
+voice 又是怎么的
+
+      先进入fast中的情况
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------  					
+
+			  
+  临时存放逻辑
+ 
+ 
+ 
+ 当点击了保存一个task
+    List<MediaModel> photos = mPhotosAdapter.getItems();
+    List<MediaModel> voices = mVoicesAdapter.getItems();
+ 
+ 图片的逻辑：
+      自己照相的
+      String filePath = StorageUtils.getTakeDir().getAbsolutePath() + File.separator + System.currentTimeMillis() + ".jpg";
+       点击确定后会复制到media文件
+	   public static String copyFile(String fromPath){
+        String toFile = StorageUtils.getMediasDir() + File.separator + System.currentTimeMillis();
+		
+		
+   保存到数据库 mediamodel表中
+   mMediaDao.insertInTx(mPhotosAdapter.getItems());
+ 
+ 
+ 
+ 
+ -----------------------------------------
+ 
+ 进入界面的时候读取当前要显示的
+ 
+  customSortTasks = TaskManage.getInstance().getDueAllTasks(sortId);//按照到期时间排个序
+ 或者
+   customSortTasks = TaskManage.getInstance().getCustomSortTasks(sortId);//获取自定义分类记事
+   
+   然后根据获取到的来进行显示
+ 
+ ----------------------------------------- 
+ 
+ 
+ FastEditTaskDialog 快速编辑dialog 
+  
+temp 存储	  
+	  SPUtils.getInstance().setTaskVoicesDraught(voiceStr);
