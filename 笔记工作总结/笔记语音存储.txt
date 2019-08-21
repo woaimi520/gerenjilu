@@ -155,29 +155,101 @@ FastEditTaskDialog
 voice 又是怎么的
 
       先进入fast中的情况
-       
+	  
+ FastEditTaskDialog      
+			case R.id.iv_record: {
+			VoiceRecordingDialog
+		 dialog.setOnRecordCompleteListener	//设置了个监听 等待消息
+		 
+VoiceRecordingDialog			
+         //进行音频录制
+        mAudioRecorderUtil = new AudioRecorderUtil();
+        mAudioRecorderUtil.setOnAudioStatusUpdateListener(this);//监听音频录制状态
+        mAudioRecorderUtil.start();
+		
+AudioRecorderUtil
+      //设置音频文件输出位置
+	  
+           mFilePath = mFolderPath + File.separator + System.currentTimeMillis() + ".amr";	// 一般为 storage/emulated/0/神指笔记ShineNote/voices/1566377359697.amr  
+
+VoiceRecordingDialog
+        //点击取消的时候
+       case R.id.tv_cancel:
+                mAudioRecorderUtil.cancel();
+				
+			AudioRecorderUtil				
+				   点击取消的时候 会删除
+			   File file = new File(mFilePath);
+					if (file.exists()) {
+						file.delete();
+VoiceRecordingDialog					}	   
+       //点击确定的时候
+      case R.id.tv_save:
+                mAudioRecorderUtil.stopRecord();
+                break;
+				
+				
+	AudioRecorderUtil
 
 
 
+ FastEditTaskDialog
+    dialog.setOnRecordCompleteListener((filePath, recordTime) -> {
+            MediaModel mediaModel = new MediaModel();
+            mediaModel.setMediaPath(filePath);///storage/emulated/0/神指笔记ShineNote/voices/1566377994836.amr
+            mediaModel.setMediaType(3);
+            mediaModel.setMediaDuration(recordTime);
+            mVoicesAdapter.clear();
+            mVoicesAdapter.add(mediaModel);
+            setAddAnimation();
+        });
+ FastEditTaskDialog
+     点击确定
+	     case R.id.iv_add: {
+       for (MediaModel mediaModel : voices) {
+                        mediaModel.setMediaId(id);//设置对应到的id
+                        mediaModel.setMediaPath(FileUtils.copyFile(mediaModel.getMediaPath()));
+                    }
+		mMediaDao.insertInTx(voices);
+	点击取消的时候
+	
+         String voiceStr = "";
+                for (MediaModel voice : voices) {
+                    voiceStr = voiceStr + FileUtils.copyFile(voice.getMediaPath()) + "&" + voice.getMediaDuration() + "|";
+                }
+                SPUtils.getInstance().setTaskVoicesDraught(voiceStr)
+				
+				
+点击奇聊哪个框录音
+mainfragment
+  mTransferTextDialog.setOnRecordCompleteListener(new VoiceRecordingTransferTextDialog.OnRecordCompleteListener() {
 
-
-
-
-
-
-
-
-
-
-
-
-
+VoiceRecordingTransferTextDialog				
+			mVoiceRecognitionHolder.startRecognize();
+				  VoiceRecognitionHolder
+				      startRecognize
+				
+			mAudioPath = StorageUtils.getAppDir().getAbsolutePath() + File.separator +"medias"+File.separator +"temp"+File.separator + System.currentTimeMillis() + "xf_temp.wav";
+  
+			mIat.setParameter(SpeechConstant.ASR_AUDIO_PATH, mAudioPath);
+			
+mainfragment	
+		   public void onRecordComplete(String filePath, long recordTime, String result) {
+            MediaModel mediaModel = new MediaModel();
+            mediaModel.setMediaPath(filePath);///storage/emulated/0/神指笔记ShineNote/medias/temp/1566378634566xf_temp.wav
+			
 ---------------------------------------------------------------------------  					
 
-			  
+
   临时存放逻辑
+     逻辑可以在这里修改
+	   mediaModel.setMediaId(id);//设置对应到的id
+       mediaModel.setMediaPath(FileUtils.copyFile(mediaModel.getMediaPath()));
+	   
+   //图片 临时文件读取的是media 中
+   //语音 转文字的读取的是media/temp中 不转文字的读取 video中
  
- 
+---------------------------------------------------------------------------  
  
  当点击了保存一个task
     List<MediaModel> photos = mPhotosAdapter.getItems();
