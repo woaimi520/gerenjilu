@@ -26,7 +26,7 @@ BufferedOutputStream
 如：
         /**
      * 复制文件
-     *
+     * 复制会覆盖已经有的
      * @param fromPath 源文件路径
      * @param toPath 目的文件路径
      * @return

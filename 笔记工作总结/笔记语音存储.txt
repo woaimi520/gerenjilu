@@ -73,7 +73,11 @@
 										    mediaModel.setMediaId(id);
 											mediaModel.setMediaPath(FileUtils.copyFile(mediaModel.getMediaPath()));//这个地方地址从外面复制到media文件夹了
 			                                mMediaDao.insertInTx(photos);//dao婊子去保存
-											
+										vioce 保存	
+											for (MediaModel mediaModel : voices) {
+										mediaModel.setMediaId(id);//设置对应到的id
+											mediaModel.setMediaPath(FileUtils.copyFile(mediaModel.getMediaPath()));
+										}
 											
 			
  照片如果是照相机立马照的
@@ -218,7 +222,7 @@ VoiceRecordingDialog					}
                     voiceStr = voiceStr + FileUtils.copyFile(voice.getMediaPath()) + "&" + voice.getMediaDuration() + "|";
                 }
                 SPUtils.getInstance().setTaskVoicesDraught(voiceStr)
-				
+				// String[] voice = voiceStr.split("\\|");后续处理
 				
 点击奇聊哪个框录音
 mainfragment
@@ -237,17 +241,47 @@ mainfragment
 		   public void onRecordComplete(String filePath, long recordTime, String result) {
             MediaModel mediaModel = new MediaModel();
             mediaModel.setMediaPath(filePath);///storage/emulated/0/神指笔记ShineNote/medias/temp/1566378634566xf_temp.wav
-			
+FastEditTaskDialog 
+          接着又会弹框			
 ---------------------------------------------------------------------------  					
+---------------------------------------------------------------------------  
+
+按加号逻辑
+
+测试 添加后
+voice 是media中的
+图片  是media中的
 
 
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------  
   临时存放逻辑
      逻辑可以在这里修改
 	   mediaModel.setMediaId(id);//设置对应到的id
        mediaModel.setMediaPath(FileUtils.copyFile(mediaModel.getMediaPath()));
+	   。
 	   
    //图片 临时文件读取的是media 中
    //语音 转文字的读取的是media/temp中 不转文字的读取 video中
+   
+   保存到数据库后
+   //图片 读取media中
+   //语音 读取media中
+   
+ 
+ 
+ 
+ 
+ 
+ 
  
 ---------------------------------------------------------------------------  
  
@@ -286,3 +320,15 @@ mainfragment
   
 temp 存储	  
 	  SPUtils.getInstance().setTaskVoicesDraught(voiceStr);
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  数据库更新 是在这句之后调用
+	    TaskModelDao taskModelDao = GreenDaoManager.getInstance().getDaoSession().getTaskModelDao();
