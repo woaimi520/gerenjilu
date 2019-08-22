@@ -24,9 +24,11 @@ BufferedOutputStream
  FileOutputStream fos = new FileOutputStream(fileOUT);//没有不会报错 且如果运行到 还会创建文件（文件夹都没有那么还是会报错 需要先创建文件夹）
 
 如：
+
         /**
      * 复制文件
-     * 复制会覆盖已经有的
+     * 复制会覆盖已经有的 是覆盖 即 之前已有的内容会消失
+	   要想不覆盖 需要改输出流为： OutputStream fosto = new FileOutputStream(toPath,true); 就会保留已有内容 接着写
      * @param fromPath 源文件路径
      * @param toPath 目的文件路径
      * @return
@@ -37,8 +39,8 @@ BufferedOutputStream
                 File fileOUT = new File(toPath);
 
 
-                FileInputStream fis = new FileInputStream(fileIN);//没有就会报错
-                FileOutputStream fos = new FileOutputStream(fileOUT);//没有不会报错 且如果运行到 还会创建文件
+                FileInputStream fis = new FileInputStream(fileIN);//没有就会报错 即源地址不存在 就会抛出异常
+                FileOutputStream fos = new FileOutputStream(fileOUT);//没有不会报错 即源地址不存在 也不会抛出 且正常运行 还会创建文件
 
 
                 BufferedInputStream bis = new BufferedInputStream(fis);
