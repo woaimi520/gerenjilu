@@ -49,15 +49,20 @@ data/app 下包含 一个 so 和 oat 文件 以及 一个apk
 
 
 设置->应用->应用详情里面的“清除数据”与“清除缓存”选项  （清除的是外部存储私有部分以及内部存储 我试了都会清）
-  清除数据： 内部存储 和外部存储 私有部分  （应用删除会删除 同时候还会删除data/app下的所有东西）
-  清除缓存： 清除的应用内存占用部分  （应用删除会删除  内部cache 确定会删除）
+清除缓存：会清除内私 Cache文件下内容（文件夹不删除）及 外私的Cache文件下内容 及文件夹
+清除数据：会清除内私Cache文件下内容（文件夹删除）
+                    database文件下内容（文件夹删除）
+					files 文件下内容（文件夹删除）
+					shared_prefs 文件下内容（文件夹删除）
+		            注意 lib文件及里面的文件不会删除			
+          及 外私的Cache文件下内容 及文件夹 ，外私的 file 及文件夹
 
 
 实际测试：
 数据库备份还原后要重启应用 不然 数据没刷新 我理解应该是缓存数据没更新同步
 
 
-内部存储 files目录= this.getFilesDir().getPath();;               									///data/user/0/com.renyu.administrator.redwineapplication/files
+内部存储 files目录= this.getFilesDir().getPath();;               									///data/user/0/com.renyu.administrator.redwineapplication/files  注意和data/data 下是一样的
 内部存储sp目录=sppath1.substring(0, sppath1.length()-5)  + "shared_prefs" + "/" + "task_sp.xml";	///data/user/0/com.renyu.administrator.redwineapplication/shared_prefs/task_sp.xml
 
 指定DB路径 = this.getDatabasePath("person.db").getPath();   								   	 	///data/user/0/com.renyu.administrator.redwineapplication/databases/person.db

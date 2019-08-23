@@ -306,7 +306,7 @@ voice 是media中的
  -----------------------------------------
  
  进入界面的时候读取当前要显示的
- 
+  最后都是从数据库中读取的
   customSortTasks = TaskManage.getInstance().getDueAllTasks(sortId);//按照到期时间排个序
  或者
    customSortTasks = TaskManage.getInstance().getCustomSortTasks(sortId);//获取自定义分类记事

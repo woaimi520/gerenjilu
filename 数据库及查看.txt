@@ -69,9 +69,12 @@ greendao 中 1对多关系中 可以通过1对象直接获取到多的对象集合 返回一个list
 3保存
 
 4查询
+  List<MediaModel> datas= mediaModelDao.queryBuilder().list();//dao 查询所有的 没有过滤
+5更新
+ mediaModelDao.update(mediaModel);//刷新数据库  
+  mediaModelDao.updateInTx(datas);//批量刷新数据库
 
-
-5 升级数据库
+6 升级数据库
    一：模块下面添加
 	  
     dependencies {
