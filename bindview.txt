@@ -59,4 +59,26 @@ adapter中使用
  annotationProcessor 'com.jakewharton:butterknife-compile:8.8.1'
   kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 
-   
+
+注意：
+1没有在  @OnClick({R.id.manual_recovery,R.id. manually_delete}) 中注册的view 当点击的时候是不会走它下面的回调函数的
+2 imagview 可以不用在xml中设置  android:clickable="true" 也能有点击事件
+3. 
+  一：在viewholder 中    ButterKnife.bind(this, itemView); 
+	且 在它里面@BindView(R.id.manually_delete)
+        ImageView manually_delete;
+	以及
+     @OnClick({R.id.manual_recovery,R.id. manually_delete})  
+  结论 能收到点击事件
+   二： 上述条件不变
+      在adapter中添加
+	      public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        ButterKnife.bind(this, holder.itemView);
+    结论 依然可以在viewholder中收到点击事件
+	
+	 
+  二： 上述条件不变
+    adapter中也添加点击事件
+	   @OnClick({R.id.manual_recovery,R.id. manually_delete})
+    public void onClick(View v) {
+	结论 viewholder中的点击事件就收不到消息了（ 没看源码 应该是自己优化的）
