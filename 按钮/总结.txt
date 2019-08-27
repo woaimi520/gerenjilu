@@ -1,0 +1,139 @@
+创建xml drawable-》new-》Drawable Resoulse file  然后输入名字就行了
+
+设置背景
+shape：图形，rectangle为矩形；
+stoke：描边
+
+solid：填充
+
+corners：圆角
+
+注意 代码中设置背景 指向 一个drawable的XML 这个XML 是公用的，且它还和最后一个设置的view的xml中的值关联
+比如 button 在xml中设置 weight = 60dp 代码中设置了背景 是 drawable mm 这个mm就会和60关联 如果还改变了deawable的颜色
+     当 button2 中设置背景的时候 背景颜色就会变化 且 宽度是60 即使它自己的xml中也有weight 属性
+   
+  
+做一个可以点击变色的按钮
+  
+   
+   
+设置color
+1 textV.setTextColor(Color.parseColor("#FF0000"));
+
+
+2 
+推荐是使用这种
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+??? <color name="springgreen">#FF3CB371</color>
+??? <color name="silver">#FFC0C0C0</color>
+??? <color name="green">#FF056B05</color>
+</resources>
+
+  tv.setTextColor(getResources().getColor(R.color.green));
+  
+  R.color.green为指向 xml 对应资源的id
+  
+额外的 在xml中使用color
+@color/green  
+
+
+
+
+
+button 设置点击变色
+1.xml中使用特殊背景 这种方式不用代码干预，但是有个问题就是使用的点击和未点击时候的颜色是固定的
+
+  <Button
+        android:id="@+id/btn01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_selector"/>
+		
+button_selector.xml
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/normal" android:state_pressed="false"/>
+    <item android:drawable="@drawable/pressed" android:state_pressed="true"/>
+</selector>
+
+normal.xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#dd794949"></solid>
+</shape>
+
+pressed.xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#dd0046c7"></solid>
+</shape>
+
+2 自定义view 这里注意不要去继承button 直接继承 textview 好控制 text和上下的距离 button不好弄
+   Filter 看作是个过滤镜片 它不会影响 text的颜色 它和透明过滤还是透明（solid 和stroke 都适用） 可以看作 text在最顶顶  透明色 <color name="transparent">#00000000</color>
+   
+ 
+public class PressNormalPressBt extends android.support.v7.widget.AppCompatTextView {
+
+
+    public PressNormalPressBt(Context context) {
+        super(context);
+    }
+
+    public PressNormalPressBt(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public PressNormalPressBt(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Drawable drawable = getBackground();
+        if(drawable!=null){
+            switch (event.getAction()){
+
+                case MotionEvent.ACTION_DOWN:
+                    drawable.setColorFilter(getResources().getColor(R.color.bt_filter),PorterDuff.Mode.SRC_ATOP);//混合颜色模式 没有相交部分舍弃
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    drawable.clearColorFilter();
+                    invalidate();
+                    break;
+
+            }
+
+        }
+
+        return super.onTouchEvent(event);
+    }
+}
+
+     <com.szqd.sznotes.ui.widget.PressNormalPressBt
+                android:id="@+id/auro_backup_switch2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/sharp_bt_rectangle_off"
+                android:paddingTop="1dp"
+                android:paddingBottom="5dp"
+                android:clickable="true"
+                android:text="15天1次"/>
+				
+sharp_bt_rectangle_off
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    android:shape="rectangle">
+
+    <solid android:color="@color/transparent"/>
+
+    <stroke
+        android:width="1dp"
+        android:color="@color/time_off" />
+
+    <corners android:radius="70dp"/>
+
+</shape>
+
