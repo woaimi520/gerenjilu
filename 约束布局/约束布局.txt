@@ -20,6 +20,7 @@
 		时候 会 先取差 在决定往哪边走 这里就是在 正中 向右边走 10dp 注意：是从正中开始走
 		
 		gone问题:
+		左边有约束
 		其他view     android:visibility="gone" 的时候
 	    1 距离还是150
 		android:layout_marginLeft="150dp" 有效
@@ -115,3 +116,73 @@ android:layout_width="0dp"
 app:layout_constraintDimensionRatio="1:1"	默认是（W，X:X） 
                    这个时候又变为了 移动view
 				    layout_marginLeft 为view整体向右移动 layout_constraintHorizontal_bias生效
+					
+					
+					
+					
+					
+链
+统一使用Left_toLeft 不用start
+相互两两约束
+一
+三个view android:layout_width="wrap_content"
+第一个view添加app:layout_constraintHorizontal_chainStyle="packed"//packed 三个紧贴 spread_inside 两头紧贴两端 spread 三个都在中间不紧贴 
+					
+layout_marginLeft 后执行	
+左边gone 后	
+这里第二个view 还是再parent 和第三个的中间
+
+二：
+三个view 都设置为 android:layout_width="0dp"
+然后都添加   app:layout_constraintHorizontal_weight="1"
+他们就会等分
+但是你要是继续用 margin_left 不管在哪个view中使用 绘制都是先执行 margin_left 最后在执行比例权衡 他们最后都是一样宽
+
+
+
+工具类
+添加辅助线
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"    //horizontal： 水平线  vertical：垂直线 
+        app:layout_constraintGuide_begin="50dp" /> //距离顶部50d'p 距离左边 50dp
+		
+		若改为 layout_constraintGuide_end            距离底部      距离右侧
+
+		若改为 layout_constraintGuide_percent=“0.4”   horizontal 距离顶部百分之40  vertical：距离左边百分之40
+		
+		
+Barrier	 屏障 需要写到对应的ConstraintLayout 标签下
+ <android.support.constraint.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content" //保持默认 应该设置多少都是一样的
+            android:layout_height="wrap_content"
+            app:barrierDirection="right"
+            app:constraint_referenced_ids="t1,t2" />
+  	
+group 需要写到对应的ConstraintLayout 标签下
+      <android.support.constraint.Group
+            android:id="@+id/group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="t1,t2,t3" />
+
+
+
+
+
+
+
+
+
+
+
+		
+					
+					
+					
+					
+					
