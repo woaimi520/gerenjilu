@@ -43,10 +43,75 @@
 		      android:layout_marginRight="60dp"   后执行
 			  app:layout_constraintHorizontal_bias="1" 先执行
 		 
-		  没有左约束的时候
+		  没有左约束的时候 有右约束的时候
 		      android:layout_marginRight="60dp"   执行
 			  app:layout_constraintHorizontal_bias="0.5" 不执行
+			  
+		约束布局的控件宽度设定：
+         wrapContent：根据内容来
+          0dp:(约束布局不建议使用match parent) 
+               左右都有约束：		  
+               一：layout_constraintHorizontal_bias 属性失效
+               二：layout_marginLeft 	效果变化 不再是整体移动控件 而是改变其宽度		   
+		       三：
+						在左边view 没有gone前不生效
+						app:layout_goneMarginLeft="100dp" 
+						
+						左边gone 
+						    会影响view宽度 左边10 右边150 
+							android:layout_marginLeft="150dp" 无效了
+							app:layout_goneMarginLeft="10dp"   生效
+		                    android:layout_marginRight="150dp" 
+							小结：gone 属性和marginleft属性在一边的时候 只会执行一个
 		 
 		 
-		 
-		 
+		      右侧无约束
+			   一：layout_constraintHorizontal_bias 属性失效
+               二：layout_marginLeft 	效果变化 不再是整体移动控件 而是改变其宽度	
+			       layout_marginRight    无效
+			   三：
+					左边view 没有gone前不生效
+						app:layout_goneMarginLeft="100dp" 
+						
+						左边gone 
+						    会影响view宽度 左边10 右边不管设置多少 都是wrapcontent效果 也就是显示完就好
+							当然左边设置间距太大 可能就不会显示了
+							android:layout_marginLeft="150dp" 无效了
+							app:layout_goneMarginLeft="10dp"   生效
+		                    android:layout_marginRight="150dp" 
+							小结：gone 属性和marginleft属性在一边的时候 只会执行一个
+							
+			 显示不下问题：
+             当左右都有约束 parent view1 view2 parent	
+                                view1 比较大的时候 会尽量显示view2 但是可能view2就显示不全了及view1 和view2 重合的现象
+
+             								
+			 长宽比例   	
+
+				app:layout_constraintDimensionRatio="1:1"	默认是（W，X:X）
+				此时layout_marginLeft 又是改变控件位置了
+					app:layout_constraintHorizontal_bias="0.2" 也重新生效了
+				另外         app:layout_constraintDimensionRatio="H,2:3" 标识 高度2 宽度3 小的一个是正好包围内容的大小
+
+总结：
+只设置单边约束的时候会紧贴 两边都设置的时候 再中间
+layout_constraintBaseline_toBaselineOf 是内容下面那根线对齐
+layout_constraintHorizontal_bias 需要左右都封起来才有效果 这是前提  它会先计算 然后再计算layout_marginLeft
+layout_goneMarginLeft 只有左边不显示的时候才生效 左边显示的时候不生效 
+                      	左边gone 
+						   0dp 会影响view宽度 左边10 右边150 
+							android:layout_marginLeft="150dp" 无效了
+							app:layout_goneMarginLeft="10dp"   生效
+		                    android:layout_marginRight="150dp" 
+							小结：gone 属性和marginleft属性在一边的时候 只会执行一个
+							
+layout_marginLeft 左边有约束才可能生效 这是前提  特殊的 
+                  左边view gone的时候 又有layout_goneMarginLeft
+				  属性的时候不生效 否则即使左边gone 还是会生效
+				  它一般是向右移动view 
+android:layout_width="0dp"  
+                  没有额外设置的时候 layout_marginLeft 为改变宽度 layout_constraintHorizontal_bias失效
+				  
+app:layout_constraintDimensionRatio="1:1"	默认是（W，X:X） 
+                   这个时候又变为了 移动view
+				    layout_marginLeft 为view整体向右移动 layout_constraintHorizontal_bias生效
