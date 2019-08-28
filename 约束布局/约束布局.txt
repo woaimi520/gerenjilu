@@ -1,0 +1,52 @@
+         baseline：
+		 app:layout_constraintBaseline_toBaselineOf="@+id/t1" 指的是 文字下面的baseline 对齐
+		 
+		角度：
+		     app:layout_constraintCircle="@+id/t1" 圆心 t1 的中心
+            app:layout_constraintCircleAngle="150" 角度 Y正 顺时针开始
+            app:layout_constraintCircleRadius="0dp" 距离 t1 到当前view的中心	
+          （        app:layout_constraintBaseline_toBaselineOf="@+id/t1" 会以圆的为准 不管XML书写先后顺序）		
+
+
+        layout_margin 注意它可以超过约束
+		1android:layout_marginLeft="10dp" 只在左边有约束的时候生效	
+		如app:layout_constraintLeft_toRightOf="@+id/t1"	
+        android:layout_marginRight="1000000dp" 右侧无约束就无效	 
+		
+		2当左右都有约束
+		注意 当只有一边有约束的时候 它会紧贴这边 但是两边都有的时候 就会跑到左右的中间
+		当          android:layout_marginRight="10dp"
+		又有        android:layout_marginleft="20dp" 
+		时候 会 先取差 在决定往哪边走 这里就是在 正中 向右边走 10dp 注意：是从正中开始走
+		
+		gone问题:
+		其他view     android:visibility="gone" 的时候
+	    1 距离还是150
+		android:layout_marginLeft="150dp" 有效
+		
+		2 只会距离10
+		android:layout_marginLeft="150dp" 无效了
+		 app:layout_goneMarginLeft="10dp"   生效
+		
+		其他view     android:visibility="visiavle" 的时候
+		1 距离还是150
+		android:layout_marginLeft="150dp" 有效
+		
+		2 距离还是150 这里不会叠加哈
+		android:layout_marginLeft="150dp" 生效
+		 app:layout_goneMarginLeft="10dp"  无效了
+		 
+		 layout_constraintHorizontal_bias  问题
+		 只有在左右 或 上下都有约束才有效 偏移 从0 - 1 0.5就是还是在距离的正中
+		 
+		 有左右约束的时候
+		      android:layout_marginRight="60dp"   后执行
+			  app:layout_constraintHorizontal_bias="1" 先执行
+		 
+		  没有左约束的时候
+		      android:layout_marginRight="60dp"   执行
+			  app:layout_constraintHorizontal_bias="0.5" 不执行
+		 
+		 
+		 
+		 
