@@ -21,10 +21,42 @@
 		发送广播
 		apk安装完成后，PMS会发一个ACTION_PACKAGE_ADDED广播，
 		   如果是卸载，会发ACTION_PACKAGE_REMOVED广播。
+		   
+		   当我删除的时候 
+		   可以直接删除 data/app/X包 把X包整个删除 重启
 	
    1.2 系统级应用
        /system/app/   
-	   替换系统应用可以新装一个 到data/app下，也可以替换掉system/app下的对应的apk 然后重启 （没条件测试）
+	   替换系统应用可以新装一个 到data/app下，也可以替换掉system/app下的对应的apk（这种情况删除不掉 只能禁用） 然后重启 （没条件测试）
+	   
+	   复制apk到system/app
+		adb push C:\Users\Administrator\Desktop\安卓神指笔记v122\114.apk /storage/emulated/0/11/ 先复制到安卓系统中
+		
+		然后再搞到系统app目录下
+		dreamqltechn:/ $ su
+		dreamqltechn:/ # mount -o remount,rw /system
+		dreamqltechn:/ # cat /storage/emulated/0/11/114.apk > /system/app/114.apk
+		dreamqltechn:/ # chmod 644 /system/app/114.apk
+		dreamqltechn:/ # reboot
+		
+注意：在daya/app /下不会生成对应文件
+
+      在data/data下会生成对应文件
+	/data/system/packages.list  会注册
+	/data/system/packages.xml 会注册
+	
+	so文件处理
+	因为 system/app下面相应的so库文件应该放到system/lib下面
+	将APK直接放入系统目录中，会导致APK找不到so文件，正常情况
+	下的安装是使用PackageManager，它会将so文件拷入系统读取的
+	so文件夹目录下，提供给App使用；系统应用就是不会使用Pack
+	ageManager去安装，所以在使用系统应用前，提前将so文件拷入
+	到so文件夹目录下（一般是system/lib目录）重启后，App 就可
+	以调用so文件了（有时间再弄）
+	
+	删除 
+	可以删除 system/app/ X。apk 或者 文件/x.apk 整体删除 再重启
+
 	
    1.3 核心级应用
        /system/priv-app/	
