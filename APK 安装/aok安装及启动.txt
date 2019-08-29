@@ -1,13 +1,39 @@
-应用级： adb install 后会复制到 data/app/下  PMS 会扫描 
-扫描后会在data/data/应用包名下/创建file 桌面根据manafest
-中的注册信息 创建桌面图标 注册广播等组件，同时判断是否安
-装过等
-测试：直接删除 data/app/包/ XX.apk后应用崩溃
+一 1.1应用级： adb install 后会复制到 data/app/下  PMS 会扫描 
+		扫描后会在data/data/应用包名下/创建file 桌面根据manafest
+		中的注册信息 创建桌面图标 注册广播等组件，同时判断是否安
+		装过等
+		测试：直接删除 data/app/包/ XX.apk后应用崩溃
 
-启动： 点击图标 ams 看有没有这个应用的进程 没有 就从zygote
-进程复制一份（zygote作用是为了加快进程创建，创建进程很耗时）
-，vm上启动这个进程。创建主线程，主线程再运行 application然
-后再到对应的activity
+		app安装在手机内存中，安装后复制到/data/app/ :
+		其中信息会被读取到以下部分
+		/data/app/X.apk存放  :apk文件(assets、res资源文件以apk形式存在这里，apk内包括所有文件)
+		/data/davlik-cache/  :存放释放的dex文件(src代码文件)
+		/data/data/your apk/ :存放app的数据(cache、lib、databases等)
+		/data/system/packages.list : 这个文件是记录手机安装的app的信息的
+		/data/system/packages.xml : 这个文件是记录安装app的详细信息(权限，uid等从各个app的AndroidManifest.xml取出来的)
 
-adb install -r XX.apk 安装保留数据
-adb shell pm uninstall -k com.szqd.sznotes 卸载保留数据 data/data/
+		在桌面创建快捷方式
+		. 在桌面上添加App的快捷方式，
+		如果AndroidManifest文件中有多个Activity被标注为
+		<action android:name="android.intent.action.MAIN" />和
+		<category android:name="android.intent.category.LAUNCHER" />
+		
+		发送广播
+		apk安装完成后，PMS会发一个ACTION_PACKAGE_ADDED广播，
+		   如果是卸载，会发ACTION_PACKAGE_REMOVED广播。
+	
+   1.2 系统级应用
+       /system/app/   
+	   替换系统应用可以新装一个 到data/app下，也可以替换掉system/app下的对应的apk 然后重启 （没条件测试）
+	
+   1.3 核心级应用
+       /system/priv-app/	
+       这里面放的是权限更高的系统核心应用，如开机launcher、系统UI、系统设置等，这个目录我们最好不要动，保持系统干净简洁
+
+二 		启动： 点击图标 ams 看有没有这个应用的进程 没有 就从zygote
+		进程复制一份（zygote作用是为了加快进程创建，创建进程很耗时）
+		，vm上启动这个进程。创建主线程，主线程再运行 application然
+		后再到对应的activity
+
+		adb install -r XX.apk 安装保留数据
+		adb shell pm uninstall -k com.szqd.sznotes 卸载保留数据 data/data/
