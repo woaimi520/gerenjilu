@@ -1,0 +1,9 @@
+应用级： adb install 后会复制到 data/app/下  PMS 会扫描 
+扫描后会在data/data/应用包名下/创建file 桌面根据manafest
+中的注册信息 创建桌面图标 注册广播等组件，同时判断是否安
+装过等
+
+启动： 点击图标 ams 看有没有这个应用的进程 没有 就从zygote
+进程复制一份（zygote作用是为了加快进程创建，创建进程很耗时）
+，vm上启动这个进程。创建主线程，主线程再运行 application然
+后再到对应的activity
