@@ -1,0 +1,59 @@
+一:添加多渠道的变量
+ 应用：每个渠道使用 ”同一位置 “的变量不同 
+1  productFlavors {
+	
+            //注意是‘’ 然后逗号分隔
+            buildConfigField 'String', 'authorities_id','"com.szqd.sznotes.fileprovider"'
+        }
+	
+	}
+2 编译版本的时候会在 E:\code\android\sznotes\app\build\generated\source\buildConfig\多渠道名\debug\com\szqd\sznotes\BuildConfig.java生成	
+package com.szqd.sznotes;
+
+public final class BuildConfig {
+  // Fields from product flavor: a_default
+  public static final String authorities_id = "com.szqd.sznotes.fileprovider";
+}
+
+3 代码中使用
+  因为 BuildConfig类的包名都是一样的
+  所以 只用  BuildConfig.authorities_id, 调用即可
+  
+二:修改多渠道在 xml 或者build中的变狼值
+ 应用 改 版本号 appid icom图标等
+	XML ： 
+			 1     
+		productFlavors {
+        a_default {
+            dimension "default"
+            manifestPlaceholders = [
+                    ICON_ID            : "@mipmap/ic_logo",
+            ]
+        }
+	}
+	  2 android:icon="${ICON_ID}"  //使用    "${变量名}" 格式来代替固定位置
+	  
+	  另外 增加资源stirng： resValue "string", "appName", '"柳州数字质监移动办公"'
+	          然后 value string 中使用  <string name="app_name">@string/appName</string>` 这个我没验证
+	
+ build中已有的
+	
+  直接：d_shanji {
+            applicationId "com.tqkj.weiji"
+            versionCode 1
+            versionName "1.0"
+        }
+  猜测：我个人觉得 这部分在build中的配置  最后都会在编译的时候生成到对应的BuildConfig中
+  
+  
+三:替换使用的资源或代码
+     切换到project 标签下 在app-》src上右键 -》new->destrory- 
+	 Res （会自动替换为渠道工程里的）
+	  建立了res 后就可以根据具体的替换来添加文件，注意名字都要一样
+	  value-》string 文件里的内容 颗粒到单个string变量
+	 java（不会替换 你需要删除main工程下对应的java文件 并创建其他渠道工程文件）
+	  修改对应代码也一样 但是要保证包名包含的文件一样 都用 destrory 创建就行 我靠好像不能自动替换
+	  
+	  
+  
+ 

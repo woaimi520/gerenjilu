@@ -1,2 +1,2 @@
 Android name:UMENG_CHANNEL
-配置参数：1_yingyongbao;
+配置参数： 1_yingyongbao;
