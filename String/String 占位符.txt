@@ -1,0 +1,53 @@
+%N$X 
+  N 标识占用哪个位置 从 1开始
+  X d:int s：字符串 f:.2f 小数点后两个数字 不会四舍五入
+  
+最普通的  
+1
+
+  <string name="string_test_1">学号：%1$d ;姓名：%2$s ;成绩：%3$.2f</string>  
+2  
+  Logger.d("alarm  " + String.format(getString(R.string.string_test_1), 123, "renyu", 92.3333));//正确的
+  打印 学号：123 ;姓名：renyu ;成绩：92.33
+  
+ 完
+1 
+String.XML
+     <array name="list">
+        <item name = "item1">我是列表1，买身价为%1$1.2f元</item>  //这里的占位是相对一行的
+        <item name = "item2">我是列表2，买身价为%1$1.2f元</item>
+        <item name = "item3">我是列表3，买身价为%1$1.2f元</item>
+    </array>
+	
+
+	
+2.	
+ String arr[] = getResources().getStringArray(R.array.list);//这里是不是写到string中  都是用 R.array. 且 没有getStringArray 只能 getResources().getStringArray
+                for(int i=0;i<arr.length;i++){
+                    Logger.d("alarm  " + String.format(arr[i],66.7777));
+                }
+				
+打印
+2019-09-06 14:20:44.422 1216-1216/com.renyu.administrator.redwineapplication D/PRETTY_LOGGER: │ alarm  我是列表1，买身价为66.78元
+2019-09-06 14:20:44.423 1216-1216/com.renyu.administrator.redwineapplication D/PRETTY_LOGGER: │ alarm  我是列表2，买身价为66.78元
+2019-09-06 14:20:44.424 1216-1216/com.renyu.administrator.redwineapplication D/PRETTY_LOGGER: │ alarm  我是列表3，买身价为66.78元
+				
+完
+
+部分变色
+
+1
+String.XML
+在需要变色部分 添加  <![CDATA[<font color="#D81B60">    </font>]]> //这里颜色值不能应用color中的 所以有弊端
+<string name="string_test_2">学号：%1$d ;姓名： <![CDATA[<font color="#D81B60">  %2$s  </font>]]> ;成绩：%3$.2f</string>
+
+2
+rxtest.setText( Html.fromHtml(String.format(getString(R.string.string_test_2), 123, "renyu", 92.3373)));
+打印
+//学号：123 ;姓名：   renyu （变色了）  ;成绩：92.33
+
+完
+
+
+
+

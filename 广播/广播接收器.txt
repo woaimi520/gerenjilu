@@ -1,0 +1,50 @@
+两种注册方式
+1.动态注册
+    public class RemindReceiver2 extends BroadcastReceiver{
+        public static final String ACTION = "com.renyu.administrator.redwineapplication.ui.main.MainFragment.RemindReceiver2";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+			。。。。
+
+        }
+    }
+	
+	注册
+	RemindReceiver2 dynamicReceiver;
+	
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		IntentFilter filter = new IntentFilter();
+        filter.addAction(RemindReceiver2.ACTION);//动态注册用action 我用组件名 收不到广播
+        dynamicReceiver = new RemindReceiver2();
+        getContext().registerReceiver(dynamicReceiver,filter);
+    }
+	
+	去注册
+	    public void onDetach() {
+       
+        getContext().unregisterReceiver(dynamicReceiver);
+
+    }
+	
+静态注册	
+
+public class RemindReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+          。。。。。
+    }
+}
+
+注册（Xxml中完成）
+   <application>
+        <receiver android:name=".ui.main.RemindReceiver" />
+
+    </application>
+
+
+
+	
+	
