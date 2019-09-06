@@ -67,6 +67,7 @@ greendao 中 1对多关系中 可以通过1对象直接获取到多的对象集合 返回一个list
 当多表中数据变化的时候 要先 mMainTaskModel.resetMedias() 不然多表有新增 新增部分你直接获取不到 
 
 3保存
+   reminderDao.insert(reminder);// ReminderModel reminder = new ReminderModel(); dao 是表管理 model 是一条数据的映射
 
 4查询
   List<MediaModel> datas= mediaModelDao.queryBuilder().list();//dao 查询所有的 没有过滤

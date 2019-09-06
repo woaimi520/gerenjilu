@@ -1,0 +1,111 @@
+package com.renyu.administrator.redwineapplication.util;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.os.Build;
+import com.orhanobut.logger.Logger;
+
+
+/**
+ * 作者：任宇
+ * 日期：2019/9/5 11:18
+ * 注释：
+ */
+public class AlarmTimeUtils {
+
+   //intent 看作是快递员的快件信息，compamtname 是授收件人名字，没有的时候 就通过action：她会打拳击，来过滤 ，catagry 是对大拳击的进一步信息 如 手臂两米粗的 进一步过滤。
+   //找到人后 你想干嘛 是由 startactivity send广播 开服务 来决定的。
+   //PendingIntent 是 intent 和  “你想干嘛”  的组合。 所以它有启动界面的PendingIntent 打开服务的PendingIntent 发送广播的PendingIntent
+   // 在底层对它的唯一行是由 intent 的 action  requestCode flag 决定 一个不同就认为不同 这里的不同不是指对象 可能对象不同 底层也认为是一个事件
+   //不管是周期闹钟还是单词闹钟 都是可以取消
+
+   /**
+    * @param context
+    * @param time 设置周期闹钟时间 单位秒
+    *             这里19后实际只能决定第一次发送的延迟 因为 周期是在intent里面的
+    * @param pendingIntent
+    */
+   public static void setTimer(Context context,int time, PendingIntent pendingIntent){
+      //应用关闭后不会收到广播 重启应用特收不到 start
+      AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+      //理解未调用后 多少秒 才能收到广播
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+         //[23,无穷）
+         Logger.d("alarm [23,无穷）闹钟设置 time = "+time);
+         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+time*1000, pendingIntent);//第二个参数决定了等待多久发送 这种方式就没有第一次发送要等待多久的设置
+      }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+         //[19,23）
+         Logger.d("alarm [19,23） 闹钟设置 time = "+time);
+         alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+time*1000,pendingIntent);
+      }else{
+         //[1,19)
+         Logger.d("alarm [1,19) 闹钟设置 time = "+time);
+         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+time*1000, time*1000, pendingIntent); //设置间隔 毫秒 第二个参数是第一次等待多久发送  第三个参数是后续的间隔
+      }
+      //应用关闭后不会收到广播 重启应用特收不到 end
+
+   }
+
+   /**
+    * @param context
+    * @param pendingIntentCancle 取消这个pendingIntentCancle 对应的闹钟
+    */
+   public static void cancleTimer(Context context,PendingIntent pendingIntentCancle){
+      Logger.d("alarm  闹钟取消");
+      //只要底层认为的 PendingIntent 不同 就不能取消 只能取消到 底层认为相同的
+      AlarmManager alarmManagerCancle = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+      alarmManagerCancle.cancel(pendingIntentCancle);
+   }
+
+   /**
+    * 广播接收器中添加的函数 19之后就需要 才能实现周期发送 不然只调用setTimer 无法在19之后实现精确定时
+    * @param context
+    * @param pendingIntent
+    * @param time
+    */
+   public static  void receiveDeal(Context context,PendingIntent pendingIntent,int time){
+      Logger.d("alarm 广播收到消息");
+      AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+         //锁屏也能收到  清除应用后 收不到 打开后还是收不到
+         Logger.d("alarm [23,无穷） 后闹钟设置 time="+time);//>=23
+         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + time*1000, pendingIntent);//这里5000代表延迟5秒
+      }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+         //23以上锁屏一段时间后就收不到了 打开锁屏 就pk  清除应用后 收不到 打开后还是收不到
+         Logger.d("alarm  [19,23)   后闹钟设置 time"+time);//19=<  <23
+         alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+time*1000 , pendingIntent);//这里5000代表延迟5秒
+      }
+   }
+
+
+   /**
+    * 设置一次性闹钟
+    * @param context
+    * @param time 周期 多久后广播接收器收到消息
+    * @param pendingIntent
+    */
+    public static void setOneTimer(Context context,int time, PendingIntent pendingIntent){
+        //应用关闭后不会收到广播 重启应用特收不到 start
+        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        //理解未调用后 多少秒 才能收到广播
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //[23,无穷）
+            Logger.d("alarm [23,无穷）闹钟设置 time = "+time);
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+time*1000, pendingIntent);//第二个参数决定了等待多久发送 这种方式就没有第一次发送要等待多久的设置
+        }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //[19,23）
+            Logger.d("alarm [19,23） 闹钟设置 time = "+time);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+time*1000,pendingIntent);
+        }else{
+            //[1,19)
+            Logger.d("alarm [1,19) 闹钟设置 time = "+time);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+time*1000,pendingIntent); //设置间隔 毫秒 类型 周期  动作
+        }
+        //应用关闭后不会收到广播 重启应用特收不到 end
+
+    }
+
+
+
+}

@@ -332,3 +332,25 @@ temp 存储
 	  
 	  数据库更新 是在这句之后调用
 	    TaskModelDao taskModelDao = GreenDaoManager.getInstance().getDaoSession().getTaskModelDao();
+		
+		
+		
+		
+		
+		
+		
+ ------------------------------------------------------------------------------- 
+		设置提醒时间
+设置：                  mTaskModel.setReminderDate(time);		
+
+
+      设置到期时间
+设置：	    mTaskModel.setDueDate(dueDate);
+            mTaskModel.setReminderDate(reminderDate);//这里还会取设置提醒时间
+
+界面finish ：       destory->save-> mTaskDao.update(mTaskModel);		
+					//然后还会添加闹钟
+					AlarmManage.addAlarm(this, mTaskModel);		
+				  //直接发送闹钟提醒 提醒时间比当前时间大
+                    sendAlarm(context, taskModel);
+		
