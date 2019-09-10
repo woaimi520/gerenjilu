@@ -70,6 +70,17 @@ XML
         //配置给TextView
         prompt.setMovementMethod(LinkMovementMethod.getInstance());//这句后才能点击连接跳转
         prompt.setText(style);
+		
+		若不要连接下划线
+		public abstract class ClickableSpanNLUtils extends ClickableSpan {
+		@Override
+		public void updateDrawState(TextPaint ds) {
+        super.updateDrawState(ds);
+        ds.setUnderlineText(false);
+		}
+
+}
+
 完
 
 改变字体颜色
