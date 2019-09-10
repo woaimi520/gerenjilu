@@ -1,0 +1,18 @@
+π§≥Ã
+buildscript {
+    ext.kotlin_version = '1.3.41'
+	}
+ dependencies {
+    
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+		}
+
+
+app
+	apply plugin: 'kotlin-android-extensions'
+	apply plugin: 'kotlin-android'
+
+
+    //¡Â…˘
+    implementation 'com.szqd.lib:libRingtoneBrowse:1.0.7'
+    implementation 'com.szqd.lib:libFlash:1.0.18'
