@@ -1,0 +1,71 @@
+1 在xml中设置
+layout中设置
+   <ImageView
+            android:id="@+id/iv_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@null"
+            android:src="@drawable/first_operate_hint_selector" />
+			
+first_operate_hint_selector		对应设置
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@mipmap/first_operate_hint_btn_pressed"/>
+    <item android:drawable="@mipmap/first_operate_hint_btn_normal"/>
+</selector>
+
+2 重写view 
+package com.szqd.sznotes.ui.widget;
+
+import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+
+/**
+ * 作者：杨祥
+ * 日期：2018/7/13 - 9:32
+ * 注释：按钮带按下效果
+ */
+public class PressButton extends android.support.v7.widget.AppCompatTextView {
+
+    public PressButton(Context context) {
+        super(context);
+    }
+
+    public PressButton(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public PressButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+   //监听点击事件
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Drawable drawable = getBackground();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (null != drawable) {
+				    //给背景加个墨镜
+                    drawable.setColorFilter(0x66000000, PorterDuff.Mode.SRC_ATOP);
+                    invalidate();
+                }
+                break;
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_UP:
+                if (null != drawable) {
+				   //去掉墨镜
+                    drawable.clearColorFilter();
+                    invalidate();
+                }
+                break;
+        }
+        return super.onTouchEvent(event);
+    }
+}
