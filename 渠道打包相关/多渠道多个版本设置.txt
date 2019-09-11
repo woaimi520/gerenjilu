@@ -4,6 +4,7 @@
 	
             //注意是‘’ 然后逗号分隔
             buildConfigField 'String', 'authorities_id','"com.szqd.sznotes.fileprovider"'
+			 buildConfigField 'int', 'default_theme_color','0'
         }
 	
 	}
@@ -27,7 +28,7 @@ public final class BuildConfig {
         a_default {
             dimension "default"
             manifestPlaceholders = [
-                    ICON_ID            : "@mipmap/ic_logo",
+                    ICON_ID            : "@mipmap/ic_logo", //这里不会生成到 BuildConfig类中
             ]
         }
 	}

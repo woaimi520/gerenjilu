@@ -1,0 +1,55 @@
+第一种 这种方式在界面oncreat的时候就已经可以看到图片
+   manyfest
+        <activity
+            android:name="com.szqd.sznotes.ui.activity.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Launcher">
+			
+	style
+   <style name="AppTheme.Launcher" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_splash_img</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>	
+	
+	setContentView(intiLayout());
+	
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    </RelativeLayout>
+	
+	
+第二种 这种方式只有在 onresume执行完后才显示图片出来	
+
+   manyfest
+        <activity
+            android:name="com.szqd.sznotes.ui.activity.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Launcher">
+			
+	style
+   <style name="AppTheme.Launcher" parent="Theme.AppCompat.Light.NoActionBar">
+      
+    </style>
+
+	setContentView(intiLayout());	
+	<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_splash_img" />
+
+    <FrameLayout
+        android:id="@+id/AdContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+		</FrameLayout>
+
+		</RelativeLayout>
+  
