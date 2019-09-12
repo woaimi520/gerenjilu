@@ -2,10 +2,10 @@
   子布局中多个都是
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  实际显示 最后一个
+  实际显示 最后一个 实际其实是覆盖了  
   
 最外层线性布局
   子布局中多个都是
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  实际显示 第一个
+  实际显示 第一个 它不是覆盖而就是只显示第一个
