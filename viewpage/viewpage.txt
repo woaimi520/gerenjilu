@@ -1,0 +1,87 @@
+布局
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:clipChildren="false"
+        android:overScrollMode="never"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"/>
+		
+		设置宽高 这里会覆盖xml中的宽高设置 但是layout_marginStart还是生效的
+		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mVp.getLayoutParams();
+        int width = ScreenUtils.getScreenWidth() - SizeUtils.dp2px(100);
+        params.width = width;
+        params.height = (int) (width / 910f * 1120f);
+        mVp.setLayoutParams(params);
+		
+		设置adapter
+		        mVp.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                GuideFragment fragment = new GuideFragment();//这里为每个item设置一个fragment
+                Bundle bundle = new Bundle();
+                bundle.putInt("guide", position);
+                fragment.setArguments(bundle);
+                return fragment;
+            }
+
+            @Override
+            public int getCount() {
+                return Constant.GUIDE_TEXT_TITLE_SJ.length;
+            }
+
+
+        });
+		
+		设置选中逻辑
+		        mVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mTvTitle.setText(Constant.GUIDE_TEXT_TITLE_SJ[position]);//textview 若不设置text 第一次进入也不会走这里
+                mTvLittle.setText(Constant.GUIDE_TEXT_LITTLE_SJ[position]);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+		
+		设置两个page 距离 设置缓存几个界面
+		mVp.setPageMargin(SizeUtils.dp2px(60));
+        mVp.setOffscreenPageLimit(Constant.GUIDES.length);
+		
+		
+		fragment主要完成
+		 @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        int guide_index = 0;
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            guide_index = bundle.getInt("guide"); //这里取位置
+        }
+        switch (guide_index) {
+            case 0:
+                Drawable drawable0 = ContextCompat.getDrawable(getContext(), R.mipmap.guild_image_0);
+                mImage.setImageDrawable(drawable0);
+                break;
+            case 1:
+                Drawable drawable1 = ContextCompat.getDrawable(getContext(), R.mipmap.guild_image_01);
+                mImage.setImageDrawable(drawable1);
+                break;
+            case 2:
+                Drawable drawable2 = ContextCompat.getDrawable(getContext(), R.mipmap.guild_image_02);
+                mImage.setImageDrawable(drawable2);
+                break;
+        }
+    }
+		
+		
