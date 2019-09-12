@@ -1,0 +1,11 @@
+最外层相对布局
+  子布局中多个都是
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  实际显示 最后一个
+  
+最外层线性布局
+  子布局中多个都是
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  实际显示 第一个
