@@ -1,0 +1,30 @@
+配置
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+	
+简单使用
+        Glide.with(this.getContext())
+                        .load("http://resource.gooaa.cn:3000/dist/cdn/upload/common/ad-manager/b9963deb-1c2e-46f1-8947-9c60d3e1495a.jpg")
+                        .into(image);
+						
+常用函数
+ CenterCrop		：方法是将图片按比例缩放到足矣填充 ImageView 的尺寸		 可能图显示不完整 但是填充满了
+ FitCenter()    ：缩放到完全显示
+ 
+ 
+ 添加显示的时候的动画
+     .transition(GenericTransitionOptions.with(R.anim.zoom_in))//glide 4.0下版本的 .animate（） 方法替换
+XML中
+android:alpha	渐变透明度动画效果
+android:scale	渐变缩放动画效果
+android:translate	画面转换位置移动动画效果
+android:rotate	画面转移旋转动画效果
+
+三种动画 
+不会改变view 属性：
+帧动画：决定每一页
+补间动画：决定开始和结束 中间系统补全
+
+改变view属性
+属性动画：改变view属性动画

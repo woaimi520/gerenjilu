@@ -1,0 +1,7 @@
+必须保证在一个局域网
+
+android studio 安装 插件 Android Wifi ADB 然后重启
+
+连接手机 并点击 多出的按钮 匹配 
+
+好了 可以断开用了

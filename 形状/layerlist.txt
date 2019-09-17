@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+    android:height="300dp"   //它整体的高度 这个受到 <bitmap  android:gravity="center" 影响
+    android:gravity="top">  //这个需要注意 指的是这个图片在他们的父布局的位置
+        <bitmap
+            android:dither="true"
+            android:gravity="center" //图片不会随着位置变化而压缩
+            android:src="@mipmap/ic_splash_bg" />
+    </item>
+</layer-list>
